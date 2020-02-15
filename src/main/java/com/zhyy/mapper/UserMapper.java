@@ -3,6 +3,7 @@ package com.zhyy.mapper;
 
 import com.zhyy.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @author Administrator
  */
 @Mapper
+@Component("userMapper")
 public interface UserMapper
 {
 	/**

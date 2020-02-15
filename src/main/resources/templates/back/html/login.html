@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
     <title>前台登录</title>
-    <base th:href="@{/}">
-    <link rel="stylesheet" href="/layui/css/layui.css" >
+<!--    <base th:href="@{/}">-->
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}" />
 </head>
 <body>
 <div class="layui-row">
@@ -31,8 +30,9 @@
         </form>
     </div>
 </div>
-<script src= "/layui/layui.js">
-
+<script th:src= "@{static/layui/layui.js}">
+</script>
+<script>
 	//Demo
 	layui.use('form', function(){
 		var form = layui.form;
