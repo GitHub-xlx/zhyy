@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>登录成功1</title>
+    <base th:href="@{/}">
+
+</head>
+<body>
+
+
+<h3>登录成功</h3>
+<p>账户:<span th:text="${user.account}"></span></p>
+<p>密码:<span th:text="${user.code}"></span></p>
+<p>积分:<span th:text="${user.scroe}"></span></p>
+</body>
+</html>

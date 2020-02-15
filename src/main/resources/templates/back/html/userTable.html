@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>用户管理界面</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+</head>
+<body>
+<div style="margin-left:0.2%;margin-top: 12%;">
+    <table id="test" lay-filter="test"></table>
+</div>
+
+
+<script  src="/back/js/jquery-3.4.1.js"></script>
+<script src="/layui/layui.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/back/js/userTable.js"></script>
+<script type="text/html" id="toolbar2">
+	{{# if(d.start == 0){  }}
+<a class="layui-btn layui-btn-sm background-style" lay-event="open">启用</a>
+{{#  } }}
+{{# if(d.start == 1){}}
+<a class="layui-btn layui-btn-sm background-style" lay-event="close">禁用</a>
+	{{#  } }}
+	<a class="layui-btn layui-btn-sm background-style" lay-event="info">重置密码</a>
+</script>
+</body>
+</html>

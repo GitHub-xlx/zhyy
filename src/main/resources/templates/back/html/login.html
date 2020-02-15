@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>前台登录</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" href="/layui/css/layui.css" >
+</head>
+<body>
+<div class="layui-row">
+    <div class="layui-col-md4 layui-col-md-offset4" style="margin-top: 420px;background-color: cadetblue" >
+        <form class="layui-form" action="/user/backLogin" method="post" style="padding-top: 20px">
+            <div class="layui-form-item">
+                <label class="layui-form-label">账号：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="account" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码：</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="code" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src= "/layui/layui.js">
+
+	//Demo
+	layui.use('form', function(){
+		var form = layui.form;
+
+		//监听提交
+		form.on('submit(formDemo)', function(data){
+			layer.msg(JSON.stringify(data.field));
+			return false;
+		});
+	});
+</script>
+</body>
+</html>
