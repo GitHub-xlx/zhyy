@@ -1,0 +1,15 @@
+/**
+* @program: Psychological
+* @ClassName manage
+* @description:
+* @author: xlx
+* @create: 2019-12-04 12:10
+* @Version 1.0
+**/
+
+.close {
+    display: none;
+}
+.open {
+    display: block;
+}
