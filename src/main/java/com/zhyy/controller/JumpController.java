@@ -16,6 +16,7 @@ public class JumpController
 	}
 	@RequestMapping({"/back/{id}"})
 	public String jumpBack(@PathVariable("id")String id){
+		System.out.println("跳转网页至"+id);
 		return "back/html/"+id;
 	}
 

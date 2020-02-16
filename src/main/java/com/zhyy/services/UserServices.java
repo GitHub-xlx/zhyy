@@ -16,4 +16,6 @@ public interface UserServices
 	 * @return
 	 */
 	public List<User> queryUserList();
+
+	public User queryUserByAccount(String account);
 }
