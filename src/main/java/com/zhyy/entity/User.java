@@ -7,20 +7,45 @@ package com.zhyy.entity;
  */
 public class User
 {
-	private Integer id;
+	private Integer uid;
+	private String account;
+	private String password;
 	private String username;
-	private String birthday;
+	private String phone;
 	private String sex;
-	private String address;
+	private String age;
+	private String department;
+	private String position;
+	private String rolecode;
 
-	public Integer getId()
+	public Integer getUid()
 	{
-		return id;
+		return uid;
 	}
 
-	public void setId(Integer id)
+	public void setUid(Integer uid)
 	{
-		this.id = id;
+		this.uid = uid;
+	}
+
+	public String getAccount()
+	{
+		return account;
+	}
+
+	public void setAccount(String account)
+	{
+		this.account = account;
+	}
+
+	public String getPassword()
+	{
+		return password;
+	}
+
+	public void setPassword(String password)
+	{
+		this.password = password;
 	}
 
 	public String getUsername()
@@ -33,14 +58,14 @@ public class User
 		this.username = username;
 	}
 
-	public String getBirthday()
+	public String getPhone()
 	{
-		return birthday;
+		return phone;
 	}
 
-	public void setBirthday(String birthday)
+	public void setPhone(String phone)
 	{
-		this.birthday = birthday;
+		this.phone = phone;
 	}
 
 	public String getSex()
@@ -53,19 +78,49 @@ public class User
 		this.sex = sex;
 	}
 
-	public String getAddress()
+	public String getAge()
 	{
-		return address;
+		return age;
 	}
 
-	public void setAddress(String address)
+	public void setAge(String age)
 	{
-		this.address = address;
+		this.age = age;
+	}
+
+	public String getDepartment()
+	{
+		return department;
+	}
+
+	public void setDepartment(String department)
+	{
+		this.department = department;
+	}
+
+	public String getPosition()
+	{
+		return position;
+	}
+
+	public void setPosition(String position)
+	{
+		this.position = position;
+	}
+
+	public String getRolecode()
+	{
+		return rolecode;
+	}
+
+	public void setRolecode(String rolecode)
+	{
+		this.rolecode = rolecode;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "User{" + "id=" + id + ", username='" + username + '\'' + ", birthday='" + birthday + '\'' + ", sex='" + sex + '\'' + ", address='" + address + '\'' + '}';
+		return "User{" + "uid=" + uid + ", account='" + account + '\'' + ", password='" + password + '\'' + ", username='" + username + '\'' + ", phone='" + phone + '\'' + ", sex='" + sex + '\'' + ", age='" + age + '\'' + ", department='" + department + '\'' + ", position='" + position + '\'' + ", rolecode='" + rolecode + '\'' + '}';
 	}
 }

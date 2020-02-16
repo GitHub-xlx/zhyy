@@ -25,4 +25,13 @@ public class UserServicesImpl implements UserServices
 		System.out.println("services **************** ");
 		return userMapper.queryUserList();
 	}
+
+	@Override
+	public User queryUserByAccount(String account)
+	{
+		System.out.println("进入实现类");
+
+		return userMapper.queryUserByAccount(account);
+	}
+
 }
