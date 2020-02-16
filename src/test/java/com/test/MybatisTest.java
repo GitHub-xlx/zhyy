@@ -3,7 +3,6 @@ package com.test;
 import com.zhyy.MySpringbootApplication;
 import com.zhyy.entity.User;
 import com.zhyy.mapper.UserMapper;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +21,7 @@ public class MybatisTest
 {
 	@Autowired
 	private UserMapper userMapper;
-	@Test
+
 	public void test()
 	{
 		List<User> list = userMapper.queryUserList();
