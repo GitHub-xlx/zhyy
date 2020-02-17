@@ -3,6 +3,7 @@
 <head >
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/static/js/axios-0.18.0.js"></script>
     <script src="/static/js/vue.js"></script>
 </head>
 <body>
@@ -15,7 +16,26 @@
     <h1>url : {{url}}</h1>
     <h1>{{details()}}</h1>
     <h1>{{f1()}}</h1>
+
+<!--    点击事件-->
     <button v-on:click="f1()">vue按钮</button>
+    <button v-on:click="f2()">切换</button>
+    <button v-on:click="f3()">ajax</button>
+
+<!--    循环-->
+    <ul v-if="flag">
+        <li v-for="(item,index) in arr">索引是{{index}}，内容是{{item}}</li>
+    </ul>
+    <ul v-show="flag">
+        <li v-for="(value,key) in arr1">key是{{key}}，内容是{{value}}</li>
+    </ul>
+    <ul>
+        <li v-for="(list,index) in arr2">id是{{list.id}}，内容是{{list.name}}</li>
+    </ul>
+
+    <input type="text" name="uesrname" v-model="arr1.name">
+
+
 </div>
 
 
@@ -27,9 +47,18 @@
 		el: '#vue_det',
         // 该标签使用的数据源，通过{{变量名}}提取
 		data: {
+			flag:false,
 			site: "菜鸟教程",
 			url: "www.runoob.com",
-			alexa: "10000"
+			alexa: "10000",
+            arr:["测试","评估","列表"],
+            arr1:{
+                id:1,
+                name:"集合"
+            },
+            arr2: [{id:1,name:"集合"},
+                    {id:2,name:"数据"}]
+
 		},
         // 该标签内所有方法,可以通过{{方法名（）}}调用
 		methods: {
@@ -38,6 +67,22 @@
 			},
             f1:function () {
                 alert("hello click")
+            },
+            f2:function () {
+                this.flag=! this.flag;
+            },
+            f3:function () {
+                axios.post('/jump/ce', {
+                    	username:"张三"
+                    })
+                    // 成功
+                    .then(function (value) {
+                    	alert(value)
+                    })
+                    // 失败
+                    .catch(function (reason) {
+                    	alert(reason)
+                    })
             }
 		}
 	})

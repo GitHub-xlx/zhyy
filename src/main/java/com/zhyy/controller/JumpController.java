@@ -3,6 +3,7 @@ package com.zhyy.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -18,6 +19,11 @@ public class JumpController
 	public String jumpBack(@PathVariable("id")String id){
 		System.out.println("跳转网页至"+id);
 		return "back/html/"+id;
+	}
+	@ResponseBody
+	@RequestMapping({"/ce"})
+	public String jumpCe(String username){
+		return "hello "+username;
 	}
 
 }
