@@ -3,7 +3,7 @@
 <head >
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="/static/js/axios-0.18.0.js"></script>
+    <script src="/static/js/axios.js"></script>
     <script src="/static/js/vue.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
     <h1>url : {{url}}</h1>
     <h1>{{details()}}</h1>
     <h1>{{f1()}}</h1>
-
+    <h1>{{1+2}}</h1>
 <!--    点击事件-->
     <button v-on:click="f1()">vue按钮</button>
     <button v-on:click="f2()">切换</button>
@@ -24,6 +24,7 @@
 
 <!--    循环-->
     <ul v-if="flag">
+<!--        （） in 数组名称-->
         <li v-for="(item,index) in arr">索引是{{index}}，内容是{{item}}</li>
     </ul>
     <ul v-show="flag">
@@ -47,6 +48,7 @@
 		el: '#vue_det',
         // 该标签使用的数据源，通过{{变量名}}提取
 		data: {
+
 			flag:false,
 			site: "菜鸟教程",
 			url: "www.runoob.com",
@@ -77,11 +79,12 @@
                     })
                     // 成功
                     .then(function (value) {
-                    	alert(value)
+	                    alert(value.data);
+	                    this.site=value.data;
                     })
                     // 失败
                     .catch(function (reason) {
-                    	alert(reason)
+                    	alert(reason);
                     })
             }
 		}
