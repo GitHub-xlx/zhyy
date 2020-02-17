@@ -15,11 +15,12 @@
     <h1>site : {{site}}</h1>
     <h1>url : {{url}}</h1>
     <h1>{{details()}}</h1>
-    <h1>{{f1()}}</h1>
     <h1>{{1+2}}</h1>
 <!--    点击事件-->
-    <button v-on:click="f1()">vue按钮</button>
-    <button v-on:click="f2()">切换</button>
+    <button v-on:click="f1()">vue按钮</button><br>
+
+    <button v-on:click="f2()">切换</button><br>
+
     <button v-on:click="f3()">ajax</button>
 
 <!--    循环-->
@@ -68,24 +69,27 @@
 				return  this.site + " - 学的不仅是技术，更是梦想！";
 			},
             f1:function () {
-                alert("hello click")
+                alert("hello click");
             },
             f2:function () {
                 this.flag=! this.flag;
             },
             f3:function () {
-                axios.post('/jump/ce', {
-                    	username:"张三"
+				var _this = this;
+                axios.get('/jump/ce', {
+                    	params:{username:'张三'}
                     })
                     // 成功
                     .then(function (value) {
 	                    alert(value.data);
-	                    this.site=value.data;
+	                    _this.site=value.data;
                     })
                     // 失败
                     .catch(function (reason) {
                     	alert(reason);
                     })
+
+
             }
 		}
 	})
