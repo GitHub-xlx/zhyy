@@ -1,20 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" >
+<head >
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/static/js/vue.js"></script>
 </head>
 <body>
-<a href="/user/find">测试查询</a>
+
 
 <h3>测试包</h3>
 
-<form action="/user/updateScore" method="post">
-    账户1：<input type="text" name="userid" /><br/>
-    积分：<input type="text" name="scroe" /><br/>
-    账户2：<input type="text" name="userid2" /><br/>
-    <input type="submit" value="修改"/><br/>
-</form>
+<div id="vue_det">
+    <h1>site : {{site}}</h1>
+    <h1>url : {{url}}</h1>
+    <h1>{{details()}}</h1>
+</div>
+
 
 </body>
+<script type="text/javascript" >
+
+	var vm = new Vue({
+		el: '#vue_det',
+		data: {
+			site: "菜鸟教程",
+			url: "www.runoob.com",
+			alexa: "10000"
+		},
+		methods: {
+			details: function() {
+				return  this.site + " - 学的不仅是技术，更是梦想！";
+			}
+		}
+	})
+</script>
 </html>

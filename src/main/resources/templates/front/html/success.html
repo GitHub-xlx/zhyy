@@ -1,18 +1,45 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>登录成功2</title>
-    <base th:href="@{/}">
-
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head >
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/vue.js"></script>
 </head>
 <body>
 
 
-<h3>登录成功</h3>
-<p>账户:<span th:text="${user.account}"></span></p>
-<p>密码:<span th:text="${user.code}"></span></p>
-<p>积分:<span th:text="${user.scroe}"></span></p>
+<h3>测试包</h3>
+
+<div id="vue_det">
+    <h1>site : {{site}}</h1>
+    <h1>url : {{url}}</h1>
+    <h1>{{details()}}</h1>
+    <h1>{{f1()}}</h1>
+    <button v-on:click="f1()">vue按钮</button>
+</div>
+
+
 </body>
+<script type="text/javascript" >
+
+	var vm = new Vue({
+        // 绑定标签id
+		el: '#vue_det',
+        // 该标签使用的数据源，通过{{变量名}}提取
+		data: {
+			site: "菜鸟教程",
+			url: "www.runoob.com",
+			alexa: "10000"
+		},
+        // 该标签内所有方法,可以通过{{方法名（）}}调用
+		methods: {
+			details: function() {
+				return  this.site + " - 学的不仅是技术，更是梦想！";
+			},
+            f1:function () {
+                alert("hello click")
+            }
+		}
+	})
+</script>
 </html>
