@@ -25,8 +25,11 @@ public class UserController
 {
 	@Autowired
 	private UserServices userServices;
+	@RequestMapping("/welcome")
+	public String welcome(){
+		return "back/html/login";
+	}
 	@RequestMapping("/query")
-
 	public String queryUserList()
 	{
 

@@ -6,12 +6,13 @@
     <base th:href="@{/}">
     <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{static/back/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/check.css}"/>
 
 </head>
 <body>
 
 <div class="login-main">
-    <header class="layui-elip">智慧医药管理系统</header>
+    <header class="layui-elip" style="font-size: 40px">智慧医药管理系统</header>
     <form class="layui-form" >
             <div class="layui-input-inline">.
             <input type="text" id="account" name="account" required lay-verify="required" placeholder="用户名" autocomplete="off"
@@ -22,14 +23,18 @@
                    class="layui-input">
         </div>
 
-        <div class="layui-input-inline">
-            <input type="text" id="checkCode" name="checkCode" required lay-verify="required" placeholder="验证码" autocomplete="off"
-                   class="layui-input" style="width: 45%;">
-            <canvas id="canvas" width="70px" height="40px" onclick="drawPic()"></canvas>
+<!--        <div class="layui-input-inline">-->
+<!--            <input type="text" id="checkCode" name="checkCode" required lay-verify="required" placeholder="验证码" autocomplete="off"-->
+<!--                   class="layui-input" style="width: 45%;">-->
+<!--            <canvas id="canvas" width="80px" height="50px" onclick="drawPic()"></canvas>-->
+<!--        </div>-->
+        <div class="drag" style="width:227.8px;margin-left: 70px;"  >
+            <div class="bg"></div>
+            <div class="text" onselectstart="return false;" >请拖动滑块解锁</div>
+            <div class="btn">&gt;&gt;</div>
         </div>
-
         <div class="layui-input-inline login-btn">
-            <button type="submit" lay-submit lay-filter="login_B" class="layui-btn">登录</button>
+            <button type="submit" lay-submit lay-filter="login_B" class="layui-btn" style="margin-top: 20px">登录</button>
         </div>
         <hr/>
 
@@ -37,19 +42,7 @@
 </div>
 <script th:src= "@{static/layui/layui.js}"></script>
 <script th:src="@{static/back/js/login.js}"></script>
-</body>
+<script th:src="@{static/js/3DBackground.js}"></script>
 
-<script>
-	//Demo
-	layui.use('form', function(){
-		var form = layui.form;
-
-		//监听提交
-		form.on('submit(formDemo)', function(data){
-			layer.msg(JSON.stringify(data.field));
-			return false;
-		});
-	});
-</script>
 </body>
 </html>
