@@ -19,13 +19,13 @@ layui.use(['form', 'layer', 'jquery', 'table', 'laydate'], function () {
 		elem: '#test'
 		, even: true
 		, page: true
-		, width: 700
+		, width: 1000
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25, 30]
 		, cols: [[
-			{field: 'drugcode', width: 150, title: '药品编号'}
-			, {field: 'currentprice', width: 150, title: '当前价格', sort: true}
-			, {field: 'previousprice', width: 150, title: '上次价格',sort: true}
+			{field: 'drugcode', width: 250, title: '药品编号'}
+			, {field: 'productname', width: 250, title: '商品名称', sort: true}
+			, {field: 'commoname', width: 250, title: '常用名称',sort: true}
 			, {field: 'priceadjustmentdate', width: 150, title: '上次调价日期'}
 			, {field: 'operator', width: 100, title: '操作员'}
 		]]
@@ -41,8 +41,8 @@ layui.use(['form', 'layer', 'jquery', 'table', 'laydate'], function () {
 		table.reload('drugTable', {
 			url: "drugController/selectprice"
 			, where: { //设定异步数据接口的额外参数，任意设
-				currentprice:$('#currentprice').val(),
-				previousprice: $('#previousprice').val(),
+				drugcode:$('#drugcode').val(),
+				commoname: $('#commoname').val(),
 				start: $('#date1').val(),
 				end: $('#date2').val()
 			}

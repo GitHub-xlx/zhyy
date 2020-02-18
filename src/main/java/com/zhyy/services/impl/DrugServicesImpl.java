@@ -3,6 +3,7 @@ package com.zhyy.services.impl;/**
  */
 
 import com.zhyy.entity.Drugprice;
+import com.zhyy.entity.DrugpriceDruginformation;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.services.DrugServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,14 @@ public class DrugServicesImpl implements DrugServices
 	private DrugMapper drugMapper;
 
 	@Override
-	public List<Drugprice> queryDrugprice(String pharmacycode, String currentprice, String previousprice, String start, String end, int nowpage, int size)
+	public List<DrugpriceDruginformation> queryDrugprice(String pharmacycode, String drugcode, String commoname, String start, String end, int nowpage, int size)
 	{
-		return drugMapper.queryDrugprice(pharmacycode,currentprice,previousprice,start,end,nowpage,size);
+		return drugMapper.queryDrugprice(pharmacycode,drugcode,commoname,start,end,nowpage,size);
 	}
 
 	@Override
-	public int countDrugprice(String pharmacycode, String currentprice, String previousprice, String start, String end)
+	public int countDrugprice(String pharmacycode, String drugcode,String commoname, String start, String end)
 	{
-		return drugMapper.countDrugprice(pharmacycode,currentprice,previousprice,start,end);
+		return drugMapper.countDrugprice(pharmacycode,drugcode,commoname,start,end);
 	}
 }

@@ -2,10 +2,7 @@ package com.zhyy.controller;
 
 
 import com.google.gson.Gson;
-import com.zhyy.entity.Drugprice;
-import com.zhyy.entity.ResultInfo;
-import com.zhyy.entity.TableMsg;
-import com.zhyy.entity.User;
+import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +22,16 @@ public class DrugController
 
 	@RequestMapping("/selectprice")
 	public @ResponseBody
-	TableMsg selectprice(String currentprice,String previousprice, String start,String end,String page,String limit, HttpServletRequest request){
+	TableMsg selectprice(String drugcode,String commoname, String start,String end,String page,String limit, HttpServletRequest request){
+
 		int pageInt=Integer.valueOf(page);
 		int limitInt=Integer.valueOf(limit);
 		User user=(User)request.getSession().getAttribute("user");
-		List<Drugprice> drugprices=null;
+		List<DrugpriceDruginformation> drugprices=null;
 		int count=0;
-		drugprices =drugServices.queryDrugprice(user.getPharmacycode(),currentprice,previousprice,start,end,pageInt,limitInt);
+		drugprices =drugServices.queryDrugprice(user.getPharmacycode(),drugcode,commoname,start,end,pageInt,limitInt);
 
-		count=drugServices.countDrugprice(user.getPharmacycode(),currentprice,previousprice,start,end);
+		count=drugServices.countDrugprice(user.getPharmacycode(),drugcode,commoname,start,end);
 
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
