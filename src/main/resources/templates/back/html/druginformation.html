@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <base th:href="@{/}">
+    <title>心理咨询与诊断平台</title>
+    <link rel="stylesheet" th:href="@{static/layui/css/layui.css}">
+    <style>
+        .layui-form-item {
+            margin-top: -1%;
+        }
+
+        td {
+            font-size: 17px;
+            height: 40px;
+            width: 150px;
+            background: #ffffff;
+        }
+
+    </style>
+</head>
+<body>
+<!--	<div id="userAccount" hidden="hidden">${sessionScope.user.user_Account}</div>-->
+<!--		<div id="userName" hidden="hidden">${sessionScope.user.user_Name}</div>-->
+<div class="userOrder" style="margin-left: 30%">
+    <form action="" class="layui-form" style="margin-left: -30%;">
+        <h2 style="margin-left: 37%;margin-top: 3%;margin-bottom: 4%;font-size: 30px;font-family: 幼圆;">我要预约</h2>
+        <div class="layui-form-item" style="margin-top: 1%">
+            <label class="layui-form-label" style="text-align: left">咨询领域：</label>
+            <div class="layui-input-inline">
+                <select lay-filter="chooseField" id="chooseField" name="chooseField">
+                    <option value="">请选择领域</option>
+                </select>
+            </div>
+            <label class="layui-form-label" style="width: 100px;text-align: left;margin-left:170px">心理咨询师：</label>
+            <div class="layui-input-inline">
+                <select lay-filter="chooseDoc" id="chooseDoc" name="chooseDoc">
+                    <option value="">请选择咨询师</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 94px;text-align: left">咨询师姓名：</label>
+            <label id="workerName" name="workerName" class="layui-form-label" style="margin-left: -6%"></label>
+        </div>
+
+        <div class="layui-form-item">
+            <label id="school" name="school" class="layui-form-label" style="width: 200px;text-align: left"></label>
+            <label id="title" name="title" class="layui-form-label" style="margin-left: -4%;text-align: left"></label>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="text-align: left">擅长领域：</label>
+            <label id="territory" name="territory" class="layui-form-label"
+                   style="text-align: left;width: 200px"></label>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="text-align: left">服务价格：</label>
+            <label id="price" name="price" class="layui-form-label" style="text-align: left"></label>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label" style="text-align: left">专业背景：</label>
+            <div class="layui-input-inline" style="width: 520px">
+                <textarea id="background" name="background" class="layui-textarea" readonly
+                          unselectable="on"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-top: 1%">
+            <label class="layui-form-label" style="text-align: left;width: 100px">可预约时间：</label>
+            <div class="layui-input-inline">
+                <select lay-filter="chooseDate" id="chooseDate" name="chooseDate">
+                    <option value="">请选择预约日期</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-top: 1%">
+            <table id="tabTime" border="1" style="margin-left: 14%">
+                <tr>
+                    <%-- gray 不可选，red 已被选， green选中--%>
+                    <td id="time1" title="09:00-10:00" align="center" valign="middle">09:00-10:00</td>
+                    <td id="time2" title="10:00-11:00" align="center" valign="middle">10:00-11:00</td>
+                    <td id="time3" title="11:00-12:00" align="center" valign="middle">11:00-12:00</td>
+                </tr>
+                <tr>
+                    <td id="time4" title="14:00-15:00" align="center" valign="middle">14:00-15:00</td>
+                    <td id="time5" title="15:00-16:00" align="center" valign="middle">15:00-16:00</td>
+                    <td id="time6" title="16:00-17:00" align="center" valign="middle">16:00-17:00</td>
+                </tr>
+            </table>
+
+        </div>
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">问题描述：</label>
+            <div class="layui-input-inline" style="width: 520px">
+                <textarea id="problem" name="problem" placeholder="请输入问题" class="layui-textarea"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="margin-left: 26%;margin-top: 2%">
+            <button type="button" class="layui-btn" lay-submit lay-filter="userOrder">提交预约</button>
+        </div>
+
+    </form>
+</div>
+</body>
+</html>

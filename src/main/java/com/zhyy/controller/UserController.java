@@ -7,10 +7,12 @@ import com.zhyy.entity.ResultInfo;
 import com.zhyy.entity.TableMsg;
 import com.zhyy.entity.User;
 import com.zhyy.services.UserServices;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,11 +39,9 @@ public class UserController
 	@RequestMapping("/query")
 	public String queryUserList()
 	{
-
-
 		return "back/html/login";
-
 	}
+
 	@RequestMapping("/doLogin")
 	public @ResponseBody
 	ResultInfo doLogin(String account, String password, HttpServletRequest request){
@@ -65,6 +65,13 @@ public class UserController
 		return new ResultInfo(403,"数据丢失");
 	}
 
+	@RequestMapping("/showMain")
+	public String showMain(HttpServletRequest request){
+		User user = (User)request.getSession().getAttribute("user");
+		System.out.println(user);
+
+		return "back/html/manage";
+	}
 
 
 	@RequestMapping("/manageUsers")

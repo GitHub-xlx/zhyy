@@ -16,7 +16,7 @@ layui.use(['form', 'layer', 'jquery', 'table', 'laydate'], function () {
 	});
 
 	table.render({
-		elem: 'test'
+		elem: '#test'
 		, even: true
 		, page: true
 		, width: 700
