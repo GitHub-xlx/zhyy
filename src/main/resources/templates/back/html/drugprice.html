@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>药品价格查询</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}" />
+</head>
+<body>
+<form class="layui-form" style="margin-top: 80px;">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">当前价格：</label>
+                <div class="layui-input-inline">
+                     <input name="currentprice" id="currentprice" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">上次价格：</label>
+                <div class="layui-input-inline">
+                    <input name="previousprice" id="previousprice" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">调价日期：</label>
+                <div class="layui-input-inline">
+                <input type="text" name="date" id="date1" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <span>至</span>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                <input type="text" name="date" id="date2" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn " id="query_bt" type="button">查询</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+<table class="layui-hide" id="test" lay-filter="table-user"></table>
+
+<script th:src= "@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/drugprice.js}"></script>
+</body>
+</html>
