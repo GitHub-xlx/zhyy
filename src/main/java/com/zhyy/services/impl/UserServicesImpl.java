@@ -19,11 +19,20 @@ public class UserServicesImpl implements UserServices
 {
 	@Autowired
 	private UserMapper userMapper;
+
+
+    //查询用户信息
 	@Override
-	public List<User> queryUserList()
+	public List<User> queryUserList(int pageInt, int limitInt)
 	{
-		System.out.println("services **************** ");
-		return userMapper.queryUserList();
+		return userMapper.queryUserList(pageInt,limitInt);
+	}
+
+	//查询用户总数
+	@Override
+	public int countUserList()
+	{
+		return userMapper.countUserList();
 	}
 
 	@Override

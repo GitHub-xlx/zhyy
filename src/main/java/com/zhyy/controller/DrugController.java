@@ -26,7 +26,6 @@ public class DrugController
 	@RequestMapping("/selectprice")
 	public @ResponseBody
 	TableMsg selectprice(String currentprice,String previousprice, String start,String end,String page,String limit, HttpServletRequest request){
-
 		int pageInt=Integer.valueOf(page);
 		int limitInt=Integer.valueOf(limit);
 		User user=(User)request.getSession().getAttribute("user");

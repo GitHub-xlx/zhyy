@@ -15,7 +15,14 @@ public interface UserServices
 	 * 测试 查询用户信息服务层
 	 * @return
 	 */
-	public List<User> queryUserList();
+
+
+	public List<User> queryUserList(int pageInt,int limitInt );
+	public int countUserList();
+
+
+
+
 
 	public User queryUserByAccount(String account);
 }

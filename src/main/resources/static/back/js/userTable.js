@@ -10,7 +10,7 @@ layui.use('table', function(){
 	var table = layui.table;
 	table.render({
 		elem: '#test'//指定表格
-		,url:'/user/find'//指定对应servlet
+		,url:'userController/manageUsers'//指定对应servlet
 		,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
 			layout: ['limit','count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
 			//,curr: 5 //设定初始在第 5 页
@@ -20,17 +20,15 @@ layui.use('table', function(){
 
 		}
 		,cols: [[
-			{field:'userid', width:80, title: 'ID', sort: true,fixed:"left"}
-			,{field:'account', width:100, title: '账户'}
+			{field:'account', width:80, title: '账号', sort: true,fixed:"left"}
+			,{field:'username', width:100, title: '名称'}
 			,{field:'phone', width:150, title: '电话', sort: true}
-			,{field:'scroe', width:100, title: '积分', sort: true}
-			,{field:'usertime', width:260, title: '注册时间', sort: true}
-			,{field:'phone', width:80, title: '状态', sort: true
-				,templet:function (d) {
-					return d.start==1? '启用':'禁用';
-				}
-			}
-			,{field:'start', width:350, title: '操作',align:'center', toolbar: '#toolbar2'}
+			,{field:'sex', width:100, title: '性别', sort: true}
+			,{field:'age', width:260, title: '年龄', sort: true}
+			,{field:'department', width:260, title: '部门', sort: true}
+			,{field:'position', width:260, title: '职位', sort: true}
+			,{field:'rolecode', width:260, title: '角色编码', sort: true}
+			, {title: '操作', fixed: 'right', width: 250, align: 'center', toolbar: '#barDemo'}
 		]]
 		,limit: 5
 		,limits:[5,10,15,20,25]
@@ -46,7 +44,7 @@ layui.use('table', function(){
 			{
 				layer.close(index);
 				$.ajax({
-					url:"UserServlet?methodName=updatCode" , // 请求路径
+					url:"" , // 请求路径
 					type:"POST" , //请求方式
 					data:{"uid":data.userid},
 					success:function (d) {
@@ -69,7 +67,7 @@ layui.use('table', function(){
 			{
 				layer.close(index);
 				$.ajax({
-					url:"UserServlet?methodName=updatStart" , // 请求路径
+					url:"" , // 请求路径
 					type:"POST" , //请求方式
 					data:{"uid":data.userid,"start":1},
 					success:function (d) {
@@ -94,7 +92,7 @@ layui.use('table', function(){
 			{
 				layer.close(index);
 				$.ajax({
-					url:"UserServlet?methodName=updatStart" , // 请求路径
+					url:"" , // 请求路径
 					type:"POST" , //请求方式
 					data:{"uid":data.userid,"start":0},
 					success:function (d) {

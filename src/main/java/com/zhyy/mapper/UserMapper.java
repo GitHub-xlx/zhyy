@@ -20,8 +20,12 @@ public interface UserMapper
 	 * 查询用户信息
 	 * @return list
 	 */
-	@Select("select * from userinfo")
-	public List<User> queryUserList();
+	@Select("select * from userinfo limit #{pageInt},#{limitInt}")
+	public List<User> queryUserList(int pageInt, int limitInt);
+	@Select("select count(*) from userinfo")
+	public int countUserList();
+
+
 	@Select("select * from userinfo where account = #{account}")
 	public User queryUserByAccount(String account);
 }
