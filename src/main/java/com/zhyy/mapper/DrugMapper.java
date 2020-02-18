@@ -2,7 +2,7 @@ package com.zhyy.mapper;
 
 
 import com.zhyy.entity.Drugprice;
-import com.zhyy.entity.DrugPriceIfClass;
+import com.zhyy.sqlifclass.DrugPriceIfClass;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Component;
@@ -31,8 +31,6 @@ public interface DrugMapper
 	 */
 	@SelectProvider(type = DrugPriceIfClass.class,method = "selectByChangeIF")
 	public List<Drugprice> queryDrugprice(String pharmacycode,String currentprice,String previousprice,String start,String end,int nowpage,int size);
-//	String pharmacycode,String currentprice,String previousprice,String start,String end
-
 
 	/**
 	 * 多条件模糊查询,返回数量

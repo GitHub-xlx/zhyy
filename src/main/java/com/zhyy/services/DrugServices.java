@@ -24,7 +24,6 @@ public interface DrugServices
 	 * @return
 	 */
 	public List<Drugprice> queryDrugprice(String pharmacycode,String currentprice,String previousprice,String start,String end,int nowpage,int size);
-//String pharmacycode,String currentprice,String previousprice,String start,String end
 
 	/**
 	 *

@@ -1,4 +1,4 @@
-package com.zhyy.entity;
+package com.zhyy.sqlifclass;
 
 import java.util.HashMap;
 

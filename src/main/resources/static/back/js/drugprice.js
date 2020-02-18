@@ -20,7 +20,6 @@ layui.use(['form', 'layer', 'jquery', 'table', 'laydate'], function () {
 		, even: true
 		, page: true
 		, width: 700
-		, marginLeft:350
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25, 30]
 		, cols: [[
