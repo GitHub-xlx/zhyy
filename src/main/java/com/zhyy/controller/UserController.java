@@ -2,14 +2,12 @@ package com.zhyy.controller;
 
 
 import com.google.gson.JsonObject;
-import com.zhyy.entity.Drugprice;
-import com.zhyy.entity.ResultInfo;
-import com.zhyy.entity.TableMsg;
-import com.zhyy.entity.User;
+import com.zhyy.entity.*;
 import com.zhyy.services.UserServices;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,10 +64,24 @@ public class UserController
 	}
 
 	@RequestMapping("/showMain")
-	public String showMain(HttpServletRequest request){
+	public String showMain(HttpServletRequest request, Model model){
 		User user = (User)request.getSession().getAttribute("user");
-		System.out.println(user);
+		ArrayList<Menu> list = (ArrayList<Menu>) userServices.queryMenuList(user.getRolecode());
+		ArrayList<Menu>list2 = new ArrayList<>();
+		HashMap map = new HashMap<String,ArrayList<Menu>>();
 
+		for (int i = 0; i <list.size() ; i++)
+		{
+			if (map.containsKey(list.get(i).getParentcode())){
+				list2.add(list.get(i));
+			}else{
+				list2 = new ArrayList<>();
+				list2.add(list.get(i));
+				map.put(list.get(i).getParentcode(),list2);
+			}
+		}
+		model.addAttribute("menu",map);
+		System.out.println(list);
 		return "back/html/manage";
 	}
 

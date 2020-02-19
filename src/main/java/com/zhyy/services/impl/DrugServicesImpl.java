@@ -9,6 +9,7 @@ import com.zhyy.mapper.DrugMapper;
 import com.zhyy.services.DrugServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  *Date 2020/2/14
  */
 @Service
+@Transactional
 public class DrugServicesImpl implements DrugServices
 {
 	@Autowired

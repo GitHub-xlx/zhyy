@@ -1,5 +1,6 @@
 package com.zhyy.services;
 
+import com.zhyy.entity.Menu;
 import com.zhyy.entity.User;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserServices
 
 	public List<User> queryUserList(int pageInt,int limitInt );
 	public int countUserList();
-
+	public List<Menu> queryMenuList(String rolecode);
 
 
 

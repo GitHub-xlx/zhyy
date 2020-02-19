@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>后台管理</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
     <script src="/static/js/axios.js"></script>
     <script src="/static/js/vue.js"></script>
+
+
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -18,25 +21,26 @@
     </div>
 
     <div class="layui-side layui-bg-black">
-        <div class="layui-collapse" lay-accordion v-if="menu != null">
-            <div class="layui-colla-item" th:each="i :${menu}">
-                <h2 class="layui-colla-title" th:text="${i.key}"></h2>
-                <div class="layui-colla-content" th:each="j :${i.value}">
-                    <a th:href="${j.path}" style="color: #F0F0F0" th:title="${j.path}" target='main_self_frame'
-                       th:text="${j.mname}"></a>
-                </div>
-            </div>
+        <div class="layui-side-scroll" lay-accordion th:if="${menu}!= null">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <li class="layui-nav-item" th:each="mapEntry:${menu}">
+                    <a class="layui-layer-close" href="javascript:;" th:text="${mapEntry.key}"></a>
+                    <dl class="layui-nav-child" th:each="menuList:${mapEntry.value}">
+                        <dd><a th:href="${menuList.url}" target="main_self_frame" th:text="${menuList.menu}"></a></dd>
+                    </dl>
+                </li>
+            </ul>
         </div>
-
     </div>
 
 
-    <div class="layui-body" >
+    <div class="layui-body">
         <!-- 内容主体区域 -->
         <iframe src=""
                 name="main_self_frame" frameborder="0"
                 id="myIframe"
-                class="layadmin-iframe" style="width:100%" height="100%" ></iframe>
+                class="layadmin-iframe" style="width:100%" height="100%"></iframe>
 
     </div>
 
@@ -44,12 +48,12 @@
         <!-- 底部固定区域 -->
     </div>
 </div>
-<script  src="/back/js/jquery-3.4.1.js" ></script>
-<script src="/layui/layui.js"></script>
-<script src="/back/js/adminOpe.js"></script>
+<script src="/static/back/js/jquery-3.4.1.js"></script>
+<script src="/static/layui/layui.js"></script>
+<script src="/static/back/js/adminOpe.js"></script>
 <script>
 	//JavaScript代码区域
-	layui.use('element', function(){
+	layui.use('element', function () {
 		var element = layui.element;
 
 	});

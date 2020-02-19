@@ -2,11 +2,13 @@ package com.zhyy.services.impl;/**
  * className
  */
 
+import com.zhyy.entity.Menu;
 import com.zhyy.entity.User;
 import com.zhyy.mapper.UserMapper;
 import com.zhyy.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
  *Date 2020/2/14
  */
 @Service
+@Transactional
 public class UserServicesImpl implements UserServices
 {
 	@Autowired
@@ -33,6 +36,12 @@ public class UserServicesImpl implements UserServices
 	public int countUserList()
 	{
 		return userMapper.countUserList();
+	}
+
+	@Override
+	public List<Menu> queryMenuList(String rolecode)
+	{
+		return userMapper.queryMenuList(rolecode);
 	}
 
 	@Override
