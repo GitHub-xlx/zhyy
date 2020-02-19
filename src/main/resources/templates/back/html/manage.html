@@ -13,10 +13,14 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">后台管理</div>
+        <div class="layui-logo">平台后台管理端</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item"><a href="#" onclick="deleteLogin()">注销</a></li>
+        <ul class="layui-nav layui-layout-right" th:object="${session.user}">
+            <li class="layui-nav-item" >
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    <span th:text="*{username}"></span>
+            </li>
+            <li class="layui-nav-item"><a href="HtmlServlet?methodName=turnManageLogin"  onclick="if(confirm('确定注销账号吗?')==false)return false;">注销</a></li>
         </ul>
     </div>
 

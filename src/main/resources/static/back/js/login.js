@@ -147,8 +147,8 @@ btn.onmousedown = function mousedown(e){
 
 						if (data.code == 200) {
 							layer.msg('登录成功');
-							location.href ="jump/back/index";
-							// location.href = "userController/showMain";
+							// location.href ="jump/back/index";
+							location.href = "userController/showMain";
 						}
 						if (data.code == 404) {
 							layer.msg('密码错误');

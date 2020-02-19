@@ -52,6 +52,7 @@ public class UserController
 				if (user.getPassword().equals(password)){
 
 					request.getSession().setAttribute("user",user);
+
 					return new ResultInfo(200,"登录成功");
 				}else{
 					return new ResultInfo(404,"密码错误");
