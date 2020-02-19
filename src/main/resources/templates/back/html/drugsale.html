@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>药品销售登记表</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+</head>
+<body>
+<form class="layui-form" style="margin-top: 80px;">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">药品编号：</label>
+                <div class="layui-input-inline">
+                    <input name="drugcode" id="drugcode" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">药品名称：</label>
+                <div class="layui-input-inline">
+                    <input name="commoname" id="commoname" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">选择框</label>
+                <div class="layui-input-inline">
+                    <select name="specialmedicine" id="specialmedicine">
+                        <option value="-1">请选择</option>
+                        <option value="是">是</option>
+                        <option value="否">否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">购买人员身份证：</label>
+                    <div class="layui-input-inline">
+                        <input name="idcard" id="idcard" class="layui-input" type="text" autocomplete="off">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">购买人员姓名：</label>
+                    <div class="layui-input-inline">
+                        <input name="consumername" id="consumername" class="layui-input" type="text" autocomplete="off">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">营业员：</label>
+                    <div class="layui-input-inline">
+                        <input name="salesperson" id="salesperson" class="layui-input" type="text" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">销售时间：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="date" id="date1" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <span>至</span>
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <input type="text" name="date" id="date2" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn " id="query_bt" type="button">查询</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+<table class="layui-hide" id="test" lay-filter="table-user"></table>
+
+<script th:src="@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/drugsale.js}"></script>
+</body>
+</html>

@@ -40,4 +40,25 @@ public class DrugController
 		tableMsg.setData(drugprices);
 		return tableMsg;
 	}
+	@RequestMapping("/selectsale")
+	public @ResponseBody
+	TableMsg selectsale(String drugcode, String commoname, String specialmedicine, String idcard, String consumername,String salesperson, String start, String end,String page,String limit, HttpServletRequest request){
+
+		int pageInt=Integer.valueOf(page);
+		int limitInt=Integer.valueOf(limit);
+		User user=(User)request.getSession().getAttribute("user");
+		List<Drugsale> drugsales=null;
+		int count=0;
+		drugsales =drugServices.queryDrugSaleList(user.getPharmacycode(),drugcode,commoname,specialmedicine,idcard,consumername,salesperson,start,end,pageInt,limitInt);
+
+		count=drugServices.countDrugSaleList(user.getPharmacycode(),drugcode,commoname,specialmedicine,idcard,consumername,salesperson,start,end);
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(drugsales);
+		return tableMsg;
+	}
+
 }
