@@ -2,116 +2,226 @@
  * @program: Mybatis
  * @ClassName userTable
  * @description: 用户表管理（禁用，启用，重置密码）
- * @author: xlx
+ * @author: lj
  * @create: 2019-12-28 16:10
  * @Version 1.0
  **/
-layui.use('table', function(){
-	var table = layui.table;
+layui.use(['table', 'jquery','form'], function () {
+	var table = layui.table
+		, $ = layui.jquery
+	    , form = layui.form;
+
 	table.render({
-		elem: '#test'//指定表格
-		,url:'userController/manageUsers'//指定对应servlet
-		,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-			layout: ['limit','count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+		elem: '#demo'//指定表格
+		, url: 'userController/manageUsers'//指定对应servlet
+		, page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+			layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
 			//,curr: 5 //设定初始在第 5 页
-			,groups: 1 //只显示 1 个连续页码
-			,first: false //不显示首页
-			,last: false //不显示尾页
+			, groups: 1 //只显示 1 个连续页码
+			, first: false //不显示首页
+			, last: false //不显示尾页
 
 		}
-		,cols: [[
-			{field:'account', width:80, title: '账号', sort: true,fixed:"left"}
-			,{field:'username', width:100, title: '名称'}
-			,{field:'phone', width:150, title: '电话', sort: true}
-			,{field:'sex', width:100, title: '性别', sort: true}
-			,{field:'age', width:260, title: '年龄', sort: true}
-			,{field:'department', width:260, title: '部门', sort: true}
-			,{field:'position', width:260, title: '职位', sort: true}
-			,{field:'rolecode', width:260, title: '角色编码', sort: true}
-			, {title: '操作', fixed: 'right', width: 250, align: 'center', toolbar: '#barDemo'}
+		, cols: [[
+			{field: 'account', width: 80, title: '账号', sort: true, fixed: "left"}
+			, {field: 'username', width: 100, title: '名称'}
+			, {field: 'phone', width: 150, title: '电话', sort: true}
+			, {field: 'sex', width: 100, title: '性别', sort: true}
+			, {field: 'age', width: 100, title: '年龄', sort: true}
+			, {field: 'department', width: 200, title: '部门', sort: true}
+			, {field: 'position', width: 200, title: '职位', sort: true}
+			, {field: 'rolecode', width: 100, title: '角色编码', sort: true}
+			,{field:'state', width:150, title: '状态', sort: true}
+			, {title: '操作', fixed: 'right', width: 400, align: 'center', toolbar: '#barDemo'}
 		]]
-		,limit: 5
-		,limits:[5,10,15,20,25]
+		, limit: 5
+		, limits: [5, 10, 15, 20, 25]
 	});
-	table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+	table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 		var data = obj.data //获得当前行数据
-			,layEvent = obj.event; //获得 lay-event 对应的值
-		var username = data.userid;
-		var time = data.atime
+			, layEvent = obj.event; //获得 lay-event 对应的值
 
-		if(layEvent === 'info'){
-			layer.confirm('确定重置'+data.account+'密码？',function (index)
-			{
+
+		if (layEvent === 'open') {
+			// layer.msg('启用操作');
+			$.ajax({
+				type: "POST", //请求方式
+				url: 'userController/enable', // 请求路径
+				data: {account: data.account},
+				success: function (msg) {
+					if (msg === '1') {
+						layer.alert("启用成功");
+						table.reload();
+					} else {
+						layer.alert("启用失败，请重新尝试");
+					}
+				},//响应成功后的回调函数
+				error: function () {
+					alert("服务器繁忙")
+				},//表示如果请求响应出现错误，会执行的回调函数
+				dataType: "text"//设置接受到的响应数据的格式
+			});
+
+		} else if (layEvent === 'close') {
+			// layer.msg('禁用操作');
+			$.ajax({
+				type: "POST", //请求方式
+				url: 'userController/disable', // 请求路径
+				data: {account: data.account},
+				success: function (msg) {
+					if (msg === '1') {
+						layer.alert("禁用成功");
+						table.reload();
+					} else {
+						layer.alert("禁用失败，请重新尝试");
+					}
+				},//响应成功后的回调函数
+				error: function () {
+					alert("服务器繁忙")
+				},//表示如果请求响应出现错误，会执行的回调函数
+				dataType: "text"//设置接受到的响应数据的格式
+			});
+
+		} else if (layEvent === 'info') {
+			// layer.msg('重置密码操作');
+			layer.confirm('确定重置' + data.account + '密码？', function (index) {
 				layer.close(index);
 				$.ajax({
-					url:"" , // 请求路径
-					type:"POST" , //请求方式
-					data:{"uid":data.userid},
-					success:function (d) {
-						if (d==='1'){
+					type: "POST", //请求方式
+					url: 'userController/resetPassword', // 请求路径
+					data: {uaccount: data.account},
+					success: function (msg) {
+						if (msg === '1') {
 							layer.alert("密码重置成功");
 							table.reload();
-						} else{
+						} else {
 							layer.alert("密码重置失败，请重新尝试");
 						}
 					},//响应成功后的回调函数
-					error:function () {
+					error: function () {
 						alert("服务器繁忙")
 					},//表示如果请求响应出现错误，会执行的回调函数
-					dataType:"text"//设置接受到的响应数据的格式
+					dataType: "text"//设置接受到的响应数据的格式
 				});
 			});
 		}
-		if(layEvent === 'open'){
-			layer.confirm('是否启用'+data.account+'该账户',function (index)
-			{
+
+
+		//药品调价 注意!!! 大于成本价 小于政府指导价,不是乱调价
+		if (layEvent === 'adjustment') {
+			layer.prompt(function (val, index) {
+				// layer.msg('得到了'+val);
 				layer.close(index);
 				$.ajax({
-					url:"" , // 请求路径
-					type:"POST" , //请求方式
-					data:{"uid":data.userid,"start":1},
-					success:function (d) {
-						if (d==='1'){
-							layer.alert("状态修改成功");
-							table.reload("test");
-						} else{
-							layer.alert("状态修改失败，请重新尝试");
+					type: "POST", //请求方式
+					url: 'userController/adjustmentPrice', // 请求路径
+					data: {price:val},
+					success: function (msg) {
+						if (msg === '1') {
+							layer.alert("调价成功");
+							table.reload();
+						} else {
+							layer.alert("调价失败，请重新尝试");
 						}
 					},//响应成功后的回调函数
-					error:function () {
+					error: function () {
 						alert("服务器繁忙")
 					},//表示如果请求响应出现错误，会执行的回调函数
-					dataType:"text"//设置接受到的响应数据的格式
+					dataType: "text"//设置接受到的响应数据的格式
 				});
-				// window.location.href="JumpServlet?methodName=godoctorinfo&username="+username;
+
+
 
 			});
 		}
-		if(layEvent === 'close'){
-			layer.confirm('是否禁用'+data.account+'该账户',function (index)
-			{
-				layer.close(index);
-				$.ajax({
-					url:"" , // 请求路径
-					type:"POST" , //请求方式
-					data:{"uid":data.userid,"start":0},
-					success:function (d) {
-						if (d==='1'){
-							layer.alert("状态修改成功");
-							table.reload();
-						} else{
-							layer.alert("状态修改失败，请重新尝试");
-						}
-					},//响应成功后的回调函数
-					error:function () {
-						alert("服务器繁忙")
-					},//表示如果请求响应出现错误，会执行的回调函数
-					dataType:"text"//设置接受到的响应数据的格式
-				});
+
+		//药品停用
+		if (layEvent === 'disable') {
+			layer.msg('停用操作');
+			$.ajax({
+				type: "POST", //请求方式
+				url: '', // 请求路径
+				data: {account: data.account},
+				success: function (msg) {
+					if (msg === '1') {
+						layer.alert("停用成功");
+						table.reload();
+					} else {
+						layer.alert("停用失败，请重新尝试");
+					}
+				},//响应成功后的回调函数
+				error: function () {
+					alert("服务器繁忙")
+				},//表示如果请求响应出现错误，会执行的回调函数
+				dataType: "text"//设置接受到的响应数据的格式
 			});
+
 		}
+
+
 	});
 
+
+
+
+
+
+
+
+
+
+
+
+
+	//新增人员
+	$("#distribution").click(function () {
+
+		layer.open({
+			type: 1, //设置类型 默认为0， 1：页面层  2：iframe层
+			title: "新增人员界面",
+			content: $("#addstaffdiv"),
+			skin: 'layui-layer-molv',
+			area: ['700px', '500px'],
+			offset: 'auto',
+			icon: 1,//只对type=0的有效
+			shadeClose: true
+			, anim: 4
+			, maxmin: true //是否显示最大化和最小化的按钮 对type=1 type=2有效
+			, success: function () {
+
+			}
+		});
+		$('#docInfo').css('display', 'block');
+	});
+
+
+	//获取下拉框的值
+	var role = 10;
+	form.on('select(role)', function (data) {
+		role = data.value;
+		if (role === '10') {
+			$('#docInfo2').css('display', 'none');
+			$('#docInfo').css('display', 'block');
+		} else if (role === '20') {
+			$('#docInfo2').css('display', 'block');
+			$('#docInfo').css('display', 'none');
+		}
+
+	});
+	//获取下拉框职称的值
+	var title = '';
+	form.on('select(title)', function (data) {
+		title = data.value;
+	});
+
+	//获取下拉框职称的值
+	var title2 = '';
+	form.on('select(title2)', function (data) {
+		title2 = data.value;
+	});
+
+	//重新渲染
+	form.render();
+
+
 });
-
-

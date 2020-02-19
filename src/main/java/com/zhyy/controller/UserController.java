@@ -73,11 +73,11 @@ public class UserController
 		return "back/html/manage";
 	}
 
-
+    //管理用户列表
 	@RequestMapping("/manageUsers")
 	public @ResponseBody
 	TableMsg manageUsers(String page, String limit, HttpServletRequest request){
-
+		System.out.println("执行到管理用户列表");
 		System.out.println("page:"+page+", limit:"+limit);
 		int pageInt=Integer.valueOf(page)-1;
 		int limitInt=Integer.valueOf(limit);
@@ -97,5 +97,67 @@ public class UserController
 		return tableMsg;
 
 	}
+	//重置密码
+	@ResponseBody
+	@RequestMapping("/resetPassword")
+	public String resetPassword(String uaccount){
+		System.out.println("执行到重置密码");
+		boolean b=userServices.resetPassword(uaccount);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			msg="1";
+		}else{
+			msg="2";
+		}
+         return msg;
+	}
 
+	//启用
+	@ResponseBody
+	@RequestMapping("/enable")
+	public String enableUser(String account){
+		System.out.println("启用");
+		boolean b=userServices.enableUser(account);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			msg="1";
+		}else{
+			msg="2";
+		}
+		return msg;
+	}
+	//禁用
+	@ResponseBody
+	@RequestMapping("/disable")
+	public String disableUser(String account){
+		System.out.println("禁用");
+		boolean b=userServices.disableUser(account);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			msg="1";
+		}else{
+			msg="2";
+		}
+		return msg;
+	}
+
+	//禁用
+	@ResponseBody
+	@RequestMapping("/adjustmentPrice")
+	public String adjustmentPrice(String price){
+		System.out.println("禁用");
+		int priceNow =Integer.valueOf(price);
+		boolean b=userServices.adjustmentPrice(priceNow);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			msg="1";
+		}else{
+			msg="2";
+		}
+		return msg;
+	}
 }

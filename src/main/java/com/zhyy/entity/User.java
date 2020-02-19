@@ -15,7 +15,7 @@ public class User
   private String position;
   private String rolecode;
   private String pharmacycode;
-
+  private String state;
 
   public long getUid() {
     return uid;
@@ -111,9 +111,20 @@ public class User
     return pharmacycode;
   }
 
+  public String getState()
+  {
+    return state;
+  }
+
+  public void setState(String state)
+  {
+    this.state = state;
+  }
+
   public void setPharmacycode(String pharmacycode) {
     this.pharmacycode = pharmacycode;
   }
+
 
   @Override
   public String toString()

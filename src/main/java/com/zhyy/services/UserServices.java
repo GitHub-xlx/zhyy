@@ -19,9 +19,10 @@ public interface UserServices
 
 	public List<User> queryUserList(int pageInt,int limitInt );
 	public int countUserList();
-
-
-
+    public boolean resetPassword(String account);
+	public boolean enableUser(String account);
+	public boolean disableUser(String account);
+	public boolean adjustmentPrice(int price);
 
 
 	public User queryUserByAccount(String account);

@@ -7,6 +7,7 @@ import com.zhyy.mapper.UserMapper;
 import com.zhyy.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,6 +35,31 @@ public class UserServicesImpl implements UserServices
 	{
 		return userMapper.countUserList();
 	}
+
+	//重置密码
+	@Override
+	public boolean resetPassword(String account)
+	{
+		return userMapper.resetPassword(account);
+	}
+	//启用
+	@Override
+	public boolean enableUser(String account)
+	{
+		return userMapper.enableUser(account);
+	}
+	//禁用
+	@Override
+	public boolean disableUser(String account)
+	{
+		return userMapper.disableUser(account);
+	}
+	//调价
+	@Override
+	public boolean adjustmentPrice(int price){
+		return userMapper.adjustmentPrice(price);
+	}
+
 
 	@Override
 	public User queryUserByAccount(String account)
