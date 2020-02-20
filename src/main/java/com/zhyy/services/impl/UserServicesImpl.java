@@ -2,6 +2,7 @@ package com.zhyy.services.impl;/**
  * className
  */
 
+import com.zhyy.entity.Menu;
 import com.zhyy.entity.User;
 import com.zhyy.mapper.UserMapper;
 import com.zhyy.services.UserServices;
@@ -16,6 +17,7 @@ import java.util.List;
  *Date 2020/2/14
  */
 @Service
+@Transactional
 public class UserServicesImpl implements UserServices
 {
 	@Autowired
@@ -60,6 +62,12 @@ public class UserServicesImpl implements UserServices
 		return userMapper.adjustmentPrice(price);
 	}
 
+
+	@Override
+	public List<Menu> queryMenuList(String rolecode)
+	{
+		return userMapper.queryMenuList(rolecode);
+	}
 
 	@Override
 	public User queryUserByAccount(String account)

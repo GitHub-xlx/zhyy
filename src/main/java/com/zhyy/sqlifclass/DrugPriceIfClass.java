@@ -25,10 +25,10 @@ public class DrugPriceIfClass
 			sql.append(" AND A.commoname LIKE '%" + commoname + "%'");
 		}
 		if (start != null && !("".equals(start))) {
-			sql.append(" AND B.priceadjustmentdate >=" + start + "");
+			sql.append(" AND B.priceadjustmentdate >= '" + start + "'");
 		}
 		if (end != null && !("".equals(end))) {
-			sql.append(" AND B.priceadjustmentdate <=" + end + "");
+			sql.append(" AND B.priceadjustmentdate <= '" + end + "'");
 		}
 		//分页语句
 		sql.append(" LIMIT " + (nowpage-1)*size + "," + size);
@@ -54,10 +54,10 @@ public class DrugPriceIfClass
 			sql.append(" AND A.commoname LIKE '%" + commoname + "%'");
 		}
 		if (start != null && !("".equals(start))) {
-			sql.append(" AND B.priceadjustmentdate >=" + start + "");
+			sql.append(" AND B.priceadjustmentdate >= '" + start + "'");
 		}
 		if (end != null && !("".equals(end))) {
-			sql.append(" AND B.priceadjustmentdate <=" + end + "");
+			sql.append(" AND B.priceadjustmentdate <= '" + end + "'");
 		}
 		return sql.toString();
 	}
