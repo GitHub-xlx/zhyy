@@ -2,25 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>后台管理</title>
+    <title>后台管理主界面</title>
     <base th:href="@{/}">
-    <link rel="stylesheet" href="/static/layui/css/layui.css">
-    <script src="/static/js/axios.js"></script>
-    <script src="/static/js/vue.js"></script>
+    <link rel="stylesheet" th:href="@{static/layui/css/layui.css}">
+    <script th:src="@{static/js/axios.js}"></script>
+    <script th:src="@{static/js/vue.js}"></script>
 
 
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">平台后台管理端</div>
+        <div class="layui-logo">智慧医药管理系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-right" th:object="${session.user}">
             <li class="layui-nav-item" >
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
                     <span th:text="*{username}"></span>
             </li>
-            <li class="layui-nav-item"><a href="HtmlServlet?methodName=turnManageLogin"  onclick="if(confirm('确定注销账号吗?')==false)return false;">注销</a></li>
+            <li class="layui-nav-item"><a href=""  onclick="if(confirm('确定注销账号吗?')==false)return false;">注销</a></li>
         </ul>
     </div>
 
@@ -52,12 +52,12 @@
         <!-- 底部固定区域 -->
     </div>
 </div>
-<script src="/static/back/js/jquery-3.4.1.js"></script>
-<script src="/static/layui/layui.js"></script>
-<script src="/static/back/js/adminOpe.js"></script>
+<script th:src="@{static/back/js/jquery-3.4.1.js}"></script>
+<script th:src="@{static/layui/layui.js}"></script>
+<!--<script src="/static/back/js/adminOpe.js"></script>-->
 <script>
 	//JavaScript代码区域
-	layui.use('element', function () {
+	layui.use('element', function(){
 		var element = layui.element;
 
 	});
