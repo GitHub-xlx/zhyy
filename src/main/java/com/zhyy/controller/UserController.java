@@ -157,13 +157,13 @@ public class UserController
 		return msg;
 	}
 
-	//禁用
+	//药品调价
 	@ResponseBody
 	@RequestMapping("/adjustmentPrice")
-	public String adjustmentPrice(String price){
-		System.out.println("禁用");
-		int priceNow =Integer.valueOf(price);
-		boolean b=userServices.adjustmentPrice(priceNow);
+	public String adjustmentPrice(String price,String drugcode){
+		System.out.println("调价");
+		double priceNow =Double.valueOf(price);
+		boolean b=userServices.adjustmentPrice(priceNow,drugcode);
 		System.out.println("b:"+b);
 		String msg="";
 		if(b){
@@ -173,4 +173,26 @@ public class UserController
 		}
 		return msg;
 	}
+	//药品停用
+	@ResponseBody
+	@RequestMapping("/drugDiscontinuation")
+	public String drugDiscontinuation(String drugcode){
+		System.out.println("药品停用");
+		boolean b=userServices.drugDiscontinuation(drugcode);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			boolean b2=userServices.drug2Discontinuation(drugcode);
+			if(b2){
+				msg="1";
+			}else{
+				msg="2";
+			}
+		}else{
+			msg="2";
+		}
+		return msg;
+	}
+
+
 }

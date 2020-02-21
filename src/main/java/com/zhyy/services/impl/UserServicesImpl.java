@@ -56,10 +56,22 @@ public class UserServicesImpl implements UserServices
 	{
 		return userMapper.disableUser(account);
 	}
-	//调价
+	//药品调价
 	@Override
-	public boolean adjustmentPrice(int price){
-		return userMapper.adjustmentPrice(price);
+	public boolean adjustmentPrice(double price,String drugcode){
+		return userMapper.adjustmentPrice(price,drugcode);
+	}
+    //药品停用(药库的药品状态)
+	@Override
+	public boolean drugDiscontinuation( String drugcode)
+	{
+		return userMapper.drugDiscontinuation(drugcode);
+	}
+	//药品停用(药房的药品状态)
+	@Override
+	public boolean drug2Discontinuation(String drugcode)
+	{
+		return userMapper.drug2Discontinuation(drugcode);
 	}
 
 

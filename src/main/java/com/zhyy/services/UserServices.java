@@ -1,5 +1,6 @@
 package com.zhyy.services;
 
+import com.zhyy.entity.Menu;
 import com.zhyy.entity.User;
 
 import java.util.List;
@@ -19,10 +20,16 @@ public interface UserServices
 
 	public List<User> queryUserList(int pageInt,int limitInt );
 	public int countUserList();
+	public boolean resetPassword(String account);
+	public boolean enableUser(String account);
+	public boolean disableUser(String account);
+	public boolean adjustmentPrice(double price,String drugcode);
+	public boolean drugDiscontinuation(String drugcode);
+	public boolean drug2Discontinuation(String drugcode);
 
 
 
-
+	public List<Menu> queryMenuList(String rolecode);
 
 	public User queryUserByAccount(String account);
 }

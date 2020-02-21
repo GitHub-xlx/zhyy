@@ -41,7 +41,6 @@ layui.use(['table', 'jquery','form'], function () {
 		var data = obj.data //获得当前行数据
 			, layEvent = obj.event; //获得 lay-event 对应的值
 
-
 		if (layEvent === 'open') {
 			// layer.msg('启用操作');
 			$.ajax({
@@ -107,7 +106,7 @@ layui.use(['table', 'jquery','form'], function () {
 		}
 
 
-		//药品调价 注意!!! 大于成本价 小于政府指导价,不是乱调价
+		//药品调价 注意!!! 大于成本价 小于政府指导价？修改的价格可以是带小数点？修改的是哪个药品的价格？
 		if (layEvent === 'adjustment') {
 			layer.prompt(function (val, index) {
 				// layer.msg('得到了'+val);
@@ -140,7 +139,7 @@ layui.use(['table', 'jquery','form'], function () {
 			layer.msg('停用操作');
 			$.ajax({
 				type: "POST", //请求方式
-				url: '', // 请求路径
+				url: 'userController/drugDiscontinuation', // 请求路径
 				data: {account: data.account},
 				success: function (msg) {
 					if (msg === '1') {
