@@ -1,6 +1,8 @@
 package com.zhyy.entity;
 
 
+import com.google.gson.Gson;
+
 public class Druginformation {
 
   private long diid;
@@ -244,4 +246,9 @@ public class Druginformation {
     this.shelflife = shelflife;
   }
 
+  @Override
+  public String toString()
+  {
+    return  new Gson().toJson(this);
+  }
 }

@@ -1,12 +1,14 @@
 package com.zhyy.mapper;
 
 
+import com.zhyy.entity.Druginformation;
 import com.zhyy.entity.Drugprice;
 import com.zhyy.entity.DrugpriceDruginformation;
 import com.zhyy.entity.Drugsale;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Component;
 
@@ -80,4 +82,15 @@ public interface DrugMapper
 	 */
 	@SelectProvider(type = DrugSaleIfClass.class,method = "countsalelist")
 	public int countDrugSaleList(String pharmacycode,String drugcode,String commoname,String specialmedicine,String idcard,String consumername,String salesperson,String start,String end);
+
+	/**
+	 * @Description  查找药品信息表
+	 * @author xlx
+	 * @Date 下午 22:59 2020/2/20 0020
+	 * @Param
+	 * @return
+	 **/
+	@Select("select * from druginformation where ${where}")
+	List<Druginformation> selectDruginformation(String where);
+
 }

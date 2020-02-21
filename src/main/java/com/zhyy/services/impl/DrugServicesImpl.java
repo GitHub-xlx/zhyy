@@ -2,6 +2,7 @@ package com.zhyy.services.impl;/**
  * className
  */
 
+import com.zhyy.entity.Druginformation;
 import com.zhyy.entity.Drugprice;
 import com.zhyy.entity.DrugpriceDruginformation;
 import com.zhyy.entity.Drugsale;
@@ -47,5 +48,19 @@ public class DrugServicesImpl implements DrugServices
 	public int countDrugSaleList(String pharmacycode, String drugcode, String commoname, String specialmedicine, String idcard, String consumername,String salesperson, String start, String end)
 	{
 		return drugMapper.countDrugSaleList(pharmacycode,drugcode,commoname,specialmedicine,idcard,consumername,salesperson,start,end);
+	}
+
+	@Override
+	public List<Druginformation> selectDruginformation(String commonname, String pincode)
+	{
+		String where="1=1 ";
+		if(commonname!=null){
+			where = commonname.length()>0 ? where+" and commonname = '"+commonname+"'" : where;
+		}
+		if (pincode!=null){
+			where = pincode.length()>0 ? where+" and pincode = '"+pincode+"'" : where;
+		}
+		return drugMapper.selectDruginformation(where);
+
 	}
 }

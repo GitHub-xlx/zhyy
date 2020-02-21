@@ -1,5 +1,6 @@
 package com.zhyy.services;
 
+import com.zhyy.entity.Druginformation;
 import com.zhyy.entity.Drugprice;
 import com.zhyy.entity.DrugpriceDruginformation;
 import com.zhyy.entity.Drugsale;
@@ -68,4 +69,16 @@ public interface DrugServices
 	 * @return
 	 */
 	public int countDrugSaleList(String pharmacycode,String drugcode,String commoname,String specialmedicine,String idcard,String consumername,String salesperson,String start,String end);
+
+	/**
+	 * @Description  通过药品常用名称和拼音码查找药品信息表
+	 * @author xlx
+	 * @Date 下午 22:28 2020/2/20 0020
+	 * @Param commonname 常用名称
+	 * @Param pincode 拼音码
+	 * @Param page 拼音码
+	 * @Param limit 拼音码
+	 * @return
+	 **/
+	List<Druginformation> selectDruginformation(String commonname, String pincode);
 }

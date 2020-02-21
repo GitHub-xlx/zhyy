@@ -9,6 +9,16 @@ public class TableMsg
 	private int count;
 	private List<?> data;
 
+	public TableMsg(){
+
+	}
+	public TableMsg(int code,String msg,int count,List<?> data){
+		this.code=code;
+		this.msg=msg;
+		this.count=count;
+		this.data=data;
+}
+
 	public int getCode()
 	{
 		return code;

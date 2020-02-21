@@ -1,6 +1,8 @@
 package com.zhyy.controller;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
@@ -60,5 +62,22 @@ public class DrugController
 		tableMsg.setData(drugsales);
 		return tableMsg;
 	}
+	@RequestMapping("/selectclaim")
+	public @ResponseBody
+	TableMsg selectclaim(int limit,int page,String commonname,String pincode, HttpServletRequest request){
+
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List all = drugServices.selectDruginformation(commonname,pincode);
+		PageInfo p = new PageInfo(all);
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)p.getTotal());
+		tableMsg.setData(p.getList());
+		return tableMsg;
+	}
+
 
 }
