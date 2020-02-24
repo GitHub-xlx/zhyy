@@ -10,6 +10,17 @@ public class Menu
 	private String url;
 	private String rolecode;
 	private String state;
+	private String parentname;
+
+	public String getParentname()
+	{
+		return parentname;
+	}
+
+	public void setParentname(String parentname)
+	{
+		this.parentname = parentname;
+	}
 
 	public int getMid()
 	{

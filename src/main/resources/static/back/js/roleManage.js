@@ -5,42 +5,40 @@ layui.use(['form','layer','jquery','table'], function(){
 	var layer  = layui.layer;
 
 
-	// // 获取下拉框数据
-	// form.on('select(user_state)', function (data) {
-	// 	category = data.value;
-	// });
 
 	table.render({
 		elem: '#test'
 		,even: true
 		,page: true
-		,width: 800
+		,width: 600
 		,limit:5
 		,limits:[5,10,15,20,25,30]
 		,cols: [[
-			{field:'menucode', width:100, title: '菜单编号',sort: true,align:'center'}
-			,{field:'parentcode', width:120, title: '上级菜单编号',sort: true,align:'center'}
-			,{field:'menu', width:100, title: '菜单名称',align:'center'}
-			,{field:'url', width:230, title: '跳转路径',align:'center'}
+			{field:'rolecode', width:100, title: '角色编号',sort: true,align:'center'}
+			,{field:'rolename', width:120, title: '角色名称',sort: true,align:'center'}
+			,{field:'departmentcode', width:80, title: '部门编号',align:'center'}
 			,{field:'state', width:100, title: '状态',align:'center',toolbar: '#toolbar1'}
 			,{field:'operate', width:200, title: '操作',align:'center', toolbar: '#toolbar'}
 
 		]]
-		,url:"sysController/menuManage"
+		,url:"sysController/roleManage"
 		,where: { //设定异步数据接口的额外参数，任意设
-			menucode: $('#menucode').val(),
-			menu: $('#menu').val()
+			rolecode: $('#rolecode').val(),
+			rolename: $('#rolename').val(),
+			department:$('#department').val()
 		}
 		,id:'userTable'
 	});
 
+
 // 用于带条件查询
 	$("#query_bt").click(function () {
 		table.reload('userTable',{
-			url:"sysController/menuManage"
+			url:"sysController/roleManage"
 			,where: { //设定异步数据接口的额外参数，任意设
-				menucode: $('#menucode').val(),
-				menu: $('#menu').val()
+				rolecode: $('#rolecode').val(),
+				rolename: $('#rolename').val(),
+				department:$('#department').val()
 			}
 			,page: {
 				curr: 1 //重新从第 1 页开始
