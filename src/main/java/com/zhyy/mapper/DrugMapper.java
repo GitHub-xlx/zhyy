@@ -1,10 +1,7 @@
 package com.zhyy.mapper;
 
 
-import com.zhyy.entity.Druginformation;
-import com.zhyy.entity.Drugprice;
-import com.zhyy.entity.DrugpriceDruginformation;
-import com.zhyy.entity.Drugsale;
+import com.zhyy.entity.*;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
 import org.apache.ibatis.annotations.Mapper;
@@ -12,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,5 +90,4 @@ public interface DrugMapper
 	 **/
 	@Select("select * from druginformation where ${where}")
 	List<Druginformation> selectDruginformation(String where);
-
 }

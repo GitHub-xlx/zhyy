@@ -4,6 +4,9 @@ package com.zhyy.controller;
 import com.google.gson.JsonObject;
 import com.zhyy.entity.*;
 import com.zhyy.services.UserServices;
+import com.zhyy.test.MyJobDetail;
+import com.zhyy.test.QuartzTest;
+import com.zhyy.test.TestSend;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,6 +55,27 @@ public class UserController
 				if (user.getPassword().equals(password)){
 
 					request.getSession().setAttribute("user",user);
+
+
+					List<Druginformation> list1=null;
+					//查询药库库存的药品的当前数量和最低数量
+					List<Drugstoredruginventory>list=userServices.checkInventoryCount();
+					if(list.size()>0){//遍历药库的药品数量是否小于最低限量
+						System.out.println("库存不足!");
+						for (int i = 0; i <list.size(); i++)
+						{
+							//根据药品编码查询药品名称
+							list1=userServices.findDrugNameByDrugCode(list.get(i).getDrugcode());
+						}
+						System.out.println("list1->查出的药品名称列表:"+list1);
+						for (int i = 0; i <list1.size(); i++)
+						{
+							QuartzTest.sendMail(list1.get(i).getCommoname());
+						}
+					}else{
+						System.out.println("库存足够!");
+					}
+
 
 					return new ResultInfo(200,"登录成功");
 				}else{

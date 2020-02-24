@@ -2,16 +2,14 @@ package com.zhyy.services.impl;/**
  * className
  */
 
-import com.zhyy.entity.Druginformation;
-import com.zhyy.entity.Drugprice;
-import com.zhyy.entity.DrugpriceDruginformation;
-import com.zhyy.entity.Drugsale;
+import com.zhyy.entity.*;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.services.DrugServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

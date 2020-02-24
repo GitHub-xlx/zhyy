@@ -160,18 +160,6 @@ layui.use(['table', 'jquery','form'], function () {
 
 	});
 
-
-
-
-
-
-
-
-
-
-
-
-
 	//新增人员
 	$("#distribution").click(function () {
 

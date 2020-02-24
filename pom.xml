@@ -101,7 +101,7 @@
         </dependency>
 
 
-        <!--JAVAMail 和 quartz框架 用到的依赖-->
+        <!--       JAVAMail 和 quartz 用到的依赖          -->
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
@@ -110,7 +110,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-            <version>4.3.7.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
@@ -123,13 +122,12 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>2.2.4.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
             <version>2.2.1</version>
         </dependency>
-
+        <!--       JAVAMail 和 quartz 用到的依赖          -->
 
 
     </dependencies>

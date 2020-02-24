@@ -2,6 +2,8 @@ package com.zhyy.services.impl;/**
  * className
  */
 
+import com.zhyy.entity.Druginformation;
+import com.zhyy.entity.Drugstoredruginventory;
 import com.zhyy.entity.Menu;
 import com.zhyy.entity.User;
 import com.zhyy.mapper.UserMapper;
@@ -74,6 +76,18 @@ public class UserServicesImpl implements UserServices
 		return userMapper.drug2Discontinuation(drugcode);
 	}
 
+	//查询药库库存数量不足的药品
+	@Override
+	public List<Drugstoredruginventory> checkInventoryCount()
+	{
+		return userMapper.checkInventoryCount();
+	}
+	//根据药品编码查询药品名称
+	@Override
+	public List<Druginformation> findDrugNameByDrugCode(String drugcode)
+	{
+		return userMapper.findDrugNameByDrugCode(drugcode);
+	}
 
 	@Override
 	public List<Menu> queryMenuList(String rolecode)
