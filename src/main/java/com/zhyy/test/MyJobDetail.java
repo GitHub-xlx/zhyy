@@ -1,15 +1,11 @@
 package com.zhyy.test;
 
-import com.zhyy.entity.Drugstoredruginventory;
-import com.zhyy.services.DrugServices;
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Map;
 
 
