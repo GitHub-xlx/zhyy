@@ -36,4 +36,5 @@ public interface SysMapper
 	@Select("select A.rolecode,A.rolename,B.departmentname departmentcode from role A,department B where ${where} ${limits}")
 	public List<Role>queryAllRole(String where,String limits);
 
+
 }

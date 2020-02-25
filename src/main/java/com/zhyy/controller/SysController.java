@@ -135,4 +135,10 @@ public class SysController
 
 		return new TableMsg(0,"",countPage,list);
 	}
+
+	@RequestMapping("/queryParentMenu")
+	public @ResponseBody List<Menu> queryParentMenu(){
+
+		return sysServices.queryAllMenu("parentcode = '0'",null);
+	}
 }

@@ -1,5 +1,7 @@
 package com.zhyy.services;
 
+import com.zhyy.entity.Druginformation;
+import com.zhyy.entity.Drugstoredruginventory;
 import com.zhyy.entity.Menu;
 import com.zhyy.entity.User;
 
@@ -22,7 +24,14 @@ public interface UserServices
 	public int countUserList();
 	public List<Menu> queryMenuList(String rolecode);
 
-
+	public boolean resetPassword(String account);
+	public boolean enableUser(String account);
+	public boolean disableUser(String account);
+	public boolean adjustmentPrice(double price,String drugcode);
+	public boolean drugDiscontinuation( String drugcode);
+	public boolean drug2Discontinuation(String drugcode);
+	public List<Drugstoredruginventory> checkInventoryCount();
+	public List<Druginformation> findDrugNameByDrugCode(String drugcode);
 
 
 	public User queryUserByAccount(String account);

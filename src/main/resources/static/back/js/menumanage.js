@@ -49,6 +49,40 @@ layui.use(['form','layer','jquery','table'], function(){
 		// Layui表格,刷新当前分页数据
 		// $(".layui-laypage-btn").click()
 	});
+
+	$("#add_bt").click(function () {
+		var that = this;
+		//多窗口模式，层叠置顶
+		layer.open({
+			type: 2 //此处以iframe举例
+			, title: '添加菜单'
+			, area: ['600px', '800px']
+			, shade: 0
+			, maxmin: true
+
+
+			, offset: [ //为了演示，随机坐标
+				($(window).height() * 0.01)
+				, ($(window).width() * 0.35)
+			]
+			, content: 'HtmlServlet?methodName=showAddWorker'
+			// ,btn: ['继续弹出', '全部关闭'] //只是为了演示
+			, yes: function () {
+				$(that).click();
+			}
+			, btn2: function () {
+				layer.closeAll();
+			}
+
+			, zIndex: layer.zIndex //重点1
+			, success: function (layero) {
+				layer.setTop(layero); //重点2
+			},end:function () {
+				window.location.reload();
+			}
+		});
+
+	});
 	table.on('tool(table-user)',function (obj) {
 		var data = obj.data;
 		var event = obj.event;

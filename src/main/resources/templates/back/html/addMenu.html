@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>添加菜单</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}"/>
+
+</head>
+<body>
+<h3 id="fun_title">添加菜单</h3>
+<form class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="margin-left:20px;text-align: left">选择父级菜单：</label>
+            <div class="layui-input-inline">
+                <select lay-filter="chooseMenu" id="chooseMenu" name="chooseMenu">
+                    <option value="">请选择父级菜单</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">菜单名称：</label>
+            <div class="layui-input-inline">
+                <input lay-verify="required" id="menuname" type="text" name="menuname"
+                       placeholder="请输入新增菜单名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">跳转链接：</label>
+            <div class="layui-input-inline">
+                <input lay-verify="required" id="url" type="text" name="url"
+                       placeholder="请输入菜单跳转链接" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item" align="center" style="margin-left: 100px">
+            <div class="layui-input-inline">
+                <button class="layui-btn " id="confirm_bt" type="button">确认添加</button>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script th:src="@{static/layui/layui.js}"></script>
+<script>
+	layui.use(['form', 'layer', 'jquery', 'table'], function () {
+		var table = layui.table;
+		var form = layui.form;
+		var $ = layui.jquery;
+		var layer = layui.layer;
+		var chooseField;
+		form.on('select(chooseField)', function (data) {
+			chooseField = data.value;
+		});
+
+		$(function () {
+			$('#chooseMenu').empty();
+			$('#chooseMenu').append('<option value="">请选择父级菜单</option>');
+			//ajax
+			$.ajax({
+				type: "POST",
+				url: "sysController/queryParentMenu",
+				dataType: "text",
+				data: {},
+				success: function (msg) {
+					var list = JSON.parse(msg);
+					for (var i = 0; i < list.length; i++) {
+						$('#chooseMenu').append('<option value="' + list[i].menucode + '">' + list[i].menuname + '</option>');
+					}
+					form.render();
+				},
+				error: function () {
+					layer.msg('服务器繁忙');
+				}
+			});
+		});
+
+		$("#query_bt").click(function () {
+			var tittle = $("#tittle").val();
+			if (chooseField.length > 0) {
+				//ajax
+				$.ajax({
+					type: "POST",
+					url: "ManageServlet?methodName=addTopic",
+					dataType: "text",
+					data: {
+						territoryNum: chooseField,
+						tittle: tittle
+					},
+					success: function (msg) {
+						if (msg === 'true') {
+
+							var index = parent.layer.getFrameIndex(window.name);
+
+							parent.layer.close(index);
+							parent.layer.msg('题目添加成功', {icon: 6});
+						}
+						layer.close();
+					},
+					error: function () {
+						layer.msg('服务器繁忙');
+					}
+				});
+
+			} else {
+				layer.msg("请选择领域类型");
+			}
+
+		});
+	});
+</script>
+</html>
