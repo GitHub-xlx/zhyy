@@ -74,9 +74,16 @@ public interface DrugServices
 	 * @Date 下午 22:28 2020/2/20 0020
 	 * @Param commonname 常用名称
 	 * @Param pincode 拼音码
-	 * @Param page 拼音码
-	 * @Param limit 拼音码
 	 * @return
 	 **/
-	List<Druginformation> selectDruginformation(String commonname, String pincode);
+	List<Druginformation> selectDruginformation(String commoname, String pincode);
+
+	/**
+	 * @Description  药库药品出库
+	 * @author xlx
+	 * @Date 下午 17:26 2020/2/26 0026
+	 * @Param
+	 * @return
+	 **/
+	int insertOutbound(Vacation vac);
 }

@@ -4,6 +4,7 @@ package com.zhyy.mapper;
 import com.zhyy.entity.*;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -82,12 +83,31 @@ public interface DrugMapper
 	public int countDrugSaleList(String pharmacycode,String drugcode,String commoname,String specialmedicine,String idcard,String consumername,String salesperson,String start,String end);
 
 	/**
-	 * @Description  查找药品信息表
+	 * @Description  查找药品信息表以及药品库存
 	 * @author xlx
 	 * @Date 下午 22:59 2020/2/20 0020
 	 * @Param
 	 * @return
 	 **/
-	@Select("select * from druginformation where ${where}")
+	@Select("select a.*,b.druginventory from (select * from druginformation where ${where}) a" +
+			" left join drugstoredruginventory b" +
+			" on a.drugcode=b.drugcode  ")
 	List<Druginformation> selectDruginformation(String where);
+
+	/**
+	 * @Description  批量插入药库出库
+	 * @author xlx
+	 * @Date 下午 21:03 2020/2/26 0026
+	 * @Param
+	 * @return
+	 **/
+	@Insert({
+			"<script>",
+			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
+			"<foreach collection='vac.list' item='item' index='index' separator=','>",
+			"(#{item.drugcode}, #{item.number},'出库',#{lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"</foreach>",
+			"</script>"
+	})
+	int insertOutbound(Vacation vac,String pharmacycode,String lotnumber,String time);
 }

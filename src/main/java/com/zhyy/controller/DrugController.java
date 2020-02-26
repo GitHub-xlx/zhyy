@@ -64,11 +64,11 @@ public class DrugController
 	}
 	@RequestMapping("/selectclaim")
 	public @ResponseBody
-	TableMsg selectclaim(int limit,int page,String commonname,String pincode, HttpServletRequest request){
+	TableMsg selectclaim(int limit,int page,String commoname,String pincode, HttpServletRequest request){
 
 		//开启分页
 		PageHelper.startPage(page,limit);
-		List all = drugServices.selectDruginformation(commonname,pincode);
+		List all = drugServices.selectDruginformation(commoname,pincode);
 		PageInfo p = new PageInfo(all);
 
 		TableMsg tableMsg = new TableMsg();

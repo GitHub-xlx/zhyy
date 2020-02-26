@@ -5,11 +5,13 @@ package com.zhyy.services.impl;/**
 import com.zhyy.entity.*;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.services.DrugServices;
+import com.zhyy.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,16 +51,26 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public List<Druginformation> selectDruginformation(String commonname, String pincode)
+	public List<Druginformation> selectDruginformation(String commoname, String pincode)
 	{
 		String where="1=1 ";
-		if(commonname!=null){
-			where = commonname.length()>0 ? where+" and commonname = '"+commonname+"'" : where;
+		if(commoname!=null){
+			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where;
 		}
 		if (pincode!=null){
-			where = pincode.length()>0 ? where+" and pincode = '"+pincode+"'" : where;
+			where = pincode.length()>0 ? where+" and pincode like '%"+pincode+"%'" : where;
 		}
 		return drugMapper.selectDruginformation(where);
 
+	}
+
+	@Override
+	public int insertOutbound(Vacation vac)
+	{
+		String[] split = vac.getDurgResult().split(",");
+		String pharmacycode = split[1];
+		String lotnumber = split[2];
+		String time = TimeUtil.getTime(new Date());
+		return drugMapper.insertOutbound(vac, pharmacycode, lotnumber, time);
 	}
 }

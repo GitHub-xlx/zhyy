@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>用户审核</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" th:href="@{static/layui/css/layui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}" />
+</head>
+<body>
+<h3 id="fun_title">正在申请流程</h3>
+<table class="layui-hide" id="test" lay-filter="drug"></table>
+
+<h3 id="fun_title1">历史流程</h3>
+<table class="layui-hide" id="test1" lay-filter="drug1"></table>
+
+<h3 id="fun_title2">待审核流程</h3>
+<table class="layui-hide" id="test2" lay-filter="drug2"></table>
+
+<h3 id="fun_title3">审核记录</h3>
+<table class="layui-hide" id="test3" lay-filter="drug3"></table>
+
+<div id="tb" style="display: none">
+    <table class="layui-hide" id="test4" lay-filter="drug4"></table>
+    <h3 id="fun_title4">审核意见</h3>
+    <textarea id="text1"></textarea>
+</div>
+
+<script th:src="@{static/back/js/jquery-3.4.1.js}"></script>
+<script th:src= "@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/userAudit.js}"></script>
+<script type="text/html" id="toolbar1">
+	<a class="layui-btn layui-btn-sm background-style" lay-event="schedule">查看进度</a>
+</script>
+<script type="text/html" id="toolbar2">
+    <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
+</script>
+</body>
+</html>

@@ -29,9 +29,30 @@ public class Druginformation {
   private String additionrate;
   private String precautions;
   private String shelflife;
+  private String druginventory="0";
+  private int number=0;
 
+	public String getDruginventory()
+	{
+		return druginventory;
+	}
 
-  public long getDiid() {
+	public void setDruginventory(String druginventory)
+	{
+		this.druginventory = druginventory;
+	}
+
+	public int getNumber()
+	{
+		return number;
+	}
+
+	public void setNumber(int number)
+	{
+		this.number = number;
+	}
+
+	public long getDiid() {
     return diid;
   }
 

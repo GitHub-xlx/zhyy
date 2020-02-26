@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}" />
 </head>
 <body>
-<h3 id="fun_title">药品请领</h3>
+<h3 id="fun_title">药品查询</h3>
 <form class="layui-form">
     <div class="layui-form-item" >
 
@@ -31,16 +31,25 @@
 </form>
 <table class="layui-hide" id="test" lay-filter="drug"></table>
 
-<div  style="display: none">
-    <table class="layui-hide" id="test1" lay-filter="drug1"></table>
+<h3 id="fun_title1">请领单</h3>
+<table class="layui-hide" id="test1" lay-filter="drug1"></table>
+<div class="layui-inline" style="text-align: center" >
+<button class="layui-btn " id="confirmation"  type="button">确认请领</button>
+</div>
+<div id="tb" style="display: none">
+    <table class="layui-hide" id="test2" lay-filter="drug2"></table>
 </div>
 
 
-
+<script th:src="@{static/back/js/jquery-3.4.1.js}"></script>
 <script th:src= "@{static/layui/layui.js}"></script>
 <script th:src="@{static/back/js/drugclaim.js}"></script>
+<script type="text/html" id="toolbar1">
+	<a class="layui-btn layui-btn-sm background-style" lay-event="add">添加请领</a>
+</script>
 <script type="text/html" id="toolbar2">
-	<a class="layui-btn layui-btn-sm background-style" lay-event="info">确认请领</a>
+
+    <a class="layui-btn layui-btn-sm background-style" lay-event="delete">删除</a>
 </script>
 </body>
 </html>

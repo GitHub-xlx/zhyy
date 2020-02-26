@@ -1,5 +1,6 @@
 package com.zhyy;
 
+import org.activiti.spring.boot.SecurityAutoConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *@author Administrator
  *Date 2020/2/13
  */
-@SpringBootApplication
+@SpringBootApplication( exclude = SecurityAutoConfiguration.class)
 public class MySpringbootApplication implements WebMvcConfigurer
 {
 	public static void main(String[] args)
