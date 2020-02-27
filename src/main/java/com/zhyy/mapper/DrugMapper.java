@@ -192,6 +192,7 @@ public interface DrugMapper
 	 * @author cbd
 	 * @return 返回药品信息list
 	 */
+	@Select("SELECT * FROM druginformation")
 	public List<Druginformation> selectDrugInfo();
 
 	/**
@@ -199,6 +200,7 @@ public interface DrugMapper
 	 * @param drugInformation 药品信息对象
 	 * @return 返回int值判断保存是否成功
 	 */
+	@Insert("INSERT INTO druginformation (`diid`, `drugcode`, `barcode`, `classcode`, `productname`, `commoname`, `specification`, `dosageform`, `drugdepotunit`, `pharmacyunit`, `prescribeunit`, `reductionformula`, `dosage`, `pincode`, `supplier`, `antibiotic`, `specialmedicine`, `approvalnumber`, `healthinsurance`, `price`, `wholesaleprice`,`additionrate`, `precautions`, `shelflife`)  values (#{diid}, #{drugcode}, #{barcode}, #{classcode}, #{productname}, #{commoname}, #{specification}, #{dosageform}, #{drugdepotunit}, #{pharmacyunit}, #{prescribeunit}, #{reductionformula}, #{dosage}, #{pincode}, #{supplier}, #{antibiotic}, #{specialmedicine}, #{approvalnumber}, #{healthinsurance}, #{price}, #{wholesaleprice}, #{additionrate}, #{precautions}, #{shelflife})")
 	public int saveDrugInfo(Druginformation drugInformation);
 
 

@@ -115,10 +115,18 @@ public class DrugController
 	{
 		return drugServices.selectDrugClassCode(parentCode);
 	}
+
+	/**
+	 * 药品分类设置新增方法：根据新增的药品分类插入到药品分类表
+	 * @author cbd
+	 * @param drugClass 药品分类信息对象
+	 * @return 返回整型值判断结果状态成功与否
+	 */
 	@RequestMapping("/saveDrugClassSetInfo")
 	@ResponseBody
 	public String saveDrugClassSetInfo(DrugClass drugClass)
 	{
+		System.out.println("提交的信息=="+drugClass);
 		String res = null;
 		int i = drugServices.saveDrugClassSetInfo(drugClass);
 		if(i>0){
@@ -128,6 +136,54 @@ public class DrugController
 		}
 		return res;
 	}
+
+	/**
+	 * 查询药品信息表
+	 * @author cbd
+	 * @param page 起始页
+	 * @param limit 每页显示数量
+	 * @return 返回药品信息表的list
+	 */
+	@RequestMapping("/selectDrugInfo")
+	@ResponseBody
+	public TableMsg selectDrugInfo(int page,int limit)
+	{
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List<Druginformation> list = drugServices.selectDrugInfo();
+		PageInfo pageInfo = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
+	}
+
+	/**
+	 * 根据药品信息对象将对应信息增加至药品信息表
+	 * @author cbd
+	 * @param drugInformation 药品信息表对象
+	 * @return 返回状态字符串
+	 */
+	@RequestMapping("/saveDrugInfo")
+	@ResponseBody
+	public String saveDrugInfo(Druginformation drugInformation)
+	{
+		String res = null;
+		int i = drugServices.saveDrugInfo(drugInformation);
+		if(i>0){
+			res = "success";
+		}else {
+			res = "fail";
+		}
+
+		return null;
+	}
+
+
+
+
 
 
 

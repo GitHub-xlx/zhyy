@@ -1,7 +1,9 @@
 package com.test;
 
 import com.zhyy.MySpringbootApplication;
+import com.zhyy.entity.Druginformation;
 import com.zhyy.entity.User;
+import com.zhyy.mapper.DrugMapper;
 import com.zhyy.mapper.UserMapper;
 import org.activiti.engine.RepositoryService;
 import org.junit.Test;
@@ -24,17 +26,25 @@ import java.util.List;
 @SpringBootTest(classes = MySpringbootApplication.class)
 public class MySpringbootApplicationTest
 {
-//	@Autowired
+	@Autowired
 //	private UserMapper userMapper;
-	@Resource
-	private RepositoryService repositoryService;
+	private DrugMapper drugMapper;
+//	@Resource
+//	private RepositoryService repositoryService;
 	@Test
 	public void test()
 	{
 //		System.out.println(111);
-		repositoryService.deleteDeployment("drugclaim",true);
+//		repositoryService.deleteDeployment("drugclaim",true);
 //		System.out.println(1121);
 //		List<User> list = userMapper.queryUserList();
 //		System.out.println(list);
+		Druginformation druginformation = new Druginformation();
+		druginformation.setClasscode("001");
+		druginformation.setCommoname("测试");
+		int i = drugMapper.saveDrugInfo(druginformation);
+		System.out.println("DrugInformation的结果="+i);
+
+
 	}
 }
