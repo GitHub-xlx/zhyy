@@ -1,5 +1,6 @@
 package com.zhyy.services;
 
+import com.zhyy.entity.Department;
 import com.zhyy.entity.Menu;
 import com.zhyy.entity.Role;
 
@@ -101,5 +102,51 @@ public interface SysServices
 	 */
 	public int editMenu(String menucode,String menuname,String url);
 
+
+	/**
+	 * 查询部门
+	 * @return
+	 */
+	public List<Department> queryDepartment();
+
+
+	/**
+	 * 根据角色编号查重
+	 * @param rolecode
+	 * @return
+	 */
+	public int checkRole(String rolecode);
+
+	/**
+	 * 添加角色
+	 * @param departmentcode
+	 * @param rolecode
+	 * @param rolename
+	 * @return
+	 */
+	public int addRole(String departmentcode,String rolecode,String rolename);
+
+	/**
+	 * 修改角色名称
+	 * @param rolecode
+	 * @param rolename
+	 * @return
+	 */
+	public int editRole(String rolecode,String rolename);
+
+	/**
+	 * 验证密码
+	 * @param account
+	 * @return
+	 */
+	public String checkPassword(String account);
+
+	/**
+	 * 修改密码
+	 * @param account
+	 * @param password
+	 * @return
+	 */
+	public int editPassword(String account,String password);
 
 }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>添加菜单</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}"/>
+    <style>
+        .layui-form-item{
+            margin-left: -7%;
+        }
+    </style>
+</head>
+
+<body>
+<h3 id="fun_title">修改菜单</h3>
+<form class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">角色名称：</label>
+            <div class="layui-input-inline">
+                <input lay-verify="required" id="rolename" type="text" name="rolename"
+                       placeholder="请输入新增菜单名称" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline" hidden="hidden" id="rolecode"></div>
+        </div>
+        <div class="layui-form-item" align="center" style="margin-left: 100px">
+            <div class="layui-input-inline">
+                <button class="layui-btn " id="confirm_bt" type="button">确认修改</button>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script th:src="@{static/layui/layui.js}"></script>
+<script>
+
+	layui.use(['form', 'layer', 'jquery'], function () {
+		var form = layui.form;
+		var $ = layui.jquery;
+		var layer = layui.layer;
+
+
+		$('#confirm_bt').click(function () {
+
+				if ($('#rolename').val().length>0) {
+						//ajax
+						$.ajax({
+							type: "POST",
+							url: "sysController/editRole",
+							data: {
+								rolecode: $('#rolecode').val(),
+								rolename: $('#rolename').val()
+							},
+							success: function (data) {
+								if (data.code==200) {
+
+									var index = parent.layer.getFrameIndex(window.name);
+
+									parent.layer.close(index);
+									parent.layer.msg('角色信息修改成功', {icon: 6});
+								}else if (data.code==305) {
+									layer.msg('角色信息修改失败')
+								}
+								layer.close();
+							},
+							error: function () {
+								layer.msg('服务器繁忙');
+							}
+						});
+					}else{
+						layer.msg("角色名称不能为空");
+					}
+
+
+		});
+
+    })
+
+</script>
+</html>

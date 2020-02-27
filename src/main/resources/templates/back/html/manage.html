@@ -17,10 +17,16 @@
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-right" th:object="${session.user}">
             <li class="layui-nav-item" >
+                <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
                     <span th:text="*{username}"></span>
+                </a>
+            <dl class="layui-nav-child">
+                <dd><a th:href="${'jump/back/editPassword'}" target="main_self_frame">修改密码</a></dd>
+                <dd><a th:href="${'sysController/exit'}" onclick="if(confirm('确定注销账号吗?')==false)return false;">注销账户</a></dd>
+            </dl>
             </li>
-            <li class="layui-nav-item"><a href=""  onclick="if(confirm('确定注销账号吗?')==false)return false;">注销</a></li>
+<!--            <li class="layui-nav-item"><a href=""  onclick="if(confirm('确定注销账号吗?')==false)return false;">注销</a></li>-->
         </ul>
     </div>
 
