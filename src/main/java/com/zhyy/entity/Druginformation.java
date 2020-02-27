@@ -2,7 +2,13 @@ package com.zhyy.entity;
 
 
 import com.google.gson.Gson;
-
+/**
+ * @Description  药品信息表和药库药品库存表（部分，最后5个）
+ * @author xlx
+ * @Date 上午 7:46 2020/2/27 0027
+ * @Param
+ * @return
+ **/
 public class Druginformation {
 
   private long diid;
@@ -31,8 +37,41 @@ public class Druginformation {
   private String shelflife;
   private String druginventory="0";
   private int number=0;
+  private String lotnumber;
+  private String productiondate;
+  private String drugstatus;
 
-	public String getDruginventory()
+  public String getLotnumber()
+  {
+    return lotnumber;
+  }
+
+  public void setLotnumber(String lotnumber)
+  {
+    this.lotnumber = lotnumber;
+  }
+
+  public String getProductiondate()
+  {
+    return productiondate;
+  }
+
+  public void setProductiondate(String productiondate)
+  {
+    this.productiondate = productiondate;
+  }
+
+  public String getDrugstatus()
+  {
+    return drugstatus;
+  }
+
+  public void setDrugstatus(String drugstatus)
+  {
+    this.drugstatus = drugstatus;
+  }
+
+  public String getDruginventory()
 	{
 		return druginventory;
 	}

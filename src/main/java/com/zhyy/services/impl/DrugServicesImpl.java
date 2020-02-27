@@ -69,8 +69,8 @@ public class DrugServicesImpl implements DrugServices
 	{
 		String[] split = vac.getDurgResult().split(",");
 		String pharmacycode = split[1];
-		String lotnumber = split[2];
 		String time = TimeUtil.getTime(new Date());
-		return drugMapper.insertOutbound(vac, pharmacycode, lotnumber, time);
+		drugMapper.insertOutbound(vac, pharmacycode, time);
+		return drugMapper.updatePharmacyInventory(vac.getList());
 	}
 }
