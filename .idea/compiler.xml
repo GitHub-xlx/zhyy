@@ -9,6 +9,7 @@
         <module name="SmartMedicine" />
         <module name="zhyy" />
         <module name="四阶段项目" />
+        <module name="zhyy0227" />
       </profile>
     </annotationProcessing>
   </component>
@@ -16,6 +17,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SmartMedicine" options="-parameters" />
       <module name="zhyy" options="-parameters" />
+      <module name="zhyy0227" options="-parameters" />
       <module name="四阶段项目" options="-parameters" />
     </option>
   </component>
