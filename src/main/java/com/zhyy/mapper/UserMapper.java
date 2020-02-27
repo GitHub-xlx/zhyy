@@ -50,7 +50,7 @@ public interface UserMapper
 	List<Druginformation> findDrugNameByDrugCode(String drugcode);
 
 
-	@Select("select D.menu parentcode,C.menu,C.url from menu D join (select A.* from menu A,(select menucode from rmrelation where rolecode = #{rolecode} and state = '0')B where A.menucode = B.menucode)C on D.menucode = C.parentcode;")
+	@Select("select D.menu parentcode,C.menu,C.url from menu D join (select A.* from menu A,(select menucode from rmrelation where rolecode = #{rolecode} and state = '0')B where A.menucode = B.menucode)C on D.menucode = C.parentcode and D.state = '0';")
 	public List<Menu> queryMenuList(String rolecode);
 	@Select("select * from userinfo where account = #{account}")
 	public User queryUserByAccount(String account);

@@ -59,4 +59,47 @@ public interface SysServices
 	 */
 	public List<Role>queryAllRole(String where,String limits);
 
+	/**
+	 * 查询菜单编号是否存在
+	 * @param menucode
+	 * @return
+	 */
+	public int checkMenu(String menucode);
+
+	/**
+	 * 添加菜单
+	 * @param menucode
+	 * @param parentcode
+	 * @param menu
+	 * @param url
+	 * @return
+	 */
+	public int addMenu(String menucode,String parentcode,String menu,String url);
+
+	/**
+	 * 启禁用菜单
+	 * @param menucode
+	 * @param state
+	 * @return
+	 */
+	public int ableMenu(String menucode,String state);
+
+	/**
+	 * 根据父级菜单启禁用
+	 * @param parentcode
+	 * @param state
+	 * @return
+	 */
+	public int ableMenuByParentCode(String parentcode,String state);
+
+	/**
+	 * 修改菜单
+	 * @param menucode
+	 * @param menuname
+	 * @param url
+	 * @return
+	 */
+	public int editMenu(String menucode,String menuname,String url);
+
+
 }

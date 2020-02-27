@@ -6,7 +6,11 @@
     <base th:href="@{/}">
     <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}" />
-
+    <style>
+        .layui-table-view{
+            margin-left: 21%;
+        }
+    </style>
 </head>
 <body>
 <h3 id="fun_title">菜单管理</h3>
@@ -38,15 +42,15 @@
 <script type="text/html" id="toolbar">
     {{# if(d.state == 0){  }}
     <a class="layui-btn layui-btn-sm layui-btn-warm background-style" lay-event="able">禁用</a>
-    <a class="layui-btn layui-btn-sm layui-btn-danger background-style" lay-event="delete">删除</a>
-    <a class="layui-btn layui-btn-sm background-style" lay-event="reset" >重置密码</a>
+    <a class="layui-btn layui-btn-sm background-style" lay-event="edit">修改</a>
+<!--    <a class="layui-btn layui-btn-sm background-style" lay-event="reset" >重置密码</a>-->
 
     {{# }else{             }}
     <a class="layui-btn layui-btn-sm layui-btn-warm background-style" lay-event="able">启用</a>
-    <a class="layui-btn layui-btn-sm layui-btn-danger background-style" lay-event="delete">删除</a>
-    <a class="layui-btn layui-btn-sm background-style" lay-event="reset" >重置密码</a>
+    <a class="layui-btn layui-btn-sm background-style" lay-event="edit">修改</a>
+<!--    <a class="layui-btn layui-btn-sm background-style" lay-event="reset" >重置密码</a>-->
 
-    {{#      }}
+    {{#   }   }}
 
 </script>
 <script type="text/html" id="toolbar1">
@@ -54,7 +58,7 @@
     菜单已启用
     {{# }else{             }}
     菜单已禁用
-    {{#      }}
+    {{#   } }}
 
 
 </script>

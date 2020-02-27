@@ -14,11 +14,10 @@ layui.use(['form','layer','jquery','table'], function(){
 		,limit:5
 		,limits:[5,10,15,20,25,30]
 		,cols: [[
-			{field:'rolecode', width:100, title: '角色编号',sort: true,align:'center'}
-			,{field:'rolename', width:120, title: '角色名称',sort: true,align:'center'}
-			,{field:'departmentcode', width:80, title: '部门编号',align:'center'}
-			,{field:'state', width:100, title: '状态',align:'center',toolbar: '#toolbar1'}
-			,{field:'operate', width:200, title: '操作',align:'center', toolbar: '#toolbar'}
+			{field:'rolecode', width:140, title: '角色编号',sort: true,align:'center'}
+			,{field:'rolename', width:160, title: '角色名称',sort: true,align:'center'}
+			,{field:'departmentcode', width:120, title: '部门',align:'center'}
+			,{field:'operate', width:180, title: '操作',align:'center', toolbar: '#toolbar'}
 
 		]]
 		,url:"sysController/roleManage"
@@ -47,59 +46,126 @@ layui.use(['form','layer','jquery','table'], function(){
 		// Layui表格,刷新当前分页数据
 		// $(".layui-laypage-btn").click()
 	});
-	table.on('tool(table-user)',function (obj) {
-		var data = obj.data;
-		var event = obj.event;
-		var account = data.user_Account;
-		var state = data.state;
+	$("#add_bt").click(function () {
+		var that = this;
+		//多窗口模式，层叠置顶
+		layer.open({
+			type: 2 //此处以iframe举例
+			, title: '添加角色'
+			, area: ['500px', '600px']
+			, shade: 0
+			, maxmin: true
+			, offset: [ //为了演示，随机坐标
+				($(window).height() * 0.01)
+				, ($(window).width() * 0.35)
+			]
+			, content: 'jump/back/addMenu'
+			// ,btn: ['继续弹出', '全部关闭'] //只是为了演示
+			, yes: function () {
+				$(that).click();
+			}
+			, btn2: function () {
+				layer.closeAll();
+			}
 
-		if (event==='able'){
-			layer.confirm('您确定要进行此操作吗？',function (index) {
+			, zIndex: layer.zIndex //重点1
+			, success: function (layero) {
+				layer.setTop(layero); //重点2
+			}, end: function () {
+				window.location.reload();
+			}
+		});
 
-				myAjax('ManageServlet?methodName=ableUser&tableName=users',{account:account,state:state},function (msg) {
+	});
+	table.on('tool(table-user)', function (obj) {
+		var data = obj.data
+			,event = obj.event
+			,menucode = data.menucode
+			,state = data.state
+			,parentcode = data.parentcode;
 
+		if (event === 'able') {
+			if (parentcode==0){
+				layer.confirm('此菜单为一级菜单，将同时作用于下级菜单，您确定要进行此操作吗？', function (index) {
 
-					if (msg=='true'){
+					$.ajax({
+						type: "POST",
+						url: "sysController/ableMenu",
+						//发送的数据（同时也将数据发送出去）
+						data: {menucode: menucode, state: state,parentcode:parentcode},
+						success: function (data) {
 
-						table.reload('userTable');
-						layer.msg("状态修改成功");
-					}else{
-						layer.msg("状态修改失败");
-					}
+							if (data.code == 200) {
+								table.reload('userTable');
+								layer.msg("状态修改成功");
+							}else{
+								layer.msg("状态修改失败");
+							}
+						},
+						error: function (msg) {
+							alert("服务器正忙。。。。" + msg);
+						}
+					});
+				})
+			}else{
+				layer.confirm('您确定要进行此操作吗？', function (index) {
+
+					$.ajax({
+						type: "POST",
+						url: "sysController/ableMenu",
+						//发送的数据（同时也将数据发送出去）
+						data: {menucode: menucode, state: state,parentcode:parentcode},
+						success: function (data) {
+
+							if (data.code == 200) {
+								table.reload('userTable');
+								layer.msg("状态修改成功");
+							}else{
+								layer.msg("状态修改失败");
+							}
+						},
+						error: function (msg) {
+							alert("服务器正忙。。。。" + msg);
+						}
+					});
 				});
+
+				// return false;
+
 				layer.close(index);
+			}
+		} else if (event === 'edit') {
+			layer.open({
+				type: 2 //此处以iframe举例
+				, title: '修改菜单'
+				, area: ['500px', '350px']
+				, shade: 0
+				, maxmin: true
+				, offset: [ //为了演示，随机坐标
+					($(window).height() * 0.25)
+					, ($(window).width() * 0.35)
+				]
+				, content: 'jump/back/editMenu'
+				// ,btn: ['继续弹出', '全部关闭'] //只是为了演示
+				, yes: function () {
+					$(that).click();
+				}
+				, btn2: function () {
+					layer.closeAll();
+				}
+
+				, zIndex: layer.zIndex //重点1
+				, success: function (layero,index) {
+					layer.setTop(layero); //重点2
+					let body =layer.getChildFrame('body',index);
+					body.find('#menuname').val(data.menu);
+					body.find('#url').val(data.url);
+					body.find('#menucode').val(data.menucode);
+
+				}, end: function () {
+					window.location.reload();
+				}
 			});
-		}else if (event==='delete'){
-			layer.confirm('您确定要删除此用户吗？',function (index) {
-				myAjax('ManageServlet?methodName=ableUser&tableName=users',{account:account,state:null},function (msg) {
-
-
-					if (msg==='true'){
-						table.reload('userTable');
-						layer.msg("状态修改成功");
-
-					}else{
-						layer.msg("状态修改失败");
-					}
-
-				});
-				layer.close(index);});
-
-		}
-		else if (event==='reset'){
-			layer.confirm('您确定要重置该用户的密码为123456吗？',function (index) {
-				myAjax('ManageServlet?methodName=resetUser&tableName=users',{account:account},function (msg) {
-
-
-					if (msg==='true'){
-						layer.msg("密码重置成功");
-
-					}else{
-						layer.msg("密码重置失败");
-					}
-
-				});
-				layer.close(index);});
 
 		}
 	})

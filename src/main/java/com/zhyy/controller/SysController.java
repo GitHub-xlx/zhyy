@@ -67,10 +67,14 @@ public class SysController
 
 		boolean flag = false;
 		ResultInfo resultInfo;
-
+		boolean once = true;
 			for (int i = 0; i <list.size() ; i++)
 			{
 				for (TreeData treeData :list.get(i).getChildren()){
+					if (once){
+						sysServices.openPermissionByRoleCode(treeData.getRolecode());
+						once = false;
+					}
 					int n =sysServices.savePermission(treeData.getId()+"",treeData.getRolecode());
 					flag = n > 0;
 				}
@@ -89,7 +93,7 @@ public class SysController
 
 	@RequestMapping("/openPermissionByRoleCode")
 	public @ResponseBody ResultInfo openPermissionByRoleCode(String rolecode){
-		System.out.println("rolecode"+rolecode);
+
 		boolean flag = false;
 		ResultInfo resultInfo;
 
@@ -141,4 +145,75 @@ public class SysController
 
 		return sysServices.queryAllMenu("parentcode = '0'",null);
 	}
+
+	@RequestMapping("/checkMenu")
+	public @ResponseBody ResultInfo checkMenu(String menucode)
+	{
+		ResultInfo resultInfo;
+		if (sysServices.checkMenu(menucode)>0){
+			resultInfo =  new ResultInfo(300,"编号已存在");
+		}else{
+			resultInfo =  new ResultInfo(200,"编号可用");
+		}
+
+		return resultInfo;
+	}
+
+	@RequestMapping("/addMenu")
+	public @ResponseBody ResultInfo addMenu(String parentcode,String menucode,String menuname,String url){
+
+		ResultInfo resultInfo;
+
+		if (sysServices.addMenu(menucode,parentcode,menuname,url)>0){
+			resultInfo = new ResultInfo(200,"添加成功");
+		}else{
+			return new ResultInfo(305,"新增失败，请重试");
+		}
+		return resultInfo;
+	}
+
+	@RequestMapping("/ableMenu")
+	public @ResponseBody ResultInfo ableMenu(String menucode,int state,int parentcode){
+		ResultInfo resultInfo;
+		int n;
+
+		if (parentcode==0){
+			if (state==0){
+				n = sysServices.ableMenuByParentCode(menucode,"1");
+				n = sysServices.ableMenu(menucode,"1");
+			}else{
+				n = sysServices.ableMenuByParentCode(menucode,"0");
+				n = sysServices.ableMenu(menucode,"0");
+			}
+		}else {
+			if (state==0){
+				n = sysServices.ableMenu(menucode,"1");
+			}else{
+				n = sysServices.ableMenu(parentcode+"","0");
+				n = sysServices.ableMenu(menucode,"0");
+			}
+		}
+
+		if (n>0){
+			resultInfo = new ResultInfo(200,"修改成功");
+		}else{
+			resultInfo = new ResultInfo(500,"修改失败");
+		}
+		return resultInfo;
+	}
+
+	@RequestMapping("/editMenu")
+	public @ResponseBody ResultInfo addMenu(String menucode,String menuname,String url){
+
+		ResultInfo resultInfo;
+
+		if (sysServices.editMenu(menucode,menuname,url)>0){
+			resultInfo = new ResultInfo(200,"添加成功");
+		}else{
+			return new ResultInfo(305,"新增失败，请重试");
+		}
+		return resultInfo;
+	}
+
 }
+

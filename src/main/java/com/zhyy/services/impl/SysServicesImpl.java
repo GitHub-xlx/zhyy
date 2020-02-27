@@ -59,5 +59,35 @@ public class SysServicesImpl implements SysServices
 		return sysMapper.queryAllRole(where,limits);
 	}
 
+	@Override
+	public int checkMenu(String menucode)
+	{
+		return sysMapper.checkMenu(menucode);
+	}
+
+	@Override
+	public int addMenu(String menucode, String parentcode, String menu, String url)
+	{
+		return sysMapper.addMenu(menucode,parentcode,menu,url);
+	}
+
+	@Override
+	public int ableMenu(String menucode, String state)
+	{
+		return sysMapper.ableMenu(menucode,state);
+	}
+
+	@Override
+	public int ableMenuByParentCode(String parentcode, String state)
+	{
+		return sysMapper.ableMenuByParentCode(parentcode,state);
+	}
+
+	@Override
+	public int editMenu(String menucode, String menuname, String url)
+	{
+		return sysMapper.editMenu(menucode,menuname,url);
+	}
+
 
 }

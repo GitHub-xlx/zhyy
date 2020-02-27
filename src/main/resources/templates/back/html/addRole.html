@@ -18,22 +18,22 @@
 <form class="layui-form">
     <div class="layui-form-item">
         <div class="layui-form-item">
-            <label class="layui-form-label" style="margin-left:20px;text-align: left">选择父级菜单：</label>
+            <label class="layui-form-label" style="margin-left:20px;text-align: left">选择部门：</label>
             <div class="layui-input-inline">
                 <select lay-filter="chooseMenu" id="chooseMenu" name="chooseMenu">
-                    <option value="">请选择父级菜单</option>
+                    <option value="">请选择部门</option>
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">菜单名称：</label>
+            <label class="layui-form-label" style="width: 100px">角色名称：</label>
             <div class="layui-input-inline">
                 <input lay-verify="required" id="menuname" type="text" name="menuname"
-                       placeholder="请输入新增菜单名称" autocomplete="off" class="layui-input">
+                       placeholder="请输入新增角色名称" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">菜单编号：</label>
+            <label class="layui-form-label" style="width: 100px">角色编号：</label>
             <div class="layui-input-inline">
                 <input lay-verify="required" id="menucode" type="text" name="menuname"
                        placeholder="请输入新增菜单编号" autocomplete="off" class="layui-input">
@@ -45,13 +45,6 @@
             <!-- 错号 -->
             <div class="layui-inline">
                 <i class="layui-icon" id="wr" style="color: red; font-weight: bolder;" hidden>ဆ</i>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">跳转链接：</label>
-            <div class="layui-input-inline">
-                <input lay-verify="required" id="url" type="text" name="url"
-                       placeholder="请输入菜单跳转链接" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item" align="center" style="margin-left: 100px">

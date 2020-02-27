@@ -8,44 +8,22 @@
     <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}"/>
     <style>
         .layui-form-item{
-            margin-left: -12%;
+            margin-left: -7%;
         }
     </style>
 </head>
 
 <body>
-<h3 id="fun_title">添加菜单</h3>
+<h3 id="fun_title">修改菜单</h3>
 <form class="layui-form">
     <div class="layui-form-item">
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="margin-left:20px;text-align: left">选择父级菜单：</label>
-            <div class="layui-input-inline">
-                <select lay-filter="chooseMenu" id="chooseMenu" name="chooseMenu">
-                    <option value="">请选择父级菜单</option>
-                </select>
-            </div>
-        </div>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">菜单名称：</label>
             <div class="layui-input-inline">
                 <input lay-verify="required" id="menuname" type="text" name="menuname"
                        placeholder="请输入新增菜单名称" autocomplete="off" class="layui-input">
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="width: 100px">菜单编号：</label>
-            <div class="layui-input-inline">
-                <input lay-verify="required" id="menucode" type="text" name="menuname"
-                       placeholder="请输入新增菜单编号" autocomplete="off" class="layui-input">
-            </div>
-            <!-- 对号 -->
-            <div class="layui-inline">
-                <i class="layui-icon" id="ri" style="color: green;font-weight: bolder;" hidden></i>
-            </div>
-            <!-- 错号 -->
-            <div class="layui-inline">
-                <i class="layui-icon" id="wr" style="color: red; font-weight: bolder;" hidden>ဆ</i>
-            </div>
+            <div class="layui-input-inline" hidden="hidden" id="menucode"></div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">跳转链接：</label>
@@ -56,12 +34,57 @@
         </div>
         <div class="layui-form-item" align="center" style="margin-left: 100px">
             <div class="layui-input-inline">
-                <button class="layui-btn " id="confirm_bt" type="button">确认添加</button>
+                <button class="layui-btn " id="confirm_bt" type="button">确认修改</button>
             </div>
         </div>
     </div>
 </form>
 </body>
 <script th:src="@{static/layui/layui.js}"></script>
-<script th:src="@{static/back/js/addMenu.js}"></script>
+<script>
+
+	layui.use(['form', 'layer', 'jquery'], function () {
+		var form = layui.form;
+		var $ = layui.jquery;
+		var layer = layui.layer;
+
+
+		$('#confirm_bt').click(function () {
+
+				if ($('#url').val().length>0&&$('#menuname').val().length>0) {
+						//ajax
+						$.ajax({
+							type: "POST",
+							url: "sysController/editMenu",
+							data: {
+								menucode: $('#menucode').val(),
+								menuname: $('#menuname').val(),
+								url: $('#url').val(),
+							},
+							success: function (data) {
+								if (data.code==200) {
+
+									var index = parent.layer.getFrameIndex(window.name);
+
+									parent.layer.close(index);
+									parent.layer.msg('菜单信息修改成功', {icon: 6});
+								}else if (data.code==305) {
+									layer.msg('菜单信息修改失败')
+								}
+								layer.close();
+							},
+							error: function () {
+								layer.msg('服务器繁忙');
+							}
+						});
+					}else{
+						layer.msg("菜单名称或跳转链接不能为空");
+					}
+
+
+		});
+
+    })
+
+</script>
 </html>

@@ -37,11 +37,22 @@
         </div>
 
         <button class="layui-btn " id="query_bt"  type="button">查询</button>
+        <button class="layui-btn " id="add_bt"  type="button">新增</button>
+
     </div>
 </form>
 <table class="layui-hide" id="test" lay-filter="table-user"></table>
 </body>
 <script th:src="@{static/layui/layui.js}"></script>
+<script type="text/html" id="toolbar">
+    {{#}}
+<!--    <a class="layui-btn layui-btn-sm layui-btn-warm background-style" lay-event="able">启用</a>-->
+    <a class="layui-btn layui-btn-sm background-style" lay-event="edit">修改</a>
+    <!--    <a class="layui-btn layui-btn-sm background-style" lay-event="reset" >重置密码</a>-->
+
+    {{#}}
+
+</script>
 <script th:src="@{static/back/js/roleManage.js}"></script>
 
 </html>
