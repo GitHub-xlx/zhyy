@@ -78,6 +78,15 @@ public class DrugController
 		tableMsg.setData(p.getList());
 		return tableMsg;
 	}
+
+
+	/**
+	 * 查询药品分类信息
+	 * @author cbd
+	 * @param page 当前页
+	 * @param limit 每页显示数量
+	 * @return 返回table信息对象
+	 */
 	@RequestMapping("/selectDrugClass")
 	@ResponseBody
 	TableMsg selectDrugClass (int page,int limit)
@@ -92,8 +101,35 @@ public class DrugController
 		tableMsg.setCount((int)pageInfo.getTotal());
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
-
 	}
+
+	/**
+	 * 根据父级编码查询其对象的子级编码的最大值
+	 * @author cbd
+	 * @param parentCode 大类编码
+	 * @return 返回子级编码最大值用于新增的子级编码
+	 */
+	@RequestMapping("/selectClassCode")
+	@ResponseBody
+	public String selectClassCode(String parentCode)
+	{
+		return drugServices.selectDrugClassCode(parentCode);
+	}
+	@RequestMapping("/saveDrugClassSetInfo")
+	@ResponseBody
+	public String saveDrugClassSetInfo(DrugClass drugClass)
+	{
+		String res = null;
+		int i = drugServices.saveDrugClassSetInfo(drugClass);
+		if(i>0){
+			res = "success";
+		}else {
+			res = "fail";
+		}
+		return res;
+	}
+
+
 
 
 

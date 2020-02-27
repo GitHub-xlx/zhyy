@@ -133,7 +133,7 @@
 			parentCode = data.value;
 			alert(parentCode);
 			$.ajax({
-				url:'/drugController/sDrugClassCode',
+				url:'/drugController/selectClassCode',
 				type:"post",
 				data:{"parentCode":parentCode},
 				success:function(resData){
@@ -164,7 +164,7 @@
 
 			// layer.alert(obj);
 
-			$.post('/drugController/IDrugClassSetInfo',
+			$.post('/drugController/saveDrugClassSetInfo',
                 {"classcode":classCode,"classname":className,"parentcode":parentCode},
                 function (obj) {
 

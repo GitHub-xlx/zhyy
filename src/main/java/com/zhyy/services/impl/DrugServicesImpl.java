@@ -91,4 +91,16 @@ public class DrugServicesImpl implements DrugServices
 	{
 		return drugMapper.saveDrugClassSetInfo(drugClass);
 	}
+
+	@Override
+	public List<Druginformation> selectDrugInfo()
+	{
+		return drugMapper.selectDrugInfo();
+	}
+
+	@Override
+	public int saveDrugInfo(Druginformation drugInformation)
+	{
+		return drugMapper.saveDrugInfo(drugInformation);
+	}
 }
