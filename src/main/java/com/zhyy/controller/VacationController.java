@@ -123,6 +123,7 @@ public class VacationController
 				//判断是否是同意发药，同意则进入药品出库
 				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
 				int i = drugServices.insertOutbound(vacation);
+
 			}
 		}
 		return flag;

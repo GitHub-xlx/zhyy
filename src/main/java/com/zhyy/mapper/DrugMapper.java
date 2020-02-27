@@ -4,10 +4,7 @@ package com.zhyy.mapper;
 import com.zhyy.entity.*;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -89,7 +86,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.*,b.druginventory from (select * from druginformation where ${where}) a" +
+	@Select("select a.*,b.druginventory,b.lotnumber,b.productiondate,b.drugstatus from (select * from druginformation where ${where}) a" +
 			" left join drugstoredruginventory b" +
 			" on a.drugcode=b.drugcode  ")
 	List<Druginformation> selectDruginformation(String where);
@@ -105,9 +102,60 @@ public interface DrugMapper
 			"<script>",
 			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},'出库',#{lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
 			"</foreach>",
 			"</script>"
 	})
-	int insertOutbound(Vacation vac,String pharmacycode,String lotnumber,String time);
+	int insertOutbound(Vacation vac,String pharmacycode,String time);
+
+	/**
+	 * @Description  修改药库库存
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 **/
+	@Update({
+			"<script>" +
+			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
+			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
+			"</foreach></script>"
+
+	})
+	int updatePharmacyInventory(List<Druginformation> list);
+
+	/**
+	 * @Description  批量插入药房入库
+	 * @author xlx
+	 * @Date 下午 21:03 2020/2/26 0026
+	 * @Param
+	 * @return
+	 **/
+	@Insert({
+			"<script>",
+			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
+			"<foreach collection='vac.list' item='item' index='index' separator=','>",
+			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"</foreach>",
+			"</script>"
+	})
+	int insertPharmacyDrug(Vacation vac,String pharmacycode,String time);
+
+	/**
+	 * @Description  修改药房库存
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 **/
+	@Update({
+			"<script>" +
+			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
+			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
+			"</foreach></script>"
+
+	})
+	int updatePharmacy(List<Druginformation> list);
 }
