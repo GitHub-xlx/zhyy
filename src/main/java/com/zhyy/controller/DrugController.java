@@ -78,6 +78,25 @@ public class DrugController
 		tableMsg.setData(p.getList());
 		return tableMsg;
 	}
+	@RequestMapping("/selectDrugClass")
+	@ResponseBody
+	TableMsg selectDrugClass (int page,int limit)
+	{
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List<DrugClass> drugClassList = drugServices.selectDrugClass();
+		PageInfo pageInfo = new PageInfo(drugClassList);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
+
+	}
+
+
+
 
 
 }

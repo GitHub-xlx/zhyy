@@ -158,4 +158,34 @@ public interface DrugMapper
 
 	})
 	int updatePharmacy(List<Druginformation> list);
+
+
+	/**
+	 * 查询分类信息列表list
+	 * @author cbd
+	 * @return 返回查询的分类信息list
+	 */
+	@Select("SELECT b.dcid,a.classcode as parentcode,a.classname as parentname,b.classcode,b.classname\n" + "FROM `drugclassification` a,`drugclassification` b where a.classcode=b.parentcode")
+	List<DrugClass> selectDrugClass();
+
+	/**
+	 * 根据大类编号查询子类编号信息
+	 * @author cbd
+	 * @param parentCode 大类编号
+	 * @return 返回查询的大类编号的最大子类编号加1
+	 */
+	@Select("SELECT classcode+1 AS classcode " + " FROM drugclassification  T " + " WHERE T.parentcode=#{parentCode} ORDER BY classcode desc LIMIT 1")
+	public String selectDrugClassCode(String parentCode);
+
+	/**
+	 * 药品分类设置新增方法：根据新增的信息插入到分类表
+	 * @author cbd
+	 * @param drugClass 药品分类信息对象
+	 * @return 返回整型值判断结果状态成功与否
+	 */
+
+	@Insert("INSERT INTO `drugclassification`(`classcode`, `classname`, `parentcode`) VALUES ( #{classcode}, #{classname}, #{parentcode})")
+	public int saveDrugClassSetInfo(DrugClass drugClass);
+
+
 }

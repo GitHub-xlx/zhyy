@@ -73,4 +73,22 @@ public class DrugServicesImpl implements DrugServices
 		drugMapper.insertOutbound(vac, pharmacycode, time);
 		return drugMapper.updatePharmacyInventory(vac.getList());
 	}
+
+	@Override
+	public List<DrugClass> selectDrugClass()
+	{
+		return drugMapper.selectDrugClass();
+	}
+
+	@Override
+	public String selectDrugClassCode(String parentCode)
+	{
+		return drugMapper.selectDrugClassCode(parentCode);
+	}
+
+	@Override
+	public int saveDrugClassSetInfo(DrugClass drugClass)
+	{
+		return drugMapper.saveDrugClassSetInfo(drugClass);
+	}
 }
