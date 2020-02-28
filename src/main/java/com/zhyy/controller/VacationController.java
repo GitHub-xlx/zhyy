@@ -122,8 +122,13 @@ public class VacationController
 			if (user.getAccount().equals("issuer")&&vacTask.getVac().getNowResult().equals("同意")){
 				//判断是否是同意发药，同意则进入药品出库
 				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
-				int i = drugServices.insertOutbound(vacation);
-
+				drugServices.insertOutbound(vacation);
+				//开启药房入库的审核流程
+				vacationServices.startVac(vacation.getApplyUser(),vacation,"pharmacystorage");
+			}else if (user.getAccount().equals("phmanager")&&vacTask.getVac().getNowResult().equals("同意")){
+				//判断药房是否是同意入库，同意则进入药房药品入库
+				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
+				drugServices.insertAndUpdate(vacation);
 			}
 		}
 		return flag;

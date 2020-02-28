@@ -118,7 +118,7 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode} and lotnumber=#{item.lotnumber})- #{item.number} " +
 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 
@@ -134,9 +134,9 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
+			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"(#{item.drugcode}, #{item.number},'入库',#{item.lotnumber},#{item.specialmedicine},'入库',#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
 			"</foreach>",
 			"</script>"
 	})
@@ -152,7 +152,7 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
+			"update druginventorytable set druginventory =(select druginventorynumber from druginventorytable where drugcode=#{item.drugcode} and lotnumber=#{item.lotnumber})- #{item.number} " +
 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 

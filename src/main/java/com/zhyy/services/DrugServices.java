@@ -112,4 +112,13 @@ public interface DrugServices
 	 */
 
 	public int saveDrugClassSetInfo(DrugClass drugClass);
+
+	/**
+	 * @Description  药房入库，插入出入库表并更新库存
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	int insertAndUpdate(Vacation vac);
 }

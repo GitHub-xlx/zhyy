@@ -5,6 +5,7 @@ package com.zhyy.services.impl;/**
 import com.zhyy.entity.*;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.services.DrugServices;
+import com.zhyy.services.UserServices;
 import com.zhyy.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class DrugServicesImpl implements DrugServices
 {
 	@Autowired
 	private DrugMapper drugMapper;
+	@Autowired
+	private UserServices userServices;
 
 	@Override
 	public List<DrugpriceDruginformation> queryDrugprice(String pharmacycode, String drugcode, String commoname, String start, String end, int nowpage, int size)
@@ -90,5 +93,14 @@ public class DrugServicesImpl implements DrugServices
 	public int saveDrugClassSetInfo(DrugClass drugClass)
 	{
 		return drugMapper.saveDrugClassSetInfo(drugClass);
+	}
+
+	@Override
+	public int insertAndUpdate(Vacation vac)
+	{
+		User user = userServices.queryUserByAccount(vac.getApplyUser());
+		String time = TimeUtil.getTime(new Date());
+		drugMapper.insertPharmacyDrug(vac,user.getPharmacycode(),time);
+		return drugMapper.updatePharmacy(vac.getList());
 	}
 }
