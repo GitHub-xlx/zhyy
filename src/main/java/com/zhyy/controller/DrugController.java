@@ -79,6 +79,29 @@ public class DrugController
 		return tableMsg;
 	}
 
+	//药房药品库存列表
+	@RequestMapping("/doDrugInventory")
+	public @ResponseBody
+	TableMsg doDrugInventory(String page, String limit, HttpServletRequest request){
+		System.out.println("药房药品库存列表");
+		System.out.println("page:"+page+", limit:"+limit);
+		int pageInt=Integer.valueOf(page)-1;
+		int limitInt=Integer.valueOf(limit);
+
+		List<Druginventorytable> druginventorytableList=null;
+		int count=0;
+		druginventorytableList =drugServices.queryDrugInventoryList(pageInt,limitInt);
+		count=drugServices.countDrugInventoryList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventorytableList);
+		return tableMsg;
+
+	}
+
 
 	/**
 	 * 查询药品分类信息

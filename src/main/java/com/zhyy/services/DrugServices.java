@@ -1,8 +1,6 @@
 package com.zhyy.services;
 
 import com.zhyy.entity.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,63 +74,9 @@ public interface DrugServices
 	 * @Date 下午 22:28 2020/2/20 0020
 	 * @Param commonname 常用名称
 	 * @Param pincode 拼音码
+	 * @Param page 拼音码
+	 * @Param limit 拼音码
 	 * @return
 	 **/
-	List<Druginformation> selectDruginformation(String commoname, String pincode);
-
-	/**
-	 * @Description  药库药品出库
-	 * @author xlx
-	 * @Date 下午 17:26 2020/2/26 0026
-	 * @Param
-	 * @return
-	 **/
-	int insertOutbound(Vacation vac);
-
-	/**
-	 * 查询分类信息列表list
-	 * @author cbd
-	 * @return 返回查询的分类信息list
-	 */
-	List<DrugClass> selectDrugClass();
-
-	/**
-	 * 根据大类编号查询子类编号信息
-	 * @author cbd
-	 * @param parentCode 大类编号
-	 * @return 返回查询的大类编号的最大子类编号加1
-	 */
-	public String selectDrugClassCode(String parentCode);
-
-	/**
-	 * 药品分类设置新增方法：根据新增的信息插入到分类表
-	 * @author cbd
-	 * @param drugClass 药品分类信息对象
-	 * @return 返回整型值判断结果状态成功与否
-	 */
-
-	public int saveDrugClassSetInfo(DrugClass drugClass);
-
-	/**
-	 * 查询药品信息表的所有药品信息
-	 * @author cbd
-	 * @return 返回药品信息list
-	 */
-	public List<Druginformation> selectDrugInfo();
-
-	/**
-	 * 根据新增药品信息对象将其保存至药品信息表
-	 * @param drugInformation 药品信息对象
-	 * @return 返回int值判断保存是否成功
-	 */
-	public int saveDrugInfo(Druginformation drugInformation);
-
-	/**
-	 * @Description  药房入库，插入出入库表并更新库存
-	 * @author xlx
-	 * @Date 上午 7:21 2020/2/28 0028
-	 * @Param
-	 * @return
-	 **/
-	int insertAndUpdate(Vacation vac);
+	List<Druginformation> selectDruginformation(String commonname, String pincode);
 }

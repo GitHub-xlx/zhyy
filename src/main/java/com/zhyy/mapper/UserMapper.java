@@ -5,6 +5,7 @@ import com.zhyy.entity.Druginformation;
 import com.zhyy.entity.Drugstoredruginventory;
 import com.zhyy.entity.Menu;
 import com.zhyy.entity.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -24,6 +25,9 @@ public interface UserMapper
 	 * 查询用户信息
 	 * @return list
 	 */
+
+    @Insert("insert into userinfo (account,password,username,phone,sex,age,department,position,rolecode,pharmacycode,state) values (#{account},#{password},#{username},#{phone},#{sex},#{age},#{role},#{title},#{rolecode},#{pharmacycode},#{state})")
+	public boolean regStaff(String account,String password,String username,String phone,String sex,String age,String role,String title,String rolecode,String pharmacycode,String state);
 	@Select("select * from userinfo limit #{pageInt},#{limitInt}")
 	public List<User> queryUserList(int pageInt, int limitInt);
 	@Select("select count(*) from userinfo")

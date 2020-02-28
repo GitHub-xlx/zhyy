@@ -5,14 +5,11 @@ package com.zhyy.services.impl;/**
 import com.zhyy.entity.*;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.services.DrugServices;
-import com.zhyy.services.UserServices;
-import com.zhyy.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,8 +23,6 @@ public class DrugServicesImpl implements DrugServices
 {
 	@Autowired
 	private DrugMapper drugMapper;
-	@Autowired
-	private UserServices userServices;
 
 	@Override
 	public List<DrugpriceDruginformation> queryDrugprice(String pharmacycode, String drugcode, String commoname, String start, String end, int nowpage, int size)
@@ -54,65 +49,16 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public List<Druginformation> selectDruginformation(String commoname, String pincode)
+	public List<Druginformation> selectDruginformation(String commonname, String pincode)
 	{
 		String where="1=1 ";
-		if(commoname!=null){
-			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where;
+		if(commonname!=null){
+			where = commonname.length()>0 ? where+" and commonname = '"+commonname+"'" : where;
 		}
 		if (pincode!=null){
-			where = pincode.length()>0 ? where+" and pincode like '%"+pincode+"%'" : where;
+			where = pincode.length()>0 ? where+" and pincode = '"+pincode+"'" : where;
 		}
 		return drugMapper.selectDruginformation(where);
 
-	}
-
-	@Override
-	public int insertOutbound(Vacation vac)
-	{
-		String[] split = vac.getDurgResult().split(",");
-		String pharmacycode = split[1];
-		String time = TimeUtil.getTime(new Date());
-		drugMapper.insertOutbound(vac, pharmacycode, time);
-		return drugMapper.updatePharmacyInventory(vac.getList());
-	}
-
-	@Override
-	public List<DrugClass> selectDrugClass()
-	{
-		return drugMapper.selectDrugClass();
-	}
-
-	@Override
-	public String selectDrugClassCode(String parentCode)
-	{
-		return drugMapper.selectDrugClassCode(parentCode);
-	}
-
-	@Override
-	public int saveDrugClassSetInfo(DrugClass drugClass)
-	{
-		return drugMapper.saveDrugClassSetInfo(drugClass);
-	}
-
-	@Override
-	public List<Druginformation> selectDrugInfo()
-	{
-		return drugMapper.selectDrugInfo();
-	}
-
-	@Override
-	public int saveDrugInfo(Druginformation drugInformation)
-	{
-		return drugMapper.saveDrugInfo(drugInformation);
-	}
-
-	@Override
-	public int insertAndUpdate(Vacation vac)
-	{
-		User user = userServices.queryUserByAccount(vac.getApplyUser());
-		String time = TimeUtil.getTime(new Date());
-		drugMapper.insertPharmacyDrug(vac,user.getPharmacycode(),time);
-		return drugMapper.updatePharmacy(vac.getList());
 	}
 }
