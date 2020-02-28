@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>药品信息设置</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" th:href="@{static/layui/css/layui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}" />
+    <style>
+        .toolbar-position{
+            right: 20px;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div style="text-align:center">
+    <h1>药品信息设置</h1>
+</div>
+<!-- 数据表格开始 -->
+<div style="text-align:center">
+    <div style="display:inline">
+        <table class="layui-hide" id="drugClass" lay-filter="drugClass"></table>
+    </div>
+</div>
+<!-- 自定义表格工具栏 -->
+<div style="display:none" id="headToolbar">
+    <div class="layui-btn-container toolbar-position">
+        <button class="layui-btn layui-btn-sm " lay-event="addClass">新增分类</button>
+    </div>
+</div>
+<!-- 数据表格结束 -->
+<!-- 新增分类弹出层开始 -->
+<div style="display: none;padding: 20px" id="addClassLayout">
+
+    <div>
+        <form action="" class="layui-form" id="dataFrm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">药品编号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="drugcode" lay-verify="title" autocomplete="off" placeholder="请输入药品编号"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">条形码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="barcode" lay-verify="title" autocomplete="off" placeholder="请输入条形码"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类编号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="classcode" lay-verify="title" autocomplete="off" placeholder="请输入分类编号"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="productname" lay-verify="title" autocomplete="off" placeholder="请输入商品名称"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">常用名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="commoname" lay-verify="title" autocomplete="off" placeholder="请输入常用名称"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">规格</label>
+                <div class="layui-input-block">
+                    <input type="text" name="specification" lay-verify="title" autocomplete="off" placeholder="请输入规格"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">剂型</label>
+                <div class="layui-input-block">
+                    <input type="text" name="dosageform" lay-verify="title" autocomplete="off" placeholder="请输入剂型"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">药库单位</label>
+                <div class="layui-input-block">
+                    <input type="text" name="drugdepotunit" lay-verify="title" autocomplete="off" placeholder="请输入药库单位"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">药房单位</label>
+                <div class="layui-input-block">
+                    <input type="text" name="pharmacyunit" lay-verify="title" autocomplete="off" placeholder="请输入药房单位"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">开药单位</label>
+                <div class="layui-input-block">
+                    <input type="text" name="prescribeunit" lay-verify="title" autocomplete="off" placeholder="请输入开药单位"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">换算公式</label>
+                <div class="layui-input-block">
+                    <input type="text" name="reductionformula" lay-verify="title" autocomplete="off" placeholder="请输入换算公式"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">用法用量</label>
+                <div class="layui-input-block">
+                    <input type="text" name="dosage" lay-verify="title" autocomplete="off" placeholder="请输入用法用量"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">拼音码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="pincode" lay-verify="title" autocomplete="off" placeholder="请输入拼音码"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">供应商</label>
+                <div class="layui-input-block">
+                    <input type="text" name="supplier" lay-verify="title" autocomplete="off" placeholder="请输入供应商"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否抗生素</label>
+                <div class="layui-input-block">
+                    <input type="text" name="antibiotic" lay-verify="title" autocomplete="off" placeholder="请输入是否抗生素"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否特殊药品</label>
+                <div class="layui-input-block">
+                    <input type="text" name="specialmedicine" lay-verify="title" autocomplete="off" placeholder="请输入是否特殊药品"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">批文准号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="approvalnumber" lay-verify="title" autocomplete="off" placeholder="请输入批准文号"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">医保</label>
+                <div class="layui-input-block">
+                    <input type="text" name="healthinsurance" lay-verify="title" autocomplete="off" placeholder="请输入医保"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">价格</label>
+                <div class="layui-input-block">
+                    <input type="text" name="price" lay-verify="title" autocomplete="off" placeholder="价格" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">批发价</label>
+                <div class="layui-input-block">
+                    <input type="text" name="wholesaleprice" lay-verify="title" autocomplete="off" placeholder="请输入批发价"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">加成率</label>
+                <div class="layui-input-block">
+                    <input type="text" name="additionrate" lay-verify="title" autocomplete="off" placeholder="请输入加成率"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">注意事项</label>
+                <div class="layui-input-block">
+                    <input type="text" name="precautions" lay-verify="title" autocomplete="off" placeholder="请输入注意事项"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">保质期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="shelflife" lay-verify="title" autocomplete="off" placeholder="请输入保质期"
+                           class="layui-input">
+                </div>
+            </div>
+
+            <!-- <label class="layui-form-label">大类名称</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="parentClass">
+                    <option value="" selected="selected"></option>
+                    <option value="100">西药</option>
+                    <option value="200">中药</option>
+                </select>
+            </div> -->
+            <!-- <div class="layui-form-item">
+                <label class="layui-form-label">新增名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="classname" id="classname" lay-verify="title" autocomplete="off"
+                        placeholder="请输入新增类对应的名称" class="layui-input">
+                </div>
+            </div> -->
+            <div class="layui-form-item" style="text-align: center;">
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-sm layui-icon layui-icon-release"
+                            lay-filter="doSubmit" lay-submit="">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-warm layui-btn-sm layui-icon layui-icon-refresh">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--新增分类弹出层结束-->
+<script th:src= "@{static/layui/layui.js}"></script>
+<script type="text/javascript"  >
+	layui.use(['element', 'layer', 'jquery', 'form', 'table'], function () {
+		var $ = layui.jquery;
+		var layer = layui.layer;
+		var form = layui.form;
+		var element = layui.element;
+		var table = layui.table;
+
+		table.render({
+			elem: '#drugClass'
+			, url: '/drugController/selectDrugInfo'
+			, toolbar: '#headToolbar' //开启头部工具栏，并为其绑定左侧模板
+			,defaultToolbar:""
+			,text:{
+				none:'暂时还没有数据'//默认：无数据。注：该属性为layui2.2.5开始新增
+			}
+			// , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+			//     title: '提示'
+			//     , layEvent: 'LAYTABLE_TIPS'
+			//     , icon: 'layui-icon-tips'
+			// }]
+			, title: '药品分类设置表'
+			, cols: [
+				[
+				// { type: 'checkbox', fixed: 'left' }
+					{ field: 'diid', title: 'ID', fixed: 'left', align: 'center', unresize: true, sort: true }
+					, { field: 'drugcode', title: '药品编号', sort: true, align: 'center' }
+					, { field: 'barcode', title: '条形码', sort: true, align: 'center' }
+					, { field: 'classcode', title: '分类编码', sort: true, align: 'center' }
+					, { field: 'productname', title: '商品名称', align: 'center' }
+					, { field: 'commoname', title: '常用名称', align: 'center' }
+					, { field: 'specification', title: '规格', align: 'center' }
+					, { field: 'dosageform', title: '剂型', align: 'center' }
+					, { field: 'drugdepotunit', title: '药库单位', align: 'center' }
+					, { field: 'pharmacyunit', title: '药房单位', align: 'center' }
+					, { field: 'prescribeunit', title: '开药单位', align: 'center' }
+					, { field: 'reductionformula', title: '换算公式', align: 'center' }
+					, { field: 'dosage', title: '用法用量', align: 'center' }
+					, { field: 'pincode', title: '拼音码', align: 'center' }
+					, { field: 'supplier', title: '供应商', align: 'center' }
+					, { field: 'antibiotic', title: '是否抗生素', align: 'center' }
+					, { field: 'specialmedicine', title: '是否特殊药品', align: 'center' }
+					, { field: 'approvalnumber', title: '批文准号', align: 'center' }
+					, { field: 'healthinsurance', title: '医保', align: 'center' }
+					, { field: 'price', title: '价格', align: 'center' }
+					, { field: 'wholesaleprice', title: '批发价', align: 'center' }
+					, { field: 'additionrate', title: '加成率', align: 'center' }
+					, { field: 'precautions', title: '注意事项', align: 'center' }
+					, { field: 'shelflife', title: '保质期', align: 'center' }
+			]
+            ]
+			, page: true
+		});
+
+
+		//头工具栏事件
+		table.on('toolbar(drugClass)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.dcid);
+			switch (obj.event) {
+				case 'addClass':
+					// alert("addClass");
+					//     var data = checkStatus.data;
+					openAddclass();
+					break;
+
+			}
+		});
+
+		//打开新增页面
+		var addClassIndex;
+		function openAddclass() {
+			alert("openAddClass 方法调用");
+			addClassIndex = layer.open({
+				type: 1,
+				title: '新增分类信息',
+				content: $("#addClassLayout"),
+				area: ['600px', '600px']
+			});
+
+		}
+
+		//大类药品选择后获取其子类的最大编码
+		var parentCode;
+		var classCode;
+		form.on('select(parentClass)',function(data){
+
+			parentCode = data.value;
+			alert(parentCode);
+			$.ajax({
+				url:'/drugController/selectClassCode',
+				type:"post",
+				data:{"parentCode":parentCode},
+				success:function(resData){
+
+					alert(resData);
+					classCode=resData;
+
+				},
+				error:function(resData){
+					alert("服务器繁忙")
+				}
+
+
+			})
+
+		});
+		//新增信息提交
+        var className;
+		form.on("submit(doSubmit)", function (obj) {
+			className=($('#classname').val());
+
+			alert(classCode+"要新增的classcode");
+			alert(className+"要新增的名称");
+			alert(parentCode+"要新增的大类编号");
+			//序列化表单数据
+			var params = $("#dataFrm").serialize();
+			layer.alert(params);
+
+			// layer.alert(obj);
+
+			$.post('/drugController/saveDrugClassSetInfo',
+                {"classcode":classCode,"classname":className,"parentcode":parentCode},
+                function (obj) {
+
+				layer.msg(obj);
+				//关闭弹出层
+				// layer.close(mainIndex)
+				//刷新数据 表格
+
+			})
+		});
+
+
+
+	})
+</script>
+
+
+<!--<script th:src="@{static/back/js/drugclaim.js}"></script>-->
+
+</body>
+</html>

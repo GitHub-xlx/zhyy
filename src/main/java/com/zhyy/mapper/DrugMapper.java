@@ -203,6 +203,15 @@ public interface DrugMapper
 	@Insert("INSERT INTO druginformation (`diid`, `drugcode`, `barcode`, `classcode`, `productname`, `commoname`, `specification`, `dosageform`, `drugdepotunit`, `pharmacyunit`, `prescribeunit`, `reductionformula`, `dosage`, `pincode`, `supplier`, `antibiotic`, `specialmedicine`, `approvalnumber`, `healthinsurance`, `price`, `wholesaleprice`,`additionrate`, `precautions`, `shelflife`)  values (#{diid}, #{drugcode}, #{barcode}, #{classcode}, #{productname}, #{commoname}, #{specification}, #{dosageform}, #{drugdepotunit}, #{pharmacyunit}, #{prescribeunit}, #{reductionformula}, #{dosage}, #{pincode}, #{supplier}, #{antibiotic}, #{specialmedicine}, #{approvalnumber}, #{healthinsurance}, #{price}, #{wholesaleprice}, #{additionrate}, #{precautions}, #{shelflife})")
 	public int saveDrugInfo(Druginformation drugInformation);
 
+	/**
+	 * 查询药库药品库存表信息
+	 * @author cbd
+	 * @return 返回查询结果集list
+	 */
+	@Select("SELECT * FROM  drugstoredruginventory")
+	public  List<Drugstoredruginventory> selectDrugStoreInventory();
+
+
 
 
 }
