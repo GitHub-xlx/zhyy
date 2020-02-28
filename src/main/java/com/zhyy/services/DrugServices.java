@@ -148,4 +148,14 @@ public interface DrugServices
 	 * @return
 	 **/
 	List<Pharmacydrugschedule> selectPharmacyd(String drugcode,String lotnumber,String asker,String outbound,String start,String end);
+
+	/**
+	 * @Description  药房库存查询（通过常用名称和是否为特殊药品）
+	 * @author xlx
+	 * @Date 下午 18:13 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
+
 }

@@ -218,7 +218,21 @@ public class DrugController
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
 	}
-
+	@RequestMapping("/selectInventorycheck")
+	@ResponseBody
+	TableMsg selectInventorycheck (int page,int limit,String commonname,String specialmedicine)
+	{
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List<Inventorycheck> list = drugServices.selectInventorycheck(commonname,specialmedicine);
+		PageInfo pageInfo = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
+	}
 
 
 

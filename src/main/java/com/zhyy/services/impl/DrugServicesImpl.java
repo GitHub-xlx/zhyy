@@ -140,4 +140,18 @@ public class DrugServicesImpl implements DrugServices
 		}
 		return drugMapper.selectPharmacyd(where);
 	}
+
+	@Override
+	public List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine)
+	{
+		String where="1=1 ";
+		if(commonname!=null){
+			where = commonname.length()>0 ? where+" and commonname like '%"+commonname+"%'" : where+" and commonname like '%%'";
+		}
+		if (specialmedicine!=null){
+			where = specialmedicine.length()>0 ? where+" and specialmedicine = '"+specialmedicine+"'" : where;
+		}
+		return drugMapper.selectInventorycheck(where);
+
+	}
 }

@@ -4,9 +4,7 @@ package com.zhyy.mapper;
 import com.zhyy.entity.*;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -213,4 +211,14 @@ public interface DrugMapper
 	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
 	List<Pharmacydrugschedule> selectPharmacyd(String where);
 
+	/**
+	 * @Description  药房库存查询（通过常用名称）
+	 * @author xlx
+	 * @Date 下午 17:52 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where #{where}) a,"
+			+ " druginventorytable b where a.drugcode=b.drugcode")
+	List<Inventorycheck> selectInventorycheck(String where);
 }
