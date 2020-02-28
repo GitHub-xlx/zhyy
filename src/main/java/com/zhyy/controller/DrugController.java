@@ -203,6 +203,21 @@ public class DrugController
 
 		return null;
 	}
+	@RequestMapping("/selectPharmacyd")
+	@ResponseBody
+	TableMsg selectPharmacyd (int page,int limit,String drugcode, String lotnumber, String asker, String outbound, String start, String end)
+	{
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List<Pharmacydrugschedule> list = drugServices.selectPharmacyd(drugcode, lotnumber, asker, outbound, start, end);
+		PageInfo pageInfo = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
+	}
 
 
 

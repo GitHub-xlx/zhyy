@@ -90,4 +90,127 @@ public interface DrugMapper
 	 **/
 	@Select("select * from druginformation where ${where}")
 	List<Druginformation> selectDruginformation(String where);
+
+	/**
+	 * @Description  批量插入药库出库
+	 * @author xlx
+	 * @Date 下午 21:03 2020/2/26 0026
+	 * @Param
+	 * @return
+	 **/
+	@Insert({
+			"<script>",
+			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
+			"<foreach collection='vac.list' item='item' index='index' separator=','>",
+			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"</foreach>",
+			"</script>"
+	})
+	int insertOutbound(Vacation vac,String pharmacycode,String time);
+
+	/**
+	 * @Description  修改药库库存
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 **/
+	@Update({
+			"<script>" +
+			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode} and lotnumber=#{item.lotnumber})- #{item.number} " +
+			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
+			"</foreach></script>"
+
+	})
+	int updatePharmacyInventory(List<Druginformation> list);
+
+	/**
+	 * @Description  批量插入药房入库
+	 * @author xlx
+	 * @Date 下午 21:03 2020/2/26 0026
+	 * @Param
+	 * @return
+	 **/
+	@Insert({
+			"<script>",
+			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
+			"<foreach collection='vac.list' item='item' index='index' separator=','>",
+			"(#{item.drugcode}, #{item.number},'入库',#{item.lotnumber},#{item.specialmedicine},'入库',#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
+			"</foreach>",
+			"</script>"
+	})
+	int insertPharmacyDrug(Vacation vac,String pharmacycode,String time);
+
+	/**
+	 * @Description  修改药房库存
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 **/
+	@Update({
+			"<script>" +
+			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+			"update druginventorytable set druginventory =(select druginventorynumber from druginventorytable where drugcode=#{item.drugcode} )- #{item.number} " +
+			"where  drugcode =#{item.drugcode} " +
+			"</foreach></script>"
+
+	})
+	int updatePharmacy(List<Druginformation> list);
+
+
+	/**
+	 * 查询分类信息列表list
+	 * @author cbd
+	 * @return 返回查询的分类信息list
+	 */
+	@Select("SELECT b.dcid,a.classcode as parentcode,a.classname as parentname,b.classcode,b.classname\n" + "FROM `drugclassification` a,`drugclassification` b where a.classcode=b.parentcode")
+	List<DrugClass> selectDrugClass();
+
+	/**
+	 * 根据大类编号查询子类编号信息
+	 * @author cbd
+	 * @param parentCode 大类编号
+	 * @return 返回查询的大类编号的最大子类编号加1
+	 */
+	@Select("SELECT classcode+1 AS classcode " + " FROM drugclassification  T " + " WHERE T.parentcode=#{parentCode} ORDER BY classcode desc LIMIT 1")
+	public String selectDrugClassCode(String parentCode);
+
+	/**
+	 * 药品分类设置新增方法：根据新增的信息插入到分类表
+	 * @author cbd
+	 * @param drugClass 药品分类信息对象
+	 * @return 返回整型值判断结果状态成功与否
+	 */
+
+	@Insert("INSERT INTO `drugclassification`(`classcode`, `classname`, `parentcode`) VALUES ( #{classcode}, #{classname}, #{parentcode})")
+	public int saveDrugClassSetInfo(DrugClass drugClass);
+
+	/**
+	 * 查询药品信息表的所有药品信息
+	 * @author cbd
+	 * @return 返回药品信息list
+	 */
+	@Select("SELECT * FROM druginformation")
+	public List<Druginformation> selectDrugInfo();
+
+	/**
+	 * 根据新增药品信息对象将其保存至药品信息表
+	 * @param drugInformation 药品信息对象
+	 * @return 返回int值判断保存是否成功
+	 */
+	@Insert("INSERT INTO druginformation (`diid`, `drugcode`, `barcode`, `classcode`, `productname`, `commoname`, `specification`, `dosageform`, `drugdepotunit`, `pharmacyunit`, `prescribeunit`, `reductionformula`, `dosage`, `pincode`, `supplier`, `antibiotic`, `specialmedicine`, `approvalnumber`, `healthinsurance`, `price`, `wholesaleprice`,`additionrate`, `precautions`, `shelflife`)  values (#{diid}, #{drugcode}, #{barcode}, #{classcode}, #{productname}, #{commoname}, #{specification}, #{dosageform}, #{drugdepotunit}, #{pharmacyunit}, #{prescribeunit}, #{reductionformula}, #{dosage}, #{pincode}, #{supplier}, #{antibiotic}, #{specialmedicine}, #{approvalnumber}, #{healthinsurance}, #{price}, #{wholesaleprice}, #{additionrate}, #{precautions}, #{shelflife})")
+	public int saveDrugInfo(Druginformation drugInformation);
+
+	/**
+	 * @Description  查询药房出入库明细表
+	 * @author xlx
+	 * @Date 下午 16:08 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
+	List<Pharmacydrugschedule> selectPharmacyd(String where);
+
 }

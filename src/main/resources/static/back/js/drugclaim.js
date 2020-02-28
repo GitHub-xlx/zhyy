@@ -1,11 +1,4 @@
-/**
- * @program: Mybatis
- * @ClassName userTable
- * @description: 用户表管理（禁用，启用，重置密码）
- * @author: xlx
- * @create: 2019-12-28 16:10
- * @Version 1.0
- **/
+
 layui.use('table', function(){
 	var table = layui.table;
 	var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
