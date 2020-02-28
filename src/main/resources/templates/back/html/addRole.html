@@ -20,7 +20,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="margin-left:20px;text-align: left">选择部门：</label>
             <div class="layui-input-inline">
-                <select lay-filter="chooseMenu" id="chooseMenu" name="chooseMenu">
+                <select lay-filter="chooseDepartment" id="chooseDepartment" name="chooseDepartment">
                     <option value="">请选择部门</option>
                 </select>
             </div>
@@ -28,15 +28,15 @@
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">角色名称：</label>
             <div class="layui-input-inline">
-                <input lay-verify="required" id="menuname" type="text" name="menuname"
+                <input lay-verify="required" id="rolename" type="text" name="rolename"
                        placeholder="请输入新增角色名称" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label" style="width: 100px">角色编号：</label>
             <div class="layui-input-inline">
-                <input lay-verify="required" id="menucode" type="text" name="menuname"
-                       placeholder="请输入新增菜单编号" autocomplete="off" class="layui-input">
+                <input lay-verify="required" id="rolecode" type="text" name="rolecode"
+                       placeholder="请输入新增角色编号" autocomplete="off" class="layui-input">
             </div>
             <!-- 对号 -->
             <div class="layui-inline">
@@ -56,5 +56,5 @@
 </form>
 </body>
 <script th:src="@{static/layui/layui.js}"></script>
-<script th:src="@{static/back/js/addMenu.js}"></script>
+<script th:src="@{static/back/js/addRole.js}"></script>
 </html>

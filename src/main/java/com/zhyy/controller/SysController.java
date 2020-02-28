@@ -6,12 +6,16 @@ import com.zhyy.utils.List2TreeUtil;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,6 +217,85 @@ public class SysController
 			return new ResultInfo(305,"新增失败，请重试");
 		}
 		return resultInfo;
+	}
+
+
+	@RequestMapping("/queryDepartment")
+	public @ResponseBody List<Department> queryDepartment(){
+
+		return sysServices.queryDepartment();
+	}
+
+	@RequestMapping("/checkRole")
+	public @ResponseBody ResultInfo checkRole(String rolecode)
+	{
+		ResultInfo resultInfo;
+		if (sysServices.checkMenu(rolecode)>0){
+			resultInfo =  new ResultInfo(300,"编号已存在");
+		}else{
+			resultInfo =  new ResultInfo(200,"编号可用");
+		}
+
+		return resultInfo;
+	}
+
+	@RequestMapping("/addRole")
+	public @ResponseBody ResultInfo addRole(String department,String rolecode,String rolename){
+
+		ResultInfo resultInfo;
+
+		if (sysServices.addRole(department,rolecode,rolename)>0){
+			resultInfo = new ResultInfo(200,"添加成功");
+		}else{
+			return new ResultInfo(305,"新增失败，请重试");
+		}
+		return resultInfo;
+	}
+	@RequestMapping("/editRole")
+	public @ResponseBody ResultInfo editRole(String rolecode,String rolename){
+
+		ResultInfo resultInfo;
+
+		if (sysServices.editRole(rolecode,rolename)>0){
+			resultInfo = new ResultInfo(200,"添加成功");
+		}else{
+			return new ResultInfo(305,"新增失败，请重试");
+		}
+		return resultInfo;
+	}
+
+	@RequestMapping("/checkPassword")
+	public @ResponseBody ResultInfo checkPassword(String account,String password)
+	{
+		ResultInfo resultInfo;
+		if (!sysServices.checkPassword(account).equals(password)){
+			resultInfo =  new ResultInfo(300,"密码输入错误");
+		}else{
+			resultInfo =  new ResultInfo(200,"密码输入正确");
+		}
+
+		return resultInfo;
+	}
+
+	@RequestMapping("/editPassword")
+	public @ResponseBody ResultInfo editPassword(String account,String newPassword){
+
+		ResultInfo resultInfo;
+
+		if (sysServices.editPassword(account,newPassword)>0){
+			resultInfo = new ResultInfo(200,"密码修改成功");
+		}else{
+			return new ResultInfo(305,"密码修改失败");
+		}
+		return resultInfo;
+	}
+
+	@RequestMapping("/exit")
+	public String exit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		request.getSession().invalidate();
+		request.getRequestDispatcher("/userController/welcome").forward(request,response);
+		return null;
 	}
 
 }

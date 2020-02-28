@@ -32,7 +32,8 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 	});
 	$('#menucode').blur(function () {
 		var menucode = $(this).val().trim();
-		if (menucode.length>0) {
+		var regExp=/^\d+(\.\d+)?$/;
+		if (menucode.length>0&&regExp.test(menucode)) {
 			$.ajax({
 				type: "POST",
 				url: "sysController/checkMenu",
@@ -57,7 +58,7 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 		}else {
 			$('#wr').removeAttr('hidden');
 			$('#ri').attr('hidden', 'hidden');
-			layer.msg('菜单编号不能为空！');
+			layer.msg('请输入正确的菜单编号！');
 			flag = false;
 		}
 

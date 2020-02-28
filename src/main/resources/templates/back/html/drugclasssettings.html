@@ -32,17 +32,17 @@
 </div>
 <!-- 数据表格结束 -->
 <!-- 新增分类弹出层开始 -->
-<div style="display: none;padding: 20px" id="addClassLayout">
-
-    <div>
+<div style="display: none;padding: 20px;margin-left: -200px;" id="addClassLayout">
         <form action="" class="layui-form" id="dataFrm">
+            <div class="layui-form-item">
             <label class="layui-form-label">大类名称</label>
-            <div class="layui-input-block">
+                <div class="layui-input-block">
                 <select name="interest" lay-filter="parentClass">
                     <option value="" selected="selected"></option>
                     <option value="100">西药</option>
                     <option value="200">中药</option>
                 </select>
+                </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">新增名称</label>
@@ -59,7 +59,6 @@
                 </div>
             </div>
         </form>
-    </div>
 </div>
 <!--新增分类弹出层结束-->
 <script th:src= "@{static/layui/layui.js}"></script>

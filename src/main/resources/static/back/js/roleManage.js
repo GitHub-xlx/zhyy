@@ -59,7 +59,7 @@ layui.use(['form','layer','jquery','table'], function(){
 				($(window).height() * 0.01)
 				, ($(window).width() * 0.35)
 			]
-			, content: 'jump/back/addMenu'
+			, content: 'jump/back/addRole'
 			// ,btn: ['继续弹出', '全部关闭'] //只是为了演示
 			, yes: function () {
 				$(that).click();
@@ -80,61 +80,9 @@ layui.use(['form','layer','jquery','table'], function(){
 	table.on('tool(table-user)', function (obj) {
 		var data = obj.data
 			,event = obj.event
-			,menucode = data.menucode
-			,state = data.state
-			,parentcode = data.parentcode;
 
-		if (event === 'able') {
-			if (parentcode==0){
-				layer.confirm('此菜单为一级菜单，将同时作用于下级菜单，您确定要进行此操作吗？', function (index) {
 
-					$.ajax({
-						type: "POST",
-						url: "sysController/ableMenu",
-						//发送的数据（同时也将数据发送出去）
-						data: {menucode: menucode, state: state,parentcode:parentcode},
-						success: function (data) {
-
-							if (data.code == 200) {
-								table.reload('userTable');
-								layer.msg("状态修改成功");
-							}else{
-								layer.msg("状态修改失败");
-							}
-						},
-						error: function (msg) {
-							alert("服务器正忙。。。。" + msg);
-						}
-					});
-				})
-			}else{
-				layer.confirm('您确定要进行此操作吗？', function (index) {
-
-					$.ajax({
-						type: "POST",
-						url: "sysController/ableMenu",
-						//发送的数据（同时也将数据发送出去）
-						data: {menucode: menucode, state: state,parentcode:parentcode},
-						success: function (data) {
-
-							if (data.code == 200) {
-								table.reload('userTable');
-								layer.msg("状态修改成功");
-							}else{
-								layer.msg("状态修改失败");
-							}
-						},
-						error: function (msg) {
-							alert("服务器正忙。。。。" + msg);
-						}
-					});
-				});
-
-				// return false;
-
-				layer.close(index);
-			}
-		} else if (event === 'edit') {
+		if (event === 'edit') {
 			layer.open({
 				type: 2 //此处以iframe举例
 				, title: '修改菜单'
@@ -145,7 +93,7 @@ layui.use(['form','layer','jquery','table'], function(){
 					($(window).height() * 0.25)
 					, ($(window).width() * 0.35)
 				]
-				, content: 'jump/back/editMenu'
+				, content: 'jump/back/editRole'
 				// ,btn: ['继续弹出', '全部关闭'] //只是为了演示
 				, yes: function () {
 					$(that).click();
@@ -158,9 +106,8 @@ layui.use(['form','layer','jquery','table'], function(){
 				, success: function (layero,index) {
 					layer.setTop(layero); //重点2
 					let body =layer.getChildFrame('body',index);
-					body.find('#menuname').val(data.menu);
-					body.find('#url').val(data.url);
-					body.find('#menucode').val(data.menucode);
+					body.find('#rolename').val(data.rolename);
+					body.find('#rolecode').val(data.rolecode);
 
 				}, end: function () {
 					window.location.reload();
