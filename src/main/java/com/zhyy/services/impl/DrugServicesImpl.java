@@ -96,6 +96,18 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
+	public List<Druginformation> selectDrugInfo()
+	{
+		return drugMapper.selectDrugInfo();
+	}
+
+	@Override
+	public int saveDrugInfo(Druginformation drugInformation)
+	{
+		return drugMapper.saveDrugInfo(drugInformation);
+	}
+
+	@Override
 	public int insertAndUpdate(Vacation vac)
 	{
 		User user = userServices.queryUserByAccount(vac.getApplyUser());

@@ -187,5 +187,22 @@ public interface DrugMapper
 	@Insert("INSERT INTO `drugclassification`(`classcode`, `classname`, `parentcode`) VALUES ( #{classcode}, #{classname}, #{parentcode})")
 	public int saveDrugClassSetInfo(DrugClass drugClass);
 
+	/**
+	 * 查询药品信息表的所有药品信息
+	 * @author cbd
+	 * @return 返回药品信息list
+	 */
+	@Select("SELECT * FROM druginformation")
+	public List<Druginformation> selectDrugInfo();
+
+	/**
+	 * 根据新增药品信息对象将其保存至药品信息表
+	 * @param drugInformation 药品信息对象
+	 * @return 返回int值判断保存是否成功
+	 */
+	@Insert("INSERT INTO druginformation (`diid`, `drugcode`, `barcode`, `classcode`, `productname`, `commoname`, `specification`, `dosageform`, `drugdepotunit`, `pharmacyunit`, `prescribeunit`, `reductionformula`, `dosage`, `pincode`, `supplier`, `antibiotic`, `specialmedicine`, `approvalnumber`, `healthinsurance`, `price`, `wholesaleprice`,`additionrate`, `precautions`, `shelflife`)  values (#{diid}, #{drugcode}, #{barcode}, #{classcode}, #{productname}, #{commoname}, #{specification}, #{dosageform}, #{drugdepotunit}, #{pharmacyunit}, #{prescribeunit}, #{reductionformula}, #{dosage}, #{pincode}, #{supplier}, #{antibiotic}, #{specialmedicine}, #{approvalnumber}, #{healthinsurance}, #{price}, #{wholesaleprice}, #{additionrate}, #{precautions}, #{shelflife})")
+	public int saveDrugInfo(Druginformation drugInformation);
+
+
 
 }

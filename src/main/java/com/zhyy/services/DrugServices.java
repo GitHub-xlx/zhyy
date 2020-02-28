@@ -114,6 +114,20 @@ public interface DrugServices
 	public int saveDrugClassSetInfo(DrugClass drugClass);
 
 	/**
+	 * 查询药品信息表的所有药品信息
+	 * @author cbd
+	 * @return 返回药品信息list
+	 */
+	public List<Druginformation> selectDrugInfo();
+
+	/**
+	 * 根据新增药品信息对象将其保存至药品信息表
+	 * @param drugInformation 药品信息对象
+	 * @return 返回int值判断保存是否成功
+	 */
+	public int saveDrugInfo(Druginformation drugInformation);
+
+	/**
 	 * @Description  药房入库，插入出入库表并更新库存
 	 * @author xlx
 	 * @Date 上午 7:21 2020/2/28 0028
