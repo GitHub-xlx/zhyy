@@ -12,6 +12,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -38,12 +39,17 @@ public class VacationServiceImpl
     private HistoryService historyService;
 	@Resource
 	private RepositoryService repositoryService;
+	@Resource
+	private ProcessEngine processEngine;
 
 
 //    private static final String PROCESS_DEFINE_KEY = "vacationProcess";
 
-    public boolean startVac(String userName, Vacation vac,String processkey) {
-
+    public boolean startVac(String userName, List list,String processkey) {
+	    Deployment deployment = processEngine.getRepositoryService().createDeployment().name(processkey)
+			    .addClasspathResource("processes/"+processkey+".bpmn")
+			    .addClasspathResource("processes/"+processkey+".png")
+			    .deploy();
         identityService.setAuthenticatedUserId(userName);
         // 开始流程
         ProcessInstance vacationInstance = runtimeService.startProcessInstanceByKey(processkey);
@@ -55,8 +61,8 @@ public class VacationServiceImpl
         Map<String, Object> vars = new HashMap<>(5);
         vars.put("applyUser", userName);
         vars.put("applyTime", TimeUtil.getTime(new Date()));
-        vars.put("reason", vac.getReason());
-        vars.put("list", vac.getList());
+//        vars.put("reason", vac.getReason());
+        vars.put("list", list);
 
         taskService.complete(currentTask.getId(), vars);
 

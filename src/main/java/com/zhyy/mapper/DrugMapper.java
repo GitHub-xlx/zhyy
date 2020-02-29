@@ -86,7 +86,8 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select * from druginformation where ${where}")
+	@Select("select a.*,b.druginventory,b.lotnumber,b.productiondate,b.drugstatus  from (select * from druginformation where ${where}) a," +
+			" drugstoredruginventory b where a.drugcode=b.drugcode")
 	List<Druginformation> selectDruginformation(String where);
 
 	/**

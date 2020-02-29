@@ -2,6 +2,7 @@ package com.zhyy.entity;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * @Param
  * @return
  **/
-public class Vacation
+public class Vacation implements Serializable
 {
 
     /**

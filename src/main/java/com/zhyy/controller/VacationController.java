@@ -1,11 +1,14 @@
 package com.zhyy.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import com.zhyy.services.impl.VacationServiceImpl;
 import com.zhyy.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -26,15 +29,19 @@ public class VacationController
 	 * @author xlx
 	 * @Date 下午 17:01 2020/2/24 0024
 	 * @Param
-	 * @return
+	 * @return @RequestBody
 	 **/
 	@RequestMapping("/startProcess")
 	public @ResponseBody
-	boolean startProcess(Vacation vac, String processkey, HttpSession session){
+	boolean startProcess( String gsonList, String processkey, HttpSession session){
 		boolean flag=false;
+		List<Druginformation> list = new Gson().fromJson(gsonList,new TypeToken< List<Druginformation>>(){}.getType());
 		User user = (User)session.getAttribute("user");
+		System.out.println(list);
+		System.out.println(1111);
+		System.out.println(new Gson().toJson(list));
 		if (user!=null){
-			flag=vacationServices.startVac(user.getAccount(),vac,processkey);
+			flag=vacationServices.startVac(user.getAccount(),list,processkey);
 		}
 		return flag;
 	}
@@ -125,7 +132,7 @@ public class VacationController
 				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
 				drugServices.insertOutbound(vacation);
 				//开启药房入库的审核流程
-				vacationServices.startVac(vacation.getApplyUser(),vacation,"pharmacystorage");
+				vacationServices.startVac(vacation.getApplyUser(),vacation.getList(),"pharmacystorage");
 			}else if (user.getAccount().equals(TimeUtil.ROLE_PHMANAGER)&&vacTask.getVac().getNowResult().equals("同意")){
 				//判断药房是否是同意入库，同意则进入药房药品入库
 				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());

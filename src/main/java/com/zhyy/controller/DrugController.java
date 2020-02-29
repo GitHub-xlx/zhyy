@@ -62,6 +62,13 @@ public class DrugController
 		tableMsg.setData(drugsales);
 		return tableMsg;
 	}
+	/**
+	 * @Description  药品请领查询
+	 * @author xlx
+	 * @Date 上午 11:31 2020/2/29 0029
+	 * @Param
+	 * @return
+	 **/
 	@RequestMapping("/selectclaim")
 	public @ResponseBody
 	TableMsg selectclaim(int limit,int page,String commoname,String pincode, HttpServletRequest request){
@@ -88,16 +95,16 @@ public class DrugController
 		int pageInt=Integer.valueOf(page)-1;
 		int limitInt=Integer.valueOf(limit);
 
-		List<Druginventorytable> druginventorytableList=null;
-		int count=0;
-		druginventorytableList =drugServices.queryDrugInventoryList(pageInt,limitInt);
-		count=drugServices.countDrugInventoryList();
+//		List<Druginventorytable> druginventorytableList=null;
+//		int count=0;
+//		druginventorytableList =drugServices.queryDrugInventoryList(pageInt,limitInt);
+//		count=drugServices.countDrugInventoryList();
 
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
-		tableMsg.setCount(count);
-		tableMsg.setData(druginventorytableList);
+//		tableMsg.setCount(count);
+//		tableMsg.setData(druginventorytableList);
 		return tableMsg;
 
 	}

@@ -39,11 +39,12 @@ public class MySpringbootApplicationTest
 //		System.out.println(1121);
 //		List<User> list = userMapper.queryUserList();
 //		System.out.println(list);
-		Druginformation druginformation = new Druginformation();
-		druginformation.setClasscode("001");
-		druginformation.setCommoname("测试");
-		int i = drugMapper.saveDrugInfo(druginformation);
-		System.out.println("DrugInformation的结果="+i);
+//		Druginformation druginformation = new Druginformation();
+//		druginformation.setClasscode("001");
+//		druginformation.setCommoname("测试");
+//		int i = drugMapper.saveDrugInfo(druginformation);
+//		System.out.println("DrugInformation的结果="+i);
+
 
 
 	}

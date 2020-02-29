@@ -2,6 +2,7 @@ package com.zhyy.entity;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -11,7 +12,7 @@ import java.util.Date;
  * @Param
  * @return
  **/
-public class VacTask
+public class VacTask implements Serializable
 {
 
     private String id;
