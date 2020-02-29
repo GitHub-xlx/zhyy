@@ -96,7 +96,11 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 						type: "POST",
 						url: "sysController/ableMenu",
 						//发送的数据（同时也将数据发送出去）
-						data: {menucode: menucode, state: state,parentcode:parentcode},
+						data: {
+							menucode: menucode,
+							state: state,
+							parentcode:parentcode
+						},
 						success: function (data) {
 
 							if (data.code == 200) {

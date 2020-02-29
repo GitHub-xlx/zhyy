@@ -189,4 +189,6 @@ public interface SysMapper
 	@Update("update userinfo set password = #{password} where account = #{account}")
 	public int editPassword(String account,String password);
 
+
+
 }

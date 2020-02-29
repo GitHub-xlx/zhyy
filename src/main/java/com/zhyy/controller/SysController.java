@@ -28,12 +28,12 @@ public class SysController
 
 	@RequestMapping("/menuManage")
 	public @ResponseBody
-	TableMsg menuManage(String menucode,String menu,String page,String limit, HttpServletRequest request){
+	TableMsg menuManage(String menucode,String menu,int page,int limit, HttpServletRequest request){
 
 		System.out.println("进入controller");
 		String where = "1=1";
 
-		String lim = "limit "+(Integer.valueOf(page)-1)*Integer.valueOf(limit)+","+Integer.valueOf(limit);
+		String lim = "limit "+((page-1)*limit)+","+limit;
 		if(menucode!=null){
 			where = menucode.length()>0 ? where+" and menucode like '%"+menucode+"%'" : where;
 		}
@@ -123,12 +123,12 @@ public class SysController
 	}
 	@RequestMapping("/roleManage")
 	public @ResponseBody
-	TableMsg menuManage(String rolecode,String rolename,String department,String page,String limit, HttpServletRequest request){
+	TableMsg menuManage(String rolecode,String rolename,String department,int page,int limit, HttpServletRequest request){
 
 		System.out.println("进入controller");
 		String where = "A.departmentcode = B.departmentcode";
 
-		String lim = "limit "+(Integer.valueOf(page)-1)*Integer.valueOf(limit)+","+Integer.valueOf(limit);
+		String lim = "limit "+((page-1)*limit)+","+limit;
 		if(rolecode!=null){
 			where = rolecode.length()>0 ? where+" and rolecode like '%"+rolecode+"%'" : where;
 		}

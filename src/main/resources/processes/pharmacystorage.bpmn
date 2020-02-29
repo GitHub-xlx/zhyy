@@ -1,90 +1,93 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
-             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
-             xmlns:activiti="http://activiti.org/bpmn"
-             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
-             xmlns:tns="http://www.activiti.org/test"
-             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             expressionLanguage="http://www.w3.org/1999/XPath"
-             id="m1515296568080"
-             name=""
-             targetNamespace="http://www.activiti.org/test"
-             typeLanguage="http://www.w3.org/2001/XMLSchema">
-   <process xmlns="" id="pharmacystorage" isClosed="false" isExecutable="true" name="药房入库"
-            processType="None">
-      <startEvent id="_2" name="StartEvent"/>
-      <userTask activiti:assignee="applicant" activiti:exclusive="true" id="_3" name="发起入库请求"/>
-      <userTask activiti:assignee="reviewer" activiti:exclusive="true" id="_4" name="药房审核"/>
-      <endEvent id="_6" name="EndEvent"/>
-      <sequenceFlow id="_7" sourceRef="_2" targetRef="_3"/>
-      <sequenceFlow id="_8" sourceRef="_3" targetRef="_4"/>
-      <sequenceFlow id="_11" name="同意" sourceRef="_4" targetRef="_6">
-         <conditionExpression xsi:type="tFormalExpression">${message=='同意'}</conditionExpression>
-      </sequenceFlow>
-      <sequenceFlow id="_5" name="不同意" sourceRef="_4" targetRef="_3">
-         <conditionExpression xsi:type="tFormalExpression">${message=='不同意'</conditionExpression>
-      </sequenceFlow>
-   </process>
-   <bpmndi:BPMNDiagram xmlns=""
-                       documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0"
-                       id="Diagram-_1"
-                       name="New Diagram">
-      <bpmndi:BPMNPlane bpmnElement="pharmacystorage">
-         <bpmndi:BPMNShape bpmnElement="_2" id="Shape-_2">
-            <omgdc:Bounds height="32.0" width="32.0" x="400.0" y="30.0"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNShape>
-         <bpmndi:BPMNShape bpmnElement="_3" id="Shape-_3">
-            <omgdc:Bounds height="55.0" width="85.0" x="380.0" y="160.0"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNShape>
-         <bpmndi:BPMNShape bpmnElement="_4" id="Shape-_4">
-            <omgdc:Bounds height="55.0" width="85.0" x="380.0" y="315.0"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNShape>
-         <bpmndi:BPMNShape bpmnElement="_6" id="Shape-_6">
-            <omgdc:Bounds height="32.0" width="32.0" x="405.0" y="470.0"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNShape>
-         <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="_4" targetElement="_3">
-            <omgdi:waypoint x="365.0" y="342.5"/>
-            <omgdi:waypoint x="240.0" y="270.0"/>
-            <omgdi:waypoint x="380.0" y="187.5"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNEdge>
-         <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="_2" targetElement="_3">
-            <omgdi:waypoint x="416.0" y="62.0"/>
-            <omgdi:waypoint x="416.0" y="160.0"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNEdge>
-         <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="_3" targetElement="_4">
-            <omgdi:waypoint x="422.5" y="215.0"/>
-            <omgdi:waypoint x="422.5" y="315.0"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNEdge>
-         <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="_4" targetElement="_6">
-            <omgdi:waypoint x="421.0" y="370.0"/>
-            <omgdi:waypoint x="421.0" y="470.0"/>
-            <bpmndi:BPMNLabel>
-               <omgdc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
-            </bpmndi:BPMNLabel>
-         </bpmndi:BPMNEdge>
-      </bpmndi:BPMNPlane>
-   </bpmndi:BPMNDiagram>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/test" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:yaoqiang="http://bpmn.sourceforge.net" exporter="Yaoqiang BPMN Editor" exporterVersion="5.3" expressionLanguage="http://www.w3.org/1999/XPath" id="m1515296568080" name="" targetNamespace="http://www.activiti.org/test" typeLanguage="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <process id="pharmacystorage" isClosed="false" isExecutable="true" name="药房入库" processType="None">
+    <extensionElements>
+      <yaoqiang:description/>
+      <yaoqiang:pageFormat height="841.8897637795276" imageableHeight="831.8897637795276" imageableWidth="588.1102362204724" imageableX="5.0" imageableY="5.0" orientation="0" width="598.1102362204724"/>
+      <yaoqiang:page background="#FFFFFF" horizontalCount="1" verticalCount="1"/>
+    </extensionElements>
+    <startEvent id="_2" isInterrupting="true" name="StartEvent" parallelMultiple="false">
+      <outgoing>_7</outgoing>
+      <outputSet/>
+    </startEvent>
+    <userTask activiti:assignee="applicant" activiti:exclusive="true" completionQuantity="1" id="_3" implementation="##unspecified" isForCompensation="false" name="发起入库请求" startQuantity="1">
+      <incoming>_7</incoming>
+      <incoming>_5</incoming>
+      <outgoing>_8</outgoing>
+    </userTask>
+    <userTask activiti:assignee="reviewer" activiti:exclusive="true" completionQuantity="1" id="_4" implementation="##unspecified" isForCompensation="false" name="药房审核" startQuantity="1">
+      <incoming>_8</incoming>
+      <outgoing>_11</outgoing>
+      <outgoing>_5</outgoing>
+    </userTask>
+    <endEvent id="_6" name="EndEvent">
+      <incoming>_11</incoming>
+      <inputSet/>
+    </endEvent>
+    <sequenceFlow id="_7" sourceRef="_2" targetRef="_3"/>
+    <sequenceFlow id="_8" sourceRef="_3" targetRef="_4"/>
+    <sequenceFlow id="_11" name="同意" sourceRef="_4" targetRef="_6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${message=='同意'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_5" name="不同意" sourceRef="_4" targetRef="_3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${message=='不同意']]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="Yaoqiang_Diagram-pharmacystorage" name="New Diagram" resolution="96.0">
+    <bpmndi:BPMNPlane bpmnElement="pharmacystorage">
+      <bpmndi:BPMNShape bpmnElement="_2" id="Yaoqiang-_2">
+        <omgdc:Bounds height="32.0" width="32.0" x="400.0" y="30.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="19.84" width="56.0" x="388.0" y="70.08"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" id="Yaoqiang-_3">
+        <omgdc:Bounds height="55.0" width="85.0" x="380.0" y="160.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="19.84" width="72.0" x="386.5" y="179.58"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" id="Yaoqiang-_4">
+        <omgdc:Bounds height="55.0" width="85.0" x="380.0" y="315.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="19.84" width="50.0" x="397.5" y="334.58"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" id="Yaoqiang-_6">
+        <omgdc:Bounds height="32.0" width="32.0" x="405.0" y="470.0"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="19.84" width="51.0" x="395.5" y="510.08"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="Yaoqiang-_11">
+        <omgdi:waypoint x="421.0" y="369.94444444444446"/>
+        <omgdi:waypoint x="421.0" y="469.9445408953525"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="34.84" width="102.0" x="370.0" y="402.53"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="Yaoqiang-_8">
+        <omgdi:waypoint x="422.5" y="214.94444444444446"/>
+        <omgdi:waypoint x="422.5" y="314.94444444444446"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="19.84" width="6.0" x="419.5" y="255.03"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7" id="Yaoqiang-_7">
+        <omgdi:waypoint x="416.0" y="61.94434799353644"/>
+        <omgdi:waypoint x="416.0" y="159.94444444444446"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="19.84" width="6.0" x="413.0" y="101.03"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5" id="Yaoqiang-_5">
+        <omgdi:waypoint x="379.94444444444446" y="342.5"/>
+        <omgdi:waypoint x="240.0" y="270.0"/>
+        <omgdi:waypoint x="379.94444444444446" y="187.5"/>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="34.84" width="109.0" x="185.5" y="247.58"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </definitions>
