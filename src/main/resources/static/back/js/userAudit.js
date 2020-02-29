@@ -52,12 +52,12 @@ layui.use('table', function(){
 			,{field:'list', width:80, title: '药品集合', sort: true,templet: '<div>{{d.vac.list}}</div>'}
 			,{field:'applyTime', width:100, title: '申请时间', sort: true,templet: '<div>{{d.vac.applyTime}}</div>'}
 			,{field:'applyStatus', width:100, title: '申请状态', sort: true,templet: '<div>{{d.vac.applyStatus}}</div>'}
-			,{field:'vac.auditor', width:100, title: '审核人', sort: true}
-			,{field:'vac.result', width:100, title: '审核结果', sort: true}
-			,{field:'vac.auditTime', width:100, title: '审核时间', sort: true}
-			,{field:'vac.dispenser', width:100, title: '发药人', sort: true}
-			,{field:'vac.durgResult', width:100, title: '发药结果', sort: true}
-			,{field:'vac.medicineTime', width:100, title: '发药时间', sort: true}
+			,{field:'auditor', width:100, title: '审核人', sort: true,templet: '<div>{{d.vac.auditor}}</div>'}
+			,{field:'result', width:100, title: '审核结果', sort: true,templet: '<div>{{d.vac.result}}</div>'}
+			,{field:'auditTime', width:100, title: '审核时间', sort: true,templet: '<div>{{d.vac.auditTime}}</div>'}
+			,{field:'dispenser', width:100, title: '发药人', sort: true,templet: '<div>{{d.vac.dispenser}}</div>'}
+			,{field:'durgResult', width:100, title: '发药结果', sort: true,templet: '<div>{{d.vac.durgResult}}</div>'}
+			,{field:'medicineTime', width:100, title: '发药时间', sort: true,templet: '<div>{{d.vac.medicineTime}}</div>'}
 		]]
 		,limit: 10
 		,limits:[10,20,30,40,50]
@@ -79,9 +79,9 @@ layui.use('table', function(){
 			,{field:'list', width:80, title: '药品集合', sort: true,templet: '<div>{{d.vac.list}}</div>'}
 			,{field:'applyTime', width:100, title: '申请时间', sort: true,templet: '<div>{{d.vac.applyTime}}</div>'}
 			,{field:'applyStatus', width:100, title: '申请状态', sort: true,templet: '<div>{{d.vac.applyStatus}}</div>'}
-			,{field:'vac.auditor', width:100, title: '审核人', sort: true}
-			,{field:'vac.result', width:100, title: '审核结果', sort: true}
-			,{field:'vac.auditTime', width:100, title: '审核时间', sort: true}
+			,{field:'auditor', width:100, title: '审核人', sort: true,templet: '<div>{{d.vac.auditor}}</div>'}
+			,{field:'result', width:100, title: '审核结果', sort: true,templet: '<div>{{d.vac.result}}</div>'}
+			,{field:'auditTime', width:100, title: '审核时间', sort: true,templet: '<div>{{d.vac.auditTime}}</div>'}
 			,{field:'start', width:60, title: '操作',align:'center', toolbar: '#toolbar2'}
 		]]
 		,limit: 10
@@ -100,16 +100,17 @@ layui.use('table', function(){
 		,cols: [[
 			{field:'id', width:80, title: '实例ID', sort: true}
 			,{field:'name', width:80, title: '流程名称', sort: true}
-			,{field:'vac.applyUser', width:100, title: '申请人'}
-			,{field:'vac.list', width:80, title: '药品集合', sort: true}
-			,{field:'vac.applyTime', width:100, title: '申请时间', sort: true}
-			,{field:'vac.applyStatus', width:100, title: '申请状态', sort: true}
-			,{field:'vac.auditor', width:100, title: '审核人', sort: true}
-			,{field:'vac.result', width:100, title: '审核结果', sort: true}
-			,{field:'vac.auditTime', width:100, title: '审核时间', sort: true}
-			,{field:'vac.dispenser', width:100, title: '发药人', sort: true}
-			,{field:'vac.durgResult', width:100, title: '发药结果', sort: true}
-			,{field:'vac.medicineTime', width:100, title: '发药时间', sort: true}
+			,{field:'applyUser', width:100, title: '申请人',templet: '<div>{{d.vac.applyUser}}</div>'}
+			,{field:'list', width:80, title: '药品集合', sort: true,templet: '<div>{{d.vac.list}}</div>'}
+			,{field:'applyTime', width:100, title: '申请时间', sort: true,templet: '<div>{{d.vac.applyTime}}</div>'}
+			,{field:'applyStatus', width:100, title: '申请状态', sort: true,templet: '<div>{{d.vac.applyStatus}}</div>'}
+			,{field:'auditor', width:100, title: '审核人', sort: true,templet: '<div>{{d.vac.auditor}}</div>'}
+			,{field:'result', width:100, title: '审核结果', sort: true,templet: '<div>{{d.vac.result}}</div>'}
+			,{field:'auditTime', width:100, title: '审核时间', sort: true,templet: '<div>{{d.vac.auditTime}}</div>'}
+			,{field:'dispenser', width:100, title: '发药人', sort: true,templet: '<div>{{d.vac.dispenser}}</div>'}
+			,{field:'durgResult', width:100, title: '发药结果', sort: true,templet: '<div>{{d.vac.durgResult}}</div>'}
+			,{field:'medicineTime', width:100, title: '发药时间', sort: true,templet: '<div>{{d.vac.medicineTime}}</div>'}
+
 		]]
 		,limit: 10
 		,limits:[10,20,30,40,50]
@@ -151,7 +152,7 @@ layui.use('table', function(){
 		var data = obj.data //获得当前行数据
 			,layEvent = obj.event; //获得 lay-event 对应的值
 		if(layEvent === 'schedule'){
-			drugDate=data.list;
+			drugDate=JSON.stringify(data.list);
 			table.reload("test4", {
 				data: drugDate,
 			});
@@ -163,7 +164,9 @@ layui.use('table', function(){
 			,layEvent = obj.event; //获得 lay-event 对应的值
 
 		if(layEvent === 'details'){
-			drugDate=data.list;
+			drugDate=data.vac.list;
+			alert(drugDate);
+
 			table.reload("test4", {
 				data: drugDate,
 			});
