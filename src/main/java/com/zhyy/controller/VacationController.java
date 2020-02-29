@@ -159,7 +159,7 @@ public class VacationController
 			flag = (boolean)vacationServices.passAudit(user.getAccount(),vacTask);
 			if (user.getAccount().equals(TimeUtil.ROLE_ISSUER)&&vacTask.getVac().getNowResult().equals("同意")){
 				//判断是否是同意发药，同意则进入药品出库
-				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
+				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getVac().getId());
 				drugServices.insertOutbound(vacation);
 				//开启药房入库的审核流程
 				vacationServices.startVac(vacation.getApplyUser(),vacation.getList(),"pharmacystorage");

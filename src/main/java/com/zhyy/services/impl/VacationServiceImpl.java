@@ -92,12 +92,24 @@ public class VacationServiceImpl
     private Vacation getVac(ProcessInstance instance) {
 //        Integer days = runtimeService.getVariable(instance.getId(), "days", Integer.class);
         String reason = runtimeService.getVariable(instance.getId(), "reason", String.class);
+        String result = runtimeService.getVariable(instance.getId(), "result", String.class);
+        String auditor = runtimeService.getVariable(instance.getId(), "auditor", String.class);
+        String auditTime = runtimeService.getVariable(instance.getId(), "auditTime", String.class);
+        String durgResult = runtimeService.getVariable(instance.getId(), "durgResult", String.class);
+        String dispenser = runtimeService.getVariable(instance.getId(), "dispenser", String.class);
+        String medicineTime = runtimeService.getVariable(instance.getId(), "medicineTime", String.class);
 	    List<Druginformation> list = runtimeService.getVariable(instance.getId(), "list", List.class);
 	    Vacation vac = new Vacation();
         vac.setApplyUser(instance.getStartUserId());
 	    vac.setId(instance.getId());
         vac.setReason(reason);
         vac.setList(list);
+        vac.setResult(result);
+        vac.setAuditor(auditor);
+        vac.setAuditTime(auditTime);
+        vac.setDurgResult(durgResult);
+        vac.setDispenser(dispenser);
+        vac.setMedicineTime(medicineTime);
         Date startTime = instance.getStartTime(); // activiti 6 才有
         vac.setApplyTime(TimeUtil.getTime(startTime));
         vac.setApplyStatus(instance.isEnded() ? "申请结束" : "等待审批");
