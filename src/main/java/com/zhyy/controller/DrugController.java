@@ -178,7 +178,7 @@ public class DrugController
 			res = "fail";
 		}
 
-		return null;
+		return res;
 	}
 
 
