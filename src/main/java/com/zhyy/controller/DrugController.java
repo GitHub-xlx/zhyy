@@ -62,13 +62,6 @@ public class DrugController
 		tableMsg.setData(drugsales);
 		return tableMsg;
 	}
-	/**
-	 * @Description  药品请领查询
-	 * @author xlx
-	 * @Date 上午 11:31 2020/2/29 0029
-	 * @Param
-	 * @return
-	 **/
 	@RequestMapping("/selectclaim")
 	public @ResponseBody
 	TableMsg selectclaim(int limit,int page,String commoname,String pincode, HttpServletRequest request){
@@ -86,28 +79,67 @@ public class DrugController
 		return tableMsg;
 	}
 
-	//药房药品库存列表
+	//--药房--药品库存列表
 	@RequestMapping("/doDrugInventory")
 	public @ResponseBody
 	TableMsg doDrugInventory(String page, String limit, HttpServletRequest request){
-		System.out.println("药房药品库存列表");
+		System.out.println("药房药--药房--药品库存列表品库存列表");
 		System.out.println("page:"+page+", limit:"+limit);
 		int pageInt=Integer.valueOf(page)-1;
 		int limitInt=Integer.valueOf(limit);
 
-//		List<Druginventorytable> druginventorytableList=null;
-//		int count=0;
-//		druginventorytableList =drugServices.queryDrugInventoryList(pageInt,limitInt);
-//		count=drugServices.countDrugInventoryList();
+		List<Druginventorytable> druginventorytableList=null;
+		int count=0;
+		druginventorytableList =drugServices.queryDrugInventoryList(pageInt,limitInt);
+		count=drugServices.countDrugInventoryList();
 
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
-//		tableMsg.setCount(count);
-//		tableMsg.setData(druginventorytableList);
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventorytableList);
 		return tableMsg;
 
 	}
+	//--药库--药品库存列表
+	@RequestMapping("/doDrugStoreDrugInventory")
+	public @ResponseBody
+	TableMsg doDrugStoreDrugInventory(String page, String limit, HttpServletRequest request){
+		System.out.println("--药库--药品库存列表");
+		System.out.println("page:"+page+", limit:"+limit);
+		int pageInt=Integer.valueOf(page)-1;
+		int limitInt=Integer.valueOf(limit);
+
+		List<Drugstoredruginventory> druginventorytableList=null;
+		int count=0;
+		druginventorytableList =drugServices.queryDrugStoreInventoryList(pageInt,limitInt);
+		count=drugServices.countDrugStoreInventoryList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventorytableList);
+		return tableMsg;
+
+	}
+
+	//药品低限设置
+	@ResponseBody
+	@RequestMapping("/lowestSetting")
+	public String lowestSetting(String drugCode,String setData){
+		System.out.println("执行到药品低限设置");
+		boolean b=drugServices.lowestSetting(drugCode,setData);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			msg="1";
+		}else{
+			msg="2";
+		}
+		return msg;
+	}
+
 
 
 	/**
@@ -208,15 +240,22 @@ public class DrugController
 			res = "fail";
 		}
 
-		return null;
+		return res;
 	}
-	@RequestMapping("/selectPharmacyd")
+
+	/**
+	 * 查询药库药品库存表信息
+	 * @author cbd
+	 * @return 返回查询结果集list
+	 */
+	@RequestMapping("/selectDrugStoreInventory")
 	@ResponseBody
-	TableMsg selectPharmacyd (int page,int limit,String drugcode, String lotnumber, String asker, String outbound, String start, String end)
+	public  TableMsg   selectDrugStoreInventory(int page,int limit)
 	{
+
 		//开启分页
 		PageHelper.startPage(page,limit);
-		List<Pharmacydrugschedule> list = drugServices.selectPharmacyd(drugcode, lotnumber, asker, outbound, start, end);
+		List<Drugstoredruginventory> list = drugServices.selectDrugStoreInventory();
 		PageInfo pageInfo = new PageInfo(list);
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
@@ -225,21 +264,29 @@ public class DrugController
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
 	}
-	@RequestMapping("/selectInventorycheck")
+
+	/**
+	 * 根据药库入库信息对象作为参数保存入库信息
+	 * @author cbd
+	 * @param drugStoreDrugInventory 药库药品入库信息对象参数
+	 * @return 返回保存结果状态int值 作为判断成功
+	 */
+	@RequestMapping("/saveDrugStoreInventory")
 	@ResponseBody
-	TableMsg selectInventorycheck (int page,int limit,String commonname,String specialmedicine)
+	public String saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory)
 	{
-		//开启分页
-		PageHelper.startPage(page,limit);
-		List<Inventorycheck> list = drugServices.selectInventorycheck(commonname,specialmedicine);
-		PageInfo pageInfo = new PageInfo(list);
-		TableMsg tableMsg = new TableMsg();
-		tableMsg.setCode(0);
-		tableMsg.setMsg("");
-		tableMsg.setCount((int)pageInfo.getTotal());
-		tableMsg.setData(pageInfo.getList());
-		return tableMsg;
+		String state = null;
+		int i = drugServices.saveDrugStoreInventory(drugStoreDrugInventory);
+		if(i>0){
+			state = "success";
+		}else {
+			state= "fail";
+		}
+
+		return state;
 	}
+
+
 
 
 

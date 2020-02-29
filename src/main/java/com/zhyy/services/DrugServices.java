@@ -1,8 +1,6 @@
 package com.zhyy.services;
 
 import com.zhyy.entity.*;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -156,6 +154,37 @@ public interface DrugServices
 	 * @Param
 	 * @return
 	 **/
+//	List<Druginformation> selectDruginformation(String commonname, String pincode);
+
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryList();
+
+	//查询药库--库存列表
+	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
+	//统计药库--库存列表数量
+	int countDrugStoreInventoryList();
+
+	//药品低限设置
+	boolean lowestSetting(String drugCode,String setData);
+
 	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
+
+
+	/**
+	 * 查询药库药品库存表信息
+	 * @author cbd
+	 * @return 返回查询结果集list
+	 */
+	public  List<Drugstoredruginventory> selectDrugStoreInventory();
+
+	/**
+	 * 根据药库入库信息对象作为参数保存入库信息
+	 * @author cbd
+	 * @param drugStoreDrugInventory 药库药品入库信息对象参数
+	 * @return 返回保存结果状态int值 作为判断成功
+	 */
+	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
 
 }

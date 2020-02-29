@@ -1,10 +1,7 @@
 package com.zhyy.mapper;
 
 
-import com.zhyy.entity.Druginformation;
-import com.zhyy.entity.Drugstoredruginventory;
-import com.zhyy.entity.Menu;
-import com.zhyy.entity.User;
+import com.zhyy.entity.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -51,7 +48,15 @@ public interface UserMapper
 	List<Drugstoredruginventory> checkInventoryCount();
 	//根据药品编码查询药品名称
 	@Select("select commoname from druginformation where drugcode = #{drugcode}")
-	List<Druginformation> findDrugNameByDrugCode(String drugcode);
+	public String findDrugNameByDrugCode(String drugcode);
+    //药房 药品过期检测
+	@Select("select A.drugcode,B.commoname,A.productiondate,B.shelflife from druginventorytable A,druginformation B where A.drugcode=B.drugcode")
+	public List<Druginventorytable> expiredCheck();
+	//药房 药品滞销检测
+	@Select("select A.drugcode,C.commoname,B.receivetime from druginventorytable A,pharmacydrugschedule B,druginformation C where A.drugcode=B.drugcode and B.drugcode=C.drugcode")
+	public List<Druginventorytable> unsalableCheck();
+
+
 
 
 	@Select("select D.menu parentcode,C.menu,C.url from menu D join (select A.* from menu A,(select menucode from rmrelation where rolecode = #{rolecode} and state = '0')B where A.menucode = B.menucode)C on D.menucode = C.parentcode and D.state = '0';")

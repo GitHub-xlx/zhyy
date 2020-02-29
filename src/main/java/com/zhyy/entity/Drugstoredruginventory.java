@@ -10,7 +10,7 @@ public class Drugstoredruginventory {
   private String lotnumber;
   private String productiondate;
   private String drugstatus;
-
+  private String commoname;
 
   public long getDsdiid() {
     return dsdiid;
@@ -74,4 +74,20 @@ public class Drugstoredruginventory {
     this.drugstatus = drugstatus;
   }
 
+  public String getCommoname()
+  {
+    return commoname;
+  }
+
+  public void setCommoname(String commoname)
+  {
+    this.commoname = commoname;
+  }
+
+
+  @Override
+  public String toString()
+  {
+    return "Drugstoredruginventory{" + "dsdiid=" + dsdiid + ", drugcode='" + drugcode + '\'' + ", druginventory=" + druginventory + ", drugminimums=" + drugminimums + ", lotnumber='" + lotnumber + '\'' + ", productiondate='" + productiondate + '\'' + ", drugstatus='" + drugstatus + '\'' + '}';
+  }
 }

@@ -1,7 +1,7 @@
 /**
  * @program: Mybatis
  * @ClassName userTable
- * @description: 药房药品库存
+ * @description: 药房:  药品库存
  * @author: linjin
  * @create: 2019-12-28 16:10
  * @Version 1.0

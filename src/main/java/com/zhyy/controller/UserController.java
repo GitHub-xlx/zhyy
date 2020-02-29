@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *@author Administrator
@@ -59,25 +56,12 @@ public class UserController
 					if(user.getState().equals("已启用")){
 						request.getSession().setAttribute("user",user);
 
-						List<Druginformation> list1=null;
-						//查询药库库存的药品的当前数量和最低数量
-						List<Drugstoredruginventory>list=userServices.checkInventoryCount();
-						if(list.size()>0){//遍历药库的药品数量是否小于最低限量
-							System.out.println("库存不足!");
-							for (int i = 0; i <list.size(); i++)
-							{
-								//根据药品编码查询药品名称
-								list1=userServices.findDrugNameByDrugCode(list.get(i).getDrugcode());
-							}
-							System.out.println("list1->查出的药品名称列表:"+list1);
-							for (int i = 0; i <list1.size(); i++)
-							{
-								QuartzTest.sendMail(list1.get(i).getCommoname());
-							}
-						}else{
-							System.out.println("库存足够!");
-						}
-
+                        //登录成功检测库存
+						checkInventory();
+						//药房过期药品检测
+						expiredCheck();
+						//药房滞销药品检测
+						unsalableCheck();
 
 						return new ResultInfo(200,"登录成功");
 					}else{
@@ -116,7 +100,90 @@ public class UserController
 		return "back/html/manage";
 	}
 
-    //管理用户列表
+	//检差库存的方法（不足则发送邮件警告）
+	public void checkInventory(){
+		ArrayList<String>arrayList = new ArrayList<>();
+		//查询药库库存的药品的当前数量和最低数量
+		List<Drugstoredruginventory>list=userServices.checkInventoryCount();
+		if(list.size()>0){//遍历药库的药品数量是否小于最低限量
+			System.out.println(list.size()+"样药品库存不足!");
+			for (int i = 0; i <list.size(); i++)
+			{
+				//根据药品编码查询药品名称
+				arrayList.add(userServices.findDrugNameByDrugCode(list.get(i).getDrugcode()));
+			}
+			QuartzTest.sendMail(String.valueOf(arrayList));
+		}else{
+			System.out.println("库存足够!");
+		}
+	}
+	//检查药房药品是否过期的方法（如过期则发送邮件警告）
+	public void expiredCheck(){
+	List<Druginventorytable>list=userServices.expiredCheck();
+	int year=0;
+	String str;
+	Calendar cal= Calendar.getInstance();
+	int yearNow=cal.get(Calendar.YEAR);
+		System.out.println("当前的年份为："+yearNow);
+	for (int i = 0; i <list.size() ; i++)
+	{
+		str=list.get(i).getProductiondate().substring(0,4);
+		System.out.println("查询出的药品年份为："+str);
+		if(list.get(i).getShelflife().equals("12个月")){
+			year=Integer.valueOf(str)+1;
+		}else if(list.get(i).getShelflife().equals("24个月")){
+			year=Integer.valueOf(str)+2;
+		}else {
+			year=Integer.valueOf(str)+3;
+		}
+
+		if(yearNow==year){
+			System.out.println(list.get(i).getCommoname()+"等药品过期了！");
+			//接下来走药品停用的方法
+			drugDiscontinuation(list.get(i).getDrugcode());
+		}
+	}
+	}
+	//检查药房药品是否滞销方法（如滞销则发送邮件警告）
+	public void unsalableCheck(){
+		List<Druginventorytable>list=userServices.unsalableCheck();
+		int month=0;
+		Calendar cal= Calendar.getInstance();
+		int monthNow = cal.get(Calendar.MONTH) + 1;
+		System.out.println("当前月份为："+monthNow);
+		String str;
+		for (int i = 0; i <list.size() ; i++)
+		{
+			str=list.get(i).getReceivetime().substring(5,7);
+			System.out.println("查询出的药品月份为："+str);
+            month=Integer.valueOf(str);
+
+            if((month+3)>12){
+	            month=month-9;
+	            if (month == monthNow)
+	            {
+		            System.out.println(list.get(i).getCommoname() + "等药品已超过90天了！");
+	            }
+            }else
+            {
+	            if ((month + 3) == monthNow)
+	            {
+		            System.out.println(list.get(i).getCommoname() + "等药品已超过90天了！");
+	            }
+            }
+		}
+	}
+
+	//药品低限设置后检测库存
+	@ResponseBody
+	@RequestMapping("/checkInventoryBySet")
+	public String checkInventoryBySet(){
+		System.out.println("执行到药品低限设置后检测库存");
+		checkInventory();
+		return "1";
+	}
+
+    //用户管理列表
 	@RequestMapping("/manageUsers")
 	public @ResponseBody
 	TableMsg manageUsers(String page, String limit, HttpServletRequest request){

@@ -4,6 +4,10 @@ package com.zhyy.mapper;
 import com.zhyy.entity.*;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -90,6 +94,25 @@ public interface DrugMapper
 			" drugstoredruginventory b where a.drugcode=b.drugcode")
 	List<Druginformation> selectDruginformation(String where);
 
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryList();
+
+	//查询药库--库存列表
+	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
+	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
+	//统计药库--库列表数量
+	@Select("select count(*) from drugstoredruginventory")
+	int countDrugStoreInventoryList();
+
+	//药品低限设置
+	@Update("update drugstoredruginventory set drugminimums = #{setData} where drugcode = #{drugCode}")
+	boolean lowestSetting(String drugCode,String setData);
+
+
 	/**
 	 * @Description  批量插入药库出库
 	 * @author xlx
@@ -117,7 +140,7 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode} and lotnumber=#{item.lotnumber})- #{item.number} " +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 
@@ -133,9 +156,9 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
+			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},'入库',#{item.lotnumber},#{item.specialmedicine},'入库',#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
+			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
 			"</foreach>",
 			"</script>"
 	})
@@ -151,8 +174,8 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update druginventorytable set druginventory =(select druginventorynumber from druginventorytable where drugcode=#{item.drugcode} )- #{item.number} " +
-			"where  drugcode =#{item.drugcode} " +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
+			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 
 	})
@@ -211,6 +234,23 @@ public interface DrugMapper
 	 **/
 	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
 	List<Pharmacydrugschedule> selectPharmacyd(String where);
+	/**
+	 * 查询药库药品库存表信息
+	 * @author cbd
+	 * @return 返回查询结果集list
+	 */
+	@Select("SELECT * FROM  drugstoredruginventory")
+	public  List<Drugstoredruginventory> selectDrugStoreInventory();
+
+	/**
+	 * 根据药库入库信息对象作为参数保存入库信息
+	 * @author cbd
+	 * @param drugStoreDrugInventory 药库药品入库信息对象参数
+	 * @return 返回保存结果状态int值 作为判断成功
+	 */
+	@Insert("INSERT INTO `drugstoredruginventory`(`dsdiid`, `drugcode`, `druginventory`, `drugminimums`, `lotnumber`, `productiondate`, `drugstatus`)  VALUES (#{dsdiid},#{drugcode},#{druginventory},#{drugminimums},#{lotnumber},#{productiondate},#{drugstatus})")
+	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
+
 
 	/**
 	 * @Description  药房库存查询（通过常用名称）
@@ -222,4 +262,6 @@ public interface DrugMapper
 	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where #{where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
+
+
 }

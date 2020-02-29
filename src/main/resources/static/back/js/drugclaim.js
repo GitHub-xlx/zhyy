@@ -21,14 +21,17 @@ layui.use('table', function(){
 			,{field:'drugcode', width:100, title: '药品编码'}
 			// ,{field:'productname', width:100, title: '药品名称', sort: true}
 			,{field:'commoname', width:100, title: '常用名称', sort: true}
+			,{field:'lotnumber', width:100, title: '批号', sort: true}
+			,{field:'productiondate', width:100, title: '生产日期', sort: true}
 			,{field:'specification', width:60, title: '规格', sort: true}
 			,{field:'dosageform', width:60, title: '剂型', sort: true}
-			,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
+			// ,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
 			,{field:'pharmacyunit', width:60, title: '药房单位', sort: true}
-			,{field:'reductionformula', width:60, title: '换算公式', sort: true}
+			// ,{field:'reductionformula', width:60, title: '换算公式', sort: true}
 			,{field:'supplier', width:60, title: '供应商', sort: true}
 			,{field:'antibiotic', width:60, title: '是否抗生素', sort: true}
 			,{field:'specialmedicine', width:60, title: '是否特殊药品', sort: true}
+			,{field:'drugstatus', width:60, title: '药品状态', sort: true}
 			,{field:'price', width:60, title: '价格', sort: true}
 			,{field:'druginventory', width:60, title: '药库数量', sort: true}
 			,{field:'number', width:60, title: '请领数量', sort: true, edit: 'text'}
@@ -53,18 +56,22 @@ layui.use('table', function(){
 			{type:'checkbox'}
 			,{field:'diid', width:80, title: 'ID', sort: true}
 			,{field:'drugcode', width:100, title: '药品编码'}
+			// ,{field:'productname', width:100, title: '药品名称', sort: true}
 			,{field:'commoname', width:100, title: '常用名称', sort: true}
+			,{field:'lotnumber', width:100, title: '批号', sort: true}
+			,{field:'productiondate', width:100, title: '生产日期', sort: true}
 			,{field:'specification', width:60, title: '规格', sort: true}
 			,{field:'dosageform', width:60, title: '剂型', sort: true}
-			,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
+			// ,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
 			,{field:'pharmacyunit', width:60, title: '药房单位', sort: true}
-			,{field:'reductionformula', width:60, title: '换算公式', sort: true}
+			// ,{field:'reductionformula', width:60, title: '换算公式', sort: true}
 			,{field:'supplier', width:60, title: '供应商', sort: true}
 			,{field:'antibiotic', width:60, title: '是否抗生素', sort: true}
 			,{field:'specialmedicine', width:60, title: '是否特殊药品', sort: true}
+			,{field:'drugstatus', width:60, title: '药品状态', sort: true}
 			,{field:'price', width:60, title: '价格', sort: true}
 			,{field:'druginventory', width:60, title: '药库数量', sort: true}
-			,{field:'number', width:60, title: '数量', sort: true, edit: 'text'}
+			,{field:'number', width:60, title: '请领数量', sort: true, edit: 'text'}
 			,{field:'start', width:60, title: '操作',align:'center', toolbar: '#toolbar2'}
 		]]
 		,limit: 10
@@ -85,18 +92,22 @@ layui.use('table', function(){
 			// ,fixed:"left"
 			{field:'diid', width:80, title: 'ID', sort: true}
 			,{field:'drugcode', width:100, title: '药品编码'}
+			// ,{field:'productname', width:100, title: '药品名称', sort: true}
 			,{field:'commoname', width:100, title: '常用名称', sort: true}
+			,{field:'lotnumber', width:100, title: '批号', sort: true}
+			,{field:'productiondate', width:100, title: '生产日期', sort: true}
 			,{field:'specification', width:60, title: '规格', sort: true}
 			,{field:'dosageform', width:60, title: '剂型', sort: true}
-			,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
+			// ,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
 			,{field:'pharmacyunit', width:60, title: '药房单位', sort: true}
-			,{field:'reductionformula', width:60, title: '换算公式', sort: true}
+			// ,{field:'reductionformula', width:60, title: '换算公式', sort: true}
 			,{field:'supplier', width:60, title: '供应商', sort: true}
 			,{field:'antibiotic', width:60, title: '是否抗生素', sort: true}
 			,{field:'specialmedicine', width:60, title: '是否特殊药品', sort: true}
+			,{field:'drugstatus', width:60, title: '药品状态', sort: true}
 			,{field:'price', width:60, title: '价格', sort: true}
 			,{field:'druginventory', width:60, title: '药库数量', sort: true}
-			,{field:'number', width:60, title: '数量', sort: true}
+			,{field:'number', width:60, title: '请领数量', sort: true, edit: 'text'}
 		]]
 		,limit: 10
 		,limits:[10,20,30,40,50]

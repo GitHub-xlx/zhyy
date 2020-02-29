@@ -92,12 +92,24 @@ public class VacationServiceImpl
     private Vacation getVac(ProcessInstance instance) {
 //        Integer days = runtimeService.getVariable(instance.getId(), "days", Integer.class);
         String reason = runtimeService.getVariable(instance.getId(), "reason", String.class);
+        String result = runtimeService.getVariable(instance.getId(), "result", String.class);
+        String auditor = runtimeService.getVariable(instance.getId(), "auditor", String.class);
+        String auditTime = runtimeService.getVariable(instance.getId(), "auditTime", String.class);
+        String durgResult = runtimeService.getVariable(instance.getId(), "durgResult", String.class);
+        String dispenser = runtimeService.getVariable(instance.getId(), "dispenser", String.class);
+        String medicineTime = runtimeService.getVariable(instance.getId(), "medicineTime", String.class);
 	    List<Druginformation> list = runtimeService.getVariable(instance.getId(), "list", List.class);
-        Vacation vac = new Vacation();
+	    Vacation vac = new Vacation();
         vac.setApplyUser(instance.getStartUserId());
 	    vac.setId(instance.getId());
         vac.setReason(reason);
         vac.setList(list);
+        vac.setResult(result);
+        vac.setAuditor(auditor);
+        vac.setAuditTime(auditTime);
+        vac.setDurgResult(durgResult);
+        vac.setDispenser(dispenser);
+        vac.setMedicineTime(medicineTime);
         Date startTime = instance.getStartTime(); // activiti 6 才有
         vac.setApplyTime(TimeUtil.getTime(startTime));
         vac.setApplyStatus(instance.isEnded() ? "申请结束" : "等待审批");
@@ -107,11 +119,14 @@ public class VacationServiceImpl
 	/**
 	 * 获取等待用户的任务列表
 	 * @param userName
-	 * @return
+	 * @return 		 .processDefinitionKey("holiday")
 	 */
     public List<VacTask> myAudit(String userName) {
-        List<Task> taskList = taskService.createTaskQuery().taskCandidateUser(userName)
-                .orderByTaskCreateTime().desc().list();
+        List<Task> taskList = taskService.createTaskQuery()
+		        .taskAssignee(userName)
+		        .list();
+//        List<Task> taskList = taskService.createTaskQuery().taskCandidateUser(userName)
+//                .orderByTaskCreateTime().desc().list();
 //        / 多此一举 taskList中包含了以下内容(用户的任务中包含了所在用户组的任务)
 //        Group group = identityService.createGroupQuery().groupMember(userName).singleResult();
 //        List<Task> list = taskService.createTaskQuery().taskCandidateGroup(group.getId()).list();
@@ -162,9 +177,8 @@ public class VacationServiceImpl
 	 * @param userName
 	 * @return
 	 */
-    public Object myVacRecord(String userName,String processkey) {
+    public Object myVacRecord(String userName) {
         List<HistoricProcessInstance> hisProInstance = historyService.createHistoricProcessInstanceQuery()
-//                .processDefinitionKey(processkey)
 		        .startedBy(userName).finished()
                 .orderByProcessInstanceEndTime().desc().list();
 
@@ -185,12 +199,12 @@ public class VacationServiceImpl
 	/**
 	 * 获取用户过往审核记录
 	 * @param userName
-	 * @param processkey
-	 * @return
+//	 * @param processkey
+	 * @return ,String processkey .processDefinitionKey(processkey)
 	 */
-    public Object myAuditRecord(String userName,String processkey) {
+    public Object myAuditRecord(String userName) {
         List<HistoricProcessInstance> hisProInstance = historyService.createHistoricProcessInstanceQuery()
-                .processDefinitionKey(processkey).involvedUser(userName).finished()
+		        .involvedUser(userName).finished()
                 .orderByProcessInstanceEndTime().desc().list();
 
 //        List<String> auditTaskNameList = new ArrayList<>();

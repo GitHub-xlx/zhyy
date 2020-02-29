@@ -2,6 +2,7 @@ package com.test;
 
 import com.zhyy.MySpringbootApplication;
 import com.zhyy.entity.Druginformation;
+import com.zhyy.entity.Drugstoredruginventory;
 import com.zhyy.entity.User;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.mapper.UserMapper;
@@ -39,12 +40,31 @@ public class MySpringbootApplicationTest
 //		System.out.println(1121);
 //		List<User> list = userMapper.queryUserList();
 //		System.out.println(list);
+//
+//		Druginformation druginformation = new Druginformation();
+//		druginformation.setClasscode("001");
+//		druginformation.setCommoname("测试");
+//		int i = drugMapper.saveDrugInfo(druginformation);
+//		System.out.println("DrugInformation的结果="+i);
 //		Druginformation druginformation = new Druginformation();
 //		druginformation.setClasscode("001");
 //		druginformation.setCommoname("测试");
 //		int i = drugMapper.saveDrugInfo(druginformation);
 //		System.out.println("DrugInformation的结果="+i);
 
+//		Druginformation druginformation = new Druginformation();
+//		druginformation.setClasscode("001");
+//		druginformation.setCommoname("测试");
+//		int i = drugMapper.saveDrugInfo(druginformation);
+//		List<Drugstoredruginventory> list = drugMapper.selectDrugStoreInventory();
+		////		System.out.println("DrugInformation的结果="+list.toString());
+
+		Drugstoredruginventory test = new Drugstoredruginventory();
+		test.setDrugcode("测试国字号");
+		test.setDrugstatus("启用");
+		test.setDruginventory(1);
+		int i = drugMapper.saveDrugStoreInventory(test);
+		System.out.println("test测试结果="+i);
 
 
 	}
