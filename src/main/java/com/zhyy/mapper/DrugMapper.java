@@ -211,6 +211,15 @@ public interface DrugMapper
 	@Select("SELECT * FROM  drugstoredruginventory")
 	public  List<Drugstoredruginventory> selectDrugStoreInventory();
 
+	/**
+	 * 根据药库入库信息对象作为参数保存入库信息
+	 * @author cbd
+	 * @param drugStoreDrugInventory 药库药品入库信息对象参数
+	 * @return 返回保存结果状态int值 作为判断成功
+	 */
+	@Insert("INSERT INTO `drugstoredruginventory`(`dsdiid`, `drugcode`, `druginventory`, `drugminimums`, `lotnumber`, `productiondate`, `drugstatus`)  VALUES (#{dsdiid},#{drugcode},#{druginventory},#{drugminimums},#{lotnumber},#{productiondate},#{drugstatus})")
+	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
+
 
 
 

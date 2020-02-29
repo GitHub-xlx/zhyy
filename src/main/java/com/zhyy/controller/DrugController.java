@@ -6,6 +6,8 @@ import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -180,6 +182,48 @@ public class DrugController
 
 		return null;
 	}
+
+	/**
+	 * 查询药库药品库存表信息
+	 * @author cbd
+	 * @return 返回查询结果集list
+	 */
+	@RequestMapping("/selectDrugStoreInventory")
+	@ResponseBody
+	public  TableMsg selectDrugStoreInventory(int page,int limit)
+	{
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List<Drugstoredruginventory> list = drugServices.selectDrugStoreInventory();
+		PageInfo pageInfo = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
+	}
+	/**
+	 * 根据药库入库信息对象作为参数保存入库信息
+	 * @author cbd
+	 * @param drugStoreDrugInventory 药库药品入库信息对象参数
+	 * @return 返回保存结果状态int值 作为判断成功
+	 */
+	@RequestMapping("/saveDrugStoreInventory")
+	@ResponseBody
+	public String saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory)
+	{
+		System.out.println("######saveDrugStoreInventory"+drugStoreDrugInventory.toString());
+		String state = null;
+		int i = drugServices.saveDrugStoreInventory(drugStoreDrugInventory);
+		if(i>0){
+			state = "success";
+		}else {
+			state = "fail";
+		}
+		return state;
+	}
+
 
 
 

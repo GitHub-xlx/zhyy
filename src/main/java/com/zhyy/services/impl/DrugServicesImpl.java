@@ -103,4 +103,16 @@ public class DrugServicesImpl implements DrugServices
 	{
 		return drugMapper.saveDrugInfo(drugInformation);
 	}
+
+	@Override
+	public List<Drugstoredruginventory> selectDrugStoreInventory()
+	{
+		return drugMapper.selectDrugStoreInventory();
+	}
+
+	@Override
+	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory)
+	{
+		return drugMapper.saveDrugStoreInventory(drugStoreDrugInventory);
+	}
 }

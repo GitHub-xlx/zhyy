@@ -32,25 +32,75 @@
 </div>
 <!-- 数据表格结束 -->
 <!-- 新增分类弹出层开始 -->
-<div style="display: none;padding: 20px;margin-left: -200px;" id="addClassLayout">
+<div style="display: none;padding: 20px" id="addClassLayout">
+
+    <div>
         <form action="" class="layui-form" id="dataFrm">
-            <div class="layui-form-item">
-            <label class="layui-form-label">大类名称</label>
-                <div class="layui-input-block">
-                <select name="interest" lay-filter="parentClass">
-                    <option value="" selected="selected"></option>
+
+        <label class="layui-form-label">大类名称</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="parentName">
+                    <option value="" selected="selected">请选择入库药品大类</option>
                     <option value="100">西药</option>
                     <option value="200">中药</option>
+
                 </select>
+            </div>
+            <label class="layui-form-label">药品名称</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="drugName">
+                    <option value="" selected="selected">请选择入库药品名称</option>
+
+                    <option value="亚太小儿氨酚黄那敏颗粒 ">亚太小儿氨酚黄那敏颗粒</option>
+                    <option value="恩尔欣盐酸阿比多尔胶囊">恩尔欣盐酸阿比多尔胶囊</option>
+                </select>
+            </div>
+
+        <label class="layui-form-label">药品编号</label>
+            <div class="layui-input-block">
+                <select name="drugcode" lay-filter="parentClass">
+                    <option value="" selected="selected"></option>
+                    <option value="100">101</option>
+                    <option value="200">102</option>
+                </select>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">药品库存数量</label>
+                <div class="layui-input-block">
+                    <input type="text" name="druginventory" id="druginventory" lay-verify="title" autocomplete="off"
+                           placeholder="请输入药品库存数量" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">新增名称</label>
+                <label class="layui-form-label">药品最低限量</label>
                 <div class="layui-input-block">
-                    <input type="text" name="classname" id="classname" lay-verify="title" autocomplete="off"
-                           placeholder="请输入新增类对应的名称" class="layui-input">
+                    <input type="text" name="drugminimums" id="drugminimums" lay-verify="title" autocomplete="off"
+                           placeholder="请输入药品最低限量数" class="layui-input">
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">批号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="lotnumber" id="lotnumber" lay-verify="title" autocomplete="off"
+                           placeholder="请输入批号" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">生产日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="productiondate" id="productiondate" lay-verify="title" autocomplete="off"
+                           placeholder="请输入生产日期" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">药品状态</label>
+                <div class="layui-input-block">
+                    <input type="text" name="drugstatus" id="drugstatus" lay-verify="title" autocomplete="off"
+                           placeholder="请选择药品状态" class="layui-input">
+                </div>
+            </div>
+
             <div class="layui-form-item" style="text-align: center;">
                 <div class="layui-input-block">
                     <button type="button" class="layui-btn layui-btn-normal layui-btn-sm layui-icon layui-icon-release"
@@ -59,6 +109,7 @@
                 </div>
             </div>
         </form>
+    </div>
 </div>
 <!--新增分类弹出层结束-->
 <script th:src= "@{static/layui/layui.js}"></script>
@@ -72,7 +123,7 @@
 
 		table.render({
 			elem: '#drugClass'
-			, url: '/drugController/selectDrugClass'
+			, url: '/drugController/selectDrugStoreInventory'
 			, toolbar: '#headToolbar' //开启头部工具栏，并为其绑定左侧模板
 			,defaultToolbar:""
 			,text:{
@@ -87,11 +138,13 @@
 			, cols: [
 				[
 				// { type: 'checkbox', fixed: 'left' }
-					{ field: 'dcid', title: 'ID', fixed: 'left', align: 'center', unresize: true, sort: true }
-					, { field: 'parentcode', title: '大类编码', sort: true, align: 'center' }
-					, { field: 'parentname', title: '大类名称', sort: true, align: 'center' }
-					, { field: 'classcode', title: '分类编码', sort: true, align: 'center' }
-					, { field: 'classname', title: '分类名称', align: 'center' }
+					{ field: 'dsdiid', title: 'ID', fixed: 'left', align: 'center', unresize: true, sort: true }
+					, { field: 'drugcode', title: '药品编号', sort: true, align: 'center' }
+					, { field: 'druginventory', title: '药品库存数量', sort: true, align: 'center' }
+					, { field: 'drugminimums', title: '药品最低限量', sort: true, align: 'center' }
+					, { field: 'lotnumber', title: '批号', align: 'center' }
+					, { field: 'productiondate', title: '生产日期', sort: true, align: 'center' }
+					, { field: 'drugstatus', title: '药品状态', align: 'center' }
 			]
             ]
 			, page: true
@@ -119,7 +172,7 @@
 				type: 1,
 				title: '新增分类信息',
 				content: $("#addClassLayout"),
-				area: ['600px', '300px']
+				area: ['600px', '500px']
 			});
 
 		}
@@ -151,20 +204,15 @@
 		});
 		//新增信息提交
         var className;
-		form.on("submit(doSubmit)", function (obj) {
+		form.on("submit(doSubmit)", function (data) {
+			alert("即将提交的数据生产日期="+data.field.productiondate);
+			alert("即将提交的数据="+data.field);
 			className=($('#classname').val());
-
-			alert(classCode+"要新增的classcode");
-			alert(className+"要新增的名称");
-			alert(parentCode+"要新增的大类编号");
 			//序列化表单数据
 			var params = $("#dataFrm").serialize();
 			layer.alert(params);
-
-			// layer.alert(obj);
-
-			$.post('/drugController/saveDrugClassSetInfo',
-                {"classcode":classCode,"classname":className,"parentcode":parentCode},
+			$.ajax('/drugController/saveDrugStoreInventory',
+                {data:data.field},
                 function (obj) {
 
 				layer.msg(obj);

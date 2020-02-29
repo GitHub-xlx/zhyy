@@ -122,8 +122,25 @@ public interface DrugServices
 
 	/**
 	 * 根据新增药品信息对象将其保存至药品信息表
+	 * @author cbd
 	 * @param drugInformation 药品信息对象
 	 * @return 返回int值判断保存是否成功
 	 */
 	public int saveDrugInfo(Druginformation drugInformation);
+
+	/**
+	 * 查询药库药品库存表信息
+	 * @author cbd
+	 * @return 返回查询结果集list
+	 */
+	public  List<Drugstoredruginventory> selectDrugStoreInventory();
+
+	/**
+	 * 根据药库入库信息对象作为参数保存入库信息
+	 * @author cbd
+	 * @param drugStoreDrugInventory 药库药品入库信息对象参数
+	 * @return 返回保存结果状态int值 作为判断成功
+	 */
+	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
+
 }

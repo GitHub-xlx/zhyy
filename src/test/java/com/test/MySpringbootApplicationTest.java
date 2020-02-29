@@ -44,8 +44,15 @@ public class MySpringbootApplicationTest
 //		druginformation.setClasscode("001");
 //		druginformation.setCommoname("测试");
 //		int i = drugMapper.saveDrugInfo(druginformation);
-		List<Drugstoredruginventory> list = drugMapper.selectDrugStoreInventory();
-		System.out.println("DrugInformation的结果="+list.toString());
+//		List<Drugstoredruginventory> list = drugMapper.selectDrugStoreInventory();
+		////		System.out.println("DrugInformation的结果="+list.toString());
+
+		Drugstoredruginventory test = new Drugstoredruginventory();
+		test.setDrugcode("测试国字号");
+		test.setDrugstatus("启用");
+		test.setDruginventory(1);
+		int i = drugMapper.saveDrugStoreInventory(test);
+		System.out.println("test测试结果="+i);
 
 
 	}

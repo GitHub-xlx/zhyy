@@ -74,4 +74,9 @@ public class Drugstoredruginventory {
     this.drugstatus = drugstatus;
   }
 
+  @Override
+  public String toString()
+  {
+    return "Drugstoredruginventory{" + "dsdiid=" + dsdiid + ", drugcode='" + drugcode + '\'' + ", druginventory=" + druginventory + ", drugminimums=" + drugminimums + ", lotnumber='" + lotnumber + '\'' + ", productiondate='" + productiondate + '\'' + ", drugstatus='" + drugstatus + '\'' + '}';
+  }
 }
