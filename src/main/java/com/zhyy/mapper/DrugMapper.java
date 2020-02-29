@@ -229,6 +229,16 @@ public interface DrugMapper
 	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
 
 
+	/**
+	 * @Description  药房库存查询（通过常用名称）
+	 * @author xlx
+	 * @Date 下午 17:52 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where #{where}) a,"
+			+ " druginventorytable b where a.drugcode=b.drugcode")
+	List<Inventorycheck> selectInventorycheck(String where);
 
 
 }
