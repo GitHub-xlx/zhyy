@@ -4,6 +4,10 @@ package com.zhyy.mapper;
 import com.zhyy.entity.*;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -89,6 +93,25 @@ public interface DrugMapper
 	@Select("select a.*,b.druginventory,b.lotnumber,b.productiondate,b.drugstatus  from (select * from druginformation where ${where}) a," +
 			" drugstoredruginventory b where a.drugcode=b.drugcode")
 	List<Druginformation> selectDruginformation(String where);
+
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryList();
+
+	//查询药库--库存列表
+	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
+	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
+	//统计药库--库列表数量
+	@Select("select count(*) from drugstoredruginventory")
+	int countDrugStoreInventoryList();
+
+	//药品低限设置
+	@Update("update drugstoredruginventory set drugminimums = #{setData} where drugcode = #{drugCode}")
+	boolean lowestSetting(String drugCode,String setData);
+
 
 	/**
 	 * @Description  批量插入药库出库

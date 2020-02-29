@@ -54,14 +54,14 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public List<Druginformation> selectDruginformation(String commoname, String pincode)
+	public List<Druginformation> selectDruginformation(String commonname, String pincode)
 	{
 		String where="1=1 ";
-		if(commoname!=null){
-			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where;
+		if(commonname!=null){
+			where = commonname.length()>0 ? where+" and commonname = '"+commonname+"'" : where;
 		}
 		if (pincode!=null){
-			where = pincode.length()>0 ? where+" and pincode like '%"+pincode+"%'" : where;
+			where = pincode.length()>0 ? where+" and pincode = '"+pincode+"'" : where;
 		}
 		return drugMapper.selectDruginformation(where);
 
@@ -166,4 +166,37 @@ public class DrugServicesImpl implements DrugServices
 	{
 		return drugMapper.saveDrugStoreInventory(drugStoreDrugInventory);
 	}
+
+	@Override
+	public List<Druginventorytable> queryDrugInventoryList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryDrugInventoryList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countDrugInventoryList()
+	{
+		return drugMapper.countDrugInventoryList();
+	}
+
+
+	@Override
+	public List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryDrugStoreInventoryList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countDrugStoreInventoryList()
+	{
+		return drugMapper.countDrugStoreInventoryList();
+	}
+
+	@Override
+	public boolean lowestSetting(String drugCode, String setData)
+	{
+		return drugMapper.lowestSetting(drugCode,setData);
+	}
+
+
 }

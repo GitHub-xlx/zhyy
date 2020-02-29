@@ -1,9 +1,6 @@
 package com.zhyy.services;
 
-import com.zhyy.entity.Druginformation;
-import com.zhyy.entity.Drugstoredruginventory;
-import com.zhyy.entity.Menu;
-import com.zhyy.entity.User;
+import com.zhyy.entity.*;
 
 import java.util.List;
 
@@ -27,12 +24,12 @@ public interface UserServices
 	public boolean drugDiscontinuation(String drugcode);
 	public boolean drug2Discontinuation(String drugcode);
 	public List<Drugstoredruginventory> checkInventoryCount();
-	public List<Druginformation> findDrugNameByDrugCode(String drugcode);
+	public String findDrugNameByDrugCode(String drugcode);
 	public List<User> queryUserList(int pageInt,int limitInt );
 	public int countUserList();
 	public List<Menu> queryMenuList(String rolecode);
-
-
+	public List<Druginventorytable> expiredCheck();
+	public List<Druginventorytable> unsalableCheck();
 
 
 	public User queryUserByAccount(String account);

@@ -2,10 +2,7 @@ package com.zhyy.services.impl;/**
  * className
  */
 
-import com.zhyy.entity.Druginformation;
-import com.zhyy.entity.Drugstoredruginventory;
-import com.zhyy.entity.Menu;
-import com.zhyy.entity.User;
+import com.zhyy.entity.*;
 import com.zhyy.mapper.UserMapper;
 import com.zhyy.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,16 +88,30 @@ public class UserServicesImpl implements UserServices
 	}
 	//根据药品编码查询药品名称
 	@Override
-	public List<Druginformation> findDrugNameByDrugCode(String drugcode)
+	public String findDrugNameByDrugCode(String drugcode)
 	{
 		return userMapper.findDrugNameByDrugCode(drugcode);
 	}
+	//药房过期药品检测
+	@Override
+	public List<Druginventorytable> expiredCheck()
+	{
+		return userMapper.expiredCheck();
+	}
+
+	@Override
+	public List<Druginventorytable> unsalableCheck()
+	{
+		return userMapper.unsalableCheck();
+	}
+
 
 	@Override
 	public List<Menu> queryMenuList(String rolecode)
 	{
 		return userMapper.queryMenuList(rolecode);
 	}
+
 
 	@Override
 	public User queryUserByAccount(String account)

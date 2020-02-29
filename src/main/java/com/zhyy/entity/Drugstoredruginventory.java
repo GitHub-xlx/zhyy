@@ -10,7 +10,7 @@ public class Drugstoredruginventory {
   private String lotnumber;
   private String productiondate;
   private String drugstatus;
-
+  private String commoname;
 
   public long getDsdiid() {
     return dsdiid;
@@ -73,6 +73,17 @@ public class Drugstoredruginventory {
   public void setDrugstatus(String drugstatus) {
     this.drugstatus = drugstatus;
   }
+
+  public String getCommoname()
+  {
+    return commoname;
+  }
+
+  public void setCommoname(String commoname)
+  {
+    this.commoname = commoname;
+  }
+
 
   @Override
   public String toString()

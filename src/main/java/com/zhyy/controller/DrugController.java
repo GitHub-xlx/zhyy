@@ -79,6 +79,68 @@ public class DrugController
 		return tableMsg;
 	}
 
+	//--药房--药品库存列表
+	@RequestMapping("/doDrugInventory")
+	public @ResponseBody
+	TableMsg doDrugInventory(String page, String limit, HttpServletRequest request){
+		System.out.println("药房药--药房--药品库存列表品库存列表");
+		System.out.println("page:"+page+", limit:"+limit);
+		int pageInt=Integer.valueOf(page)-1;
+		int limitInt=Integer.valueOf(limit);
+
+		List<Druginventorytable> druginventorytableList=null;
+		int count=0;
+		druginventorytableList =drugServices.queryDrugInventoryList(pageInt,limitInt);
+		count=drugServices.countDrugInventoryList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventorytableList);
+		return tableMsg;
+
+	}
+	//--药库--药品库存列表
+	@RequestMapping("/doDrugStoreDrugInventory")
+	public @ResponseBody
+	TableMsg doDrugStoreDrugInventory(String page, String limit, HttpServletRequest request){
+		System.out.println("--药库--药品库存列表");
+		System.out.println("page:"+page+", limit:"+limit);
+		int pageInt=Integer.valueOf(page)-1;
+		int limitInt=Integer.valueOf(limit);
+
+		List<Drugstoredruginventory> druginventorytableList=null;
+		int count=0;
+		druginventorytableList =drugServices.queryDrugStoreInventoryList(pageInt,limitInt);
+		count=drugServices.countDrugStoreInventoryList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventorytableList);
+		return tableMsg;
+
+	}
+
+	//药品低限设置
+	@ResponseBody
+	@RequestMapping("/lowestSetting")
+	public String lowestSetting(String drugCode,String setData){
+		System.out.println("执行到药品低限设置");
+		boolean b=drugServices.lowestSetting(drugCode,setData);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			msg="1";
+		}else{
+			msg="2";
+		}
+		return msg;
+	}
+
+
 
 	/**
 	 * 查询药品分类信息
