@@ -165,6 +165,11 @@ btn.onmousedown = function mousedown(e){
 							init();
 							btn.onmousedown = mousedown;
 						}
+						if (data.code == 406) {
+							layer.msg('该账号已被禁用,有问题联系管理员');
+							init();
+							btn.onmousedown = mousedown;
+						}
 					},
 					error: function (msg) {
 						alert("服务器正忙。。。。" + msg);

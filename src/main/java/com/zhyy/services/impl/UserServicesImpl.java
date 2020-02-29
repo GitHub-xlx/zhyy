@@ -40,6 +40,13 @@ public class UserServicesImpl implements UserServices
 		return userMapper.countUserList();
 	}
 
+	//新增人员
+	@Override
+	public boolean regStaff(String account, String password, String username, String phone, String sex, String age, String role, String title, String rolecode, String pharmacycode, String state)
+	{
+		return userMapper.regStaff(account,password,username,phone,sex,age,role,title,rolecode,pharmacycode,state);
+	}
+
 	//重置密码
 	@Override
 	public boolean resetPassword(String account)

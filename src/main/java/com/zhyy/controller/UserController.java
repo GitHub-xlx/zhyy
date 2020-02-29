@@ -47,6 +47,7 @@ public class UserController
 	public @ResponseBody
 	ResultInfo doLogin(String account, String password, HttpServletRequest request){
 
+
 		if (account!=null&&password!=null){
 			System.out.println("开始查询用户");
 			User user = userServices.queryUserByAccount(account);
@@ -54,30 +55,35 @@ public class UserController
 				System.out.println("比对密码");
 				if (user.getPassword().equals(password)){
 
-					request.getSession().setAttribute("user",user);
+					System.out.println("比对用户的状态");
+					if(user.getState().equals("已启用")){
+						request.getSession().setAttribute("user",user);
+
+						List<Druginformation> list1=null;
+						//查询药库库存的药品的当前数量和最低数量
+						List<Drugstoredruginventory>list=userServices.checkInventoryCount();
+						if(list.size()>0){//遍历药库的药品数量是否小于最低限量
+							System.out.println("库存不足!");
+							for (int i = 0; i <list.size(); i++)
+							{
+								//根据药品编码查询药品名称
+								list1=userServices.findDrugNameByDrugCode(list.get(i).getDrugcode());
+							}
+							System.out.println("list1->查出的药品名称列表:"+list1);
+							for (int i = 0; i <list1.size(); i++)
+							{
+								QuartzTest.sendMail(list1.get(i).getCommoname());
+							}
+						}else{
+							System.out.println("库存足够!");
+						}
 
 
-					List<Druginformation> list1=null;
-					//查询药库库存的药品的当前数量和最低数量
-					List<Drugstoredruginventory>list=userServices.checkInventoryCount();
-					if(list.size()>0){//遍历药库的药品数量是否小于最低限量
-						System.out.println("库存不足!");
-						for (int i = 0; i <list.size(); i++)
-						{
-							//根据药品编码查询药品名称
-							list1=userServices.findDrugNameByDrugCode(list.get(i).getDrugcode());
-						}
-						System.out.println("list1->查出的药品名称列表:"+list1);
-						for (int i = 0; i <list1.size(); i++)
-						{
-							QuartzTest.sendMail(list1.get(i).getCommoname());
-						}
+						return new ResultInfo(200,"登录成功");
 					}else{
-						System.out.println("库存足够!");
+						return new ResultInfo(406,"该账号已被禁用,有问题联系管理员");
 					}
 
-
-					return new ResultInfo(200,"登录成功");
 				}else{
 					return new ResultInfo(404,"密码错误");
 				}
@@ -116,14 +122,13 @@ public class UserController
 	TableMsg manageUsers(String page, String limit, HttpServletRequest request){
 		System.out.println("执行到管理用户列表");
 		System.out.println("page:"+page+", limit:"+limit);
-		int pageInt=Integer.valueOf(page)-1;
 		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
 
 
 		List<User> User=null;
 		int count=0;
 		User =userServices.queryUserList(pageInt,limitInt);
-
 		count=userServices.countUserList();
 
 		TableMsg tableMsg = new TableMsg();
@@ -133,6 +138,46 @@ public class UserController
 		tableMsg.setData(User);
 		return tableMsg;
 
+	}
+
+
+	//新增人员
+	@ResponseBody
+	@RequestMapping("/regStaff")
+	public String regStaff(String account2,String password2,String username2, String phone2,
+	                       String sex2,String age2,String roles,String titles){
+		System.out.println("执行到新增人员");
+		String role="";
+		String title="";
+		if(roles.equals("01")){
+			 role="药库";
+				if(titles.equals("001")){
+					title="库管人员";
+
+				}else if(titles.equals("002")){
+					title="仓库经理";
+				}else{
+					title="采购人员";
+				}
+
+		}else{
+			role="药房";
+			if(titles.equals("003"))
+			{
+				title = "药房销售";
+			}else{
+				title="药房经理";
+			}
+		}
+		boolean b=userServices.regStaff(account2,password2,username2,phone2,sex2,age2,role,title,titles,"001","已启用");
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			msg="1";
+		}else{
+			msg="2";
+		}
+		return msg;
 	}
 	//重置密码
 	@ResponseBody

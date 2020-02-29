@@ -122,11 +122,42 @@ public interface DrugServices
 
 	/**
 	 * 根据新增药品信息对象将其保存至药品信息表
-	 * @author cbd
 	 * @param drugInformation 药品信息对象
 	 * @return 返回int值判断保存是否成功
 	 */
 	public int saveDrugInfo(Druginformation drugInformation);
+
+	/**
+	 * @Description  药房入库，插入出入库表并更新库存
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	int insertAndUpdate(Vacation vac);
+
+	/**
+	 * @Description  查询药房出入库明细
+	 * @author xlx
+	 * @Date 下午 16:12 2020/2/28 0028
+	 * @Param  drugcode 药品编号
+	 * @Param lotnumber 批号
+	 * @Param asker 申请人
+	 * @Param outbound 出入库
+	 * @Param start，end 操作时间的开始和结束
+	 * @return
+	 **/
+	List<Pharmacydrugschedule> selectPharmacyd(String drugcode,String lotnumber,String asker,String outbound,String start,String end);
+
+	/**
+	 * @Description  药房库存查询（通过常用名称和是否为特殊药品）
+	 * @author xlx
+	 * @Date 下午 18:13 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
+
 
 	/**
 	 * 查询药库药品库存表信息

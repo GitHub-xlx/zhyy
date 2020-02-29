@@ -1,7 +1,7 @@
-.layui-form{
-    margin-top: 40px;
-    margin-left: 25%;
-}
+/*.layui-form{*/
+/*    margin-top: 40px;*/
+/*    margin-left: 25%;*/
+/*}*/
 
 .h3{
     font-size: 45px;
@@ -44,12 +44,4 @@
     text-align: center;
     margin-top: 3%;
 
-}
-#username_pa{
-    margin-left: 25%;
-    width: 10%;
-}
-
-#state_pa{
-    width: 10%;
 }

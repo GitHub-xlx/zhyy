@@ -2,6 +2,9 @@ package com.zhyy.entity;
 
 
 import com.google.gson.Gson;
+
+import java.io.Serializable;
+
 /**
  * @Description  药品信息表和药库药品库存表（部分，最后5个）
  * @author xlx
@@ -9,7 +12,8 @@ import com.google.gson.Gson;
  * @Param
  * @return
  **/
-public class Druginformation {
+public class Druginformation implements Serializable
+{
 
   private long diid;
   private String drugcode;

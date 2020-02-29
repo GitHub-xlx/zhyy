@@ -5,6 +5,7 @@ package com.zhyy.services.impl;/**
 import com.zhyy.entity.*;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.services.DrugServices;
+import com.zhyy.services.UserServices;
 import com.zhyy.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ public class DrugServicesImpl implements DrugServices
 {
 	@Autowired
 	private DrugMapper drugMapper;
+	@Autowired
+	private UserServices userServices;
 
 	@Override
 	public List<DrugpriceDruginformation> queryDrugprice(String pharmacycode, String drugcode, String commoname, String start, String end, int nowpage, int size)
@@ -102,6 +105,54 @@ public class DrugServicesImpl implements DrugServices
 	public int saveDrugInfo(Druginformation drugInformation)
 	{
 		return drugMapper.saveDrugInfo(drugInformation);
+	}
+
+	@Override
+	public int insertAndUpdate(Vacation vac)
+	{
+		User user = userServices.queryUserByAccount(vac.getApplyUser());
+		String time = TimeUtil.getTime(new Date());
+		drugMapper.insertPharmacyDrug(vac,user.getPharmacycode(),time);
+		return drugMapper.updatePharmacy(vac.getList());
+	}
+
+	@Override
+	public List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end)
+	{
+		String where="1=1 ";
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (lotnumber!=null){
+			where = lotnumber.length()>0 ? where+" and lotnumber like '%"+lotnumber+"%'" : where;
+		}
+		if (asker!=null){
+			where = asker.length()>0 ? where+" and asker like '%"+asker+"%'" : where;
+		}
+		if (outbound!=null){
+			where = outbound.length()>0 ? where+" and outbound = '"+outbound+"'" : where;
+		}
+		if (start!=null){
+			where = start.length()>0 ? where+" and operatingtime > '"+start+"'" : where;
+		}
+		if (end!=null){
+			where = end.length()>0 ? where+" and operatingtime < '"+end+"'" : where;
+		}
+		return drugMapper.selectPharmacyd(where);
+	}
+
+	@Override
+	public List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine)
+	{
+		String where="1=1 ";
+		if(commonname!=null){
+			where = commonname.length()>0 ? where+" and commonname like '%"+commonname+"%'" : where+" and commonname like '%%'";
+		}
+		if (specialmedicine!=null){
+			where = specialmedicine.length()>0 ? where+" and specialmedicine = '"+specialmedicine+"'" : where;
+		}
+		return drugMapper.selectInventorycheck(where);
+
 	}
 
 	@Override

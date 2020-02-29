@@ -1,11 +1,4 @@
-/**
- * @program: Mybatis
- * @ClassName userTable
- * @description: 用户表管理（禁用，启用，重置密码）
- * @author: xlx
- * @create: 2019-12-28 16:10
- * @Version 1.0
- **/
+
 layui.use('table', function(){
 	var table = layui.table;
 	var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
@@ -26,16 +19,19 @@ layui.use('table', function(){
 
 			{field:'diid', width:80, title: 'ID', sort: true}
 			,{field:'drugcode', width:100, title: '药品编码'}
-			,{field:'productname', width:100, title: '药品名称', sort: true}
+			// ,{field:'productname', width:100, title: '药品名称', sort: true}
 			,{field:'commoname', width:100, title: '常用名称', sort: true}
+			,{field:'lotnumber', width:100, title: '批号', sort: true}
+			,{field:'productiondate', width:100, title: '生产日期', sort: true}
 			,{field:'specification', width:60, title: '规格', sort: true}
 			,{field:'dosageform', width:60, title: '剂型', sort: true}
-			,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
+			// ,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
 			,{field:'pharmacyunit', width:60, title: '药房单位', sort: true}
-			,{field:'reductionformula', width:60, title: '换算公式', sort: true}
+			// ,{field:'reductionformula', width:60, title: '换算公式', sort: true}
 			,{field:'supplier', width:60, title: '供应商', sort: true}
 			,{field:'antibiotic', width:60, title: '是否抗生素', sort: true}
 			,{field:'specialmedicine', width:60, title: '是否特殊药品', sort: true}
+			,{field:'drugstatus', width:60, title: '药品状态', sort: true}
 			,{field:'price', width:60, title: '价格', sort: true}
 			,{field:'druginventory', width:60, title: '药库数量', sort: true}
 			,{field:'number', width:60, title: '请领数量', sort: true, edit: 'text'}
@@ -60,18 +56,22 @@ layui.use('table', function(){
 			{type:'checkbox'}
 			,{field:'diid', width:80, title: 'ID', sort: true}
 			,{field:'drugcode', width:100, title: '药品编码'}
+			// ,{field:'productname', width:100, title: '药品名称', sort: true}
 			,{field:'commoname', width:100, title: '常用名称', sort: true}
+			,{field:'lotnumber', width:100, title: '批号', sort: true}
+			,{field:'productiondate', width:100, title: '生产日期', sort: true}
 			,{field:'specification', width:60, title: '规格', sort: true}
 			,{field:'dosageform', width:60, title: '剂型', sort: true}
-			,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
+			// ,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
 			,{field:'pharmacyunit', width:60, title: '药房单位', sort: true}
-			,{field:'reductionformula', width:60, title: '换算公式', sort: true}
+			// ,{field:'reductionformula', width:60, title: '换算公式', sort: true}
 			,{field:'supplier', width:60, title: '供应商', sort: true}
 			,{field:'antibiotic', width:60, title: '是否抗生素', sort: true}
 			,{field:'specialmedicine', width:60, title: '是否特殊药品', sort: true}
+			,{field:'drugstatus', width:60, title: '药品状态', sort: true}
 			,{field:'price', width:60, title: '价格', sort: true}
 			,{field:'druginventory', width:60, title: '药库数量', sort: true}
-			,{field:'number', width:60, title: '数量', sort: true, edit: 'text'}
+			,{field:'number', width:60, title: '请领数量', sort: true, edit: 'text'}
 			,{field:'start', width:60, title: '操作',align:'center', toolbar: '#toolbar2'}
 		]]
 		,limit: 10
@@ -92,18 +92,22 @@ layui.use('table', function(){
 			// ,fixed:"left"
 			{field:'diid', width:80, title: 'ID', sort: true}
 			,{field:'drugcode', width:100, title: '药品编码'}
+			// ,{field:'productname', width:100, title: '药品名称', sort: true}
 			,{field:'commoname', width:100, title: '常用名称', sort: true}
+			,{field:'lotnumber', width:100, title: '批号', sort: true}
+			,{field:'productiondate', width:100, title: '生产日期', sort: true}
 			,{field:'specification', width:60, title: '规格', sort: true}
 			,{field:'dosageform', width:60, title: '剂型', sort: true}
-			,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
+			// ,{field:'drugdepotunit', width:60, title: '药库单位', sort: true}
 			,{field:'pharmacyunit', width:60, title: '药房单位', sort: true}
-			,{field:'reductionformula', width:60, title: '换算公式', sort: true}
+			// ,{field:'reductionformula', width:60, title: '换算公式', sort: true}
 			,{field:'supplier', width:60, title: '供应商', sort: true}
 			,{field:'antibiotic', width:60, title: '是否抗生素', sort: true}
 			,{field:'specialmedicine', width:60, title: '是否特殊药品', sort: true}
+			,{field:'drugstatus', width:60, title: '药品状态', sort: true}
 			,{field:'price', width:60, title: '价格', sort: true}
 			,{field:'druginventory', width:60, title: '药库数量', sort: true}
-			,{field:'number', width:60, title: '数量', sort: true}
+			,{field:'number', width:60, title: '请领数量', sort: true, edit: 'text'}
 		]]
 		,limit: 10
 		,limits:[10,20,30,40,50]
@@ -124,7 +128,9 @@ layui.use('table', function(){
 	});
 	// 最终确认请领
 	$("#confirmation").click(function () {
-		table.reload('test2');
+		table.reload("test2", {
+			data: drugDate,
+		});
 		layui.use(['table', 'form'], function() {
 			var form = layui.form;
 			layer.open({
@@ -140,12 +146,14 @@ layui.use('table', function(){
 					$.ajax({
 						url:'/vacationController/startProcess',
 						method:'post',
+						// contentType : "application/json;charsetset=UTF-8",//必须
 						data:{
-							'list':drugDate,
+							'gsonList':JSON.stringify(drugDate),
+							// 'list':drugDate,
 							'processkey':'drugclaim'
 						},
 						success:function(res){
-							if(res.val()){
+							if(res){
 								layer.msg('请领成功，等待审核', {
 									time: 1500, //1500ms后自动关闭
 								});
@@ -220,19 +228,23 @@ layui.use('table', function(){
 					// alert(list.length);
 					// list.push(data);
 					var index;
-					alert(checkStatus.data.length);
-					for (var i = 0; i <checkStatus.data.length ; i++) {
-						index = drugDate.indexOf(checkStatus.data[i]);
-						alert(index);
-						alert(checkStatus.data[i].val());
-						if (index > -1) {
-							drugDate.splice(index, 1);
+					if (checkStatus.data.length===0){
+						layer.msg('请先勾选数据', {
+							time: 1500, //1500ms后自动关闭
+						});
+					} else {
+						for (var i = 0; i <checkStatus.data.length ; i++) {
+							index = JSON.stringify(drugDate).indexOf(JSON.stringify(checkStatus.data[i]));
+							if (index > -1) {
+								drugDate.splice(index, 1);
+							}
 						}
+						table.reload("test1", {
+							data: drugDate,
+						});
 					}
 					layer.close(dex);
-					table.reload("test1", {
-						data: drugDate,
-					});
+
 					// var oldData = table.cache["test2"];
 					// oldData.splice(obj.tr.data('index'),1);
 					// table.reload('test2',{data : oldData});

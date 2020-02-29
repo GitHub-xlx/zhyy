@@ -80,15 +80,14 @@ public interface DrugMapper
 	public int countDrugSaleList(String pharmacycode,String drugcode,String commoname,String specialmedicine,String idcard,String consumername,String salesperson,String start,String end);
 
 	/**
-	 * @Description  查找药品信息表以及药品库存
+	 * @Description  查找药品信息表
 	 * @author xlx
 	 * @Date 下午 22:59 2020/2/20 0020
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.*,b.druginventory,b.lotnumber,b.productiondate,b.drugstatus from (select * from druginformation where ${where}) a" +
-			" left join drugstoredruginventory b" +
-			" on a.drugcode=b.drugcode  ")
+	@Select("select a.*,b.druginventory,b.lotnumber,b.productiondate,b.drugstatus  from (select * from druginformation where ${where}) a," +
+			" drugstoredruginventory b where a.drugcode=b.drugcode")
 	List<Druginformation> selectDruginformation(String where);
 
 	/**
@@ -203,6 +202,15 @@ public interface DrugMapper
 	@Insert("INSERT INTO druginformation (`diid`, `drugcode`, `barcode`, `classcode`, `productname`, `commoname`, `specification`, `dosageform`, `drugdepotunit`, `pharmacyunit`, `prescribeunit`, `reductionformula`, `dosage`, `pincode`, `supplier`, `antibiotic`, `specialmedicine`, `approvalnumber`, `healthinsurance`, `price`, `wholesaleprice`,`additionrate`, `precautions`, `shelflife`)  values (#{diid}, #{drugcode}, #{barcode}, #{classcode}, #{productname}, #{commoname}, #{specification}, #{dosageform}, #{drugdepotunit}, #{pharmacyunit}, #{prescribeunit}, #{reductionformula}, #{dosage}, #{pincode}, #{supplier}, #{antibiotic}, #{specialmedicine}, #{approvalnumber}, #{healthinsurance}, #{price}, #{wholesaleprice}, #{additionrate}, #{precautions}, #{shelflife})")
 	public int saveDrugInfo(Druginformation drugInformation);
 
+	/**
+	 * @Description  查询药房出入库明细表
+	 * @author xlx
+	 * @Date 下午 16:08 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
+	List<Pharmacydrugschedule> selectPharmacyd(String where);
 	/**
 	 * 查询药库药品库存表信息
 	 * @author cbd

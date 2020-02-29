@@ -12,6 +12,7 @@ import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -38,12 +39,17 @@ public class VacationServiceImpl
     private HistoryService historyService;
 	@Resource
 	private RepositoryService repositoryService;
+	@Resource
+	private ProcessEngine processEngine;
 
 
 //    private static final String PROCESS_DEFINE_KEY = "vacationProcess";
 
-    public boolean startVac(String userName, Vacation vac,String processkey) {
-
+    public boolean startVac(String userName, List list,String processkey) {
+	    Deployment deployment = processEngine.getRepositoryService().createDeployment().name(processkey)
+			    .addClasspathResource("processes/"+processkey+".bpmn")
+			    .addClasspathResource("processes/"+processkey+".png")
+			    .deploy();
         identityService.setAuthenticatedUserId(userName);
         // 开始流程
         ProcessInstance vacationInstance = runtimeService.startProcessInstanceByKey(processkey);
@@ -55,8 +61,8 @@ public class VacationServiceImpl
         Map<String, Object> vars = new HashMap<>(5);
         vars.put("applyUser", userName);
         vars.put("applyTime", TimeUtil.getTime(new Date()));
-        vars.put("reason", vac.getReason());
-        vars.put("list", vac.getList());
+//        vars.put("reason", vac.getReason());
+        vars.put("list", list);
 
         taskService.complete(currentTask.getId(), vars);
 
@@ -87,7 +93,7 @@ public class VacationServiceImpl
 //        Integer days = runtimeService.getVariable(instance.getId(), "days", Integer.class);
         String reason = runtimeService.getVariable(instance.getId(), "reason", String.class);
 	    List<Druginformation> list = runtimeService.getVariable(instance.getId(), "list", List.class);
-        Vacation vac = new Vacation();
+	    Vacation vac = new Vacation();
         vac.setApplyUser(instance.getStartUserId());
 	    vac.setId(instance.getId());
         vac.setReason(reason);
@@ -101,11 +107,14 @@ public class VacationServiceImpl
 	/**
 	 * 获取等待用户的任务列表
 	 * @param userName
-	 * @return
+	 * @return 		 .processDefinitionKey("holiday")
 	 */
     public List<VacTask> myAudit(String userName) {
-        List<Task> taskList = taskService.createTaskQuery().taskCandidateUser(userName)
-                .orderByTaskCreateTime().desc().list();
+        List<Task> taskList = taskService.createTaskQuery()
+		        .taskAssignee(userName)
+		        .list();
+//        List<Task> taskList = taskService.createTaskQuery().taskCandidateUser(userName)
+//                .orderByTaskCreateTime().desc().list();
 //        / 多此一举 taskList中包含了以下内容(用户的任务中包含了所在用户组的任务)
 //        Group group = identityService.createGroupQuery().groupMember(userName).singleResult();
 //        List<Task> list = taskService.createTaskQuery().taskCandidateGroup(group.getId()).list();
@@ -156,9 +165,8 @@ public class VacationServiceImpl
 	 * @param userName
 	 * @return
 	 */
-    public Object myVacRecord(String userName,String processkey) {
+    public Object myVacRecord(String userName) {
         List<HistoricProcessInstance> hisProInstance = historyService.createHistoricProcessInstanceQuery()
-//                .processDefinitionKey(processkey)
 		        .startedBy(userName).finished()
                 .orderByProcessInstanceEndTime().desc().list();
 
@@ -179,12 +187,12 @@ public class VacationServiceImpl
 	/**
 	 * 获取用户过往审核记录
 	 * @param userName
-	 * @param processkey
-	 * @return
+//	 * @param processkey
+	 * @return ,String processkey .processDefinitionKey(processkey)
 	 */
-    public Object myAuditRecord(String userName,String processkey) {
+    public Object myAuditRecord(String userName) {
         List<HistoricProcessInstance> hisProInstance = historyService.createHistoricProcessInstanceQuery()
-                .processDefinitionKey(processkey).involvedUser(userName).finished()
+		        .involvedUser(userName).finished()
                 .orderByProcessInstanceEndTime().desc().list();
 
 //        List<String> auditTaskNameList = new ArrayList<>();

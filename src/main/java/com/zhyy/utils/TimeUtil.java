@@ -13,7 +13,22 @@ import java.util.List;
  */
 public class TimeUtil
 {
-
+    /**
+     *  申请人
+     */
+    public final static String ROLE_APPLICANT = "applicant";
+    /**
+     *  药库审核人
+     */
+    public final static String ROLE_REVIEWER = "reviewer";
+    /**
+     *  药库仓管
+     */
+    public final static String ROLE_ISSUER = "issuer";
+    /**
+     *  药房审核人
+     */
+    public final static String ROLE_PHMANAGER = "phmanager";
     /**
      * 获取yyyy-MM-dd HH:mm:ss格式的是时间
      */

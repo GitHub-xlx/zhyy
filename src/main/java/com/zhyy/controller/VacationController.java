@@ -1,10 +1,16 @@
 package com.zhyy.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import com.zhyy.services.impl.VacationServiceImpl;
+import com.zhyy.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,15 +31,16 @@ public class VacationController
 	 * @author xlx
 	 * @Date 下午 17:01 2020/2/24 0024
 	 * @Param
-	 * @return
+	 * @return @RequestBody
 	 **/
 	@RequestMapping("/startProcess")
 	public @ResponseBody
-	boolean startProcess(Vacation vac, String processkey, HttpSession session){
+	boolean startProcess( String gsonList, String processkey, HttpSession session){
 		boolean flag=false;
+		List<Druginformation> list = new Gson().fromJson(gsonList,new TypeToken< List<Druginformation>>(){}.getType());
 		User user = (User)session.getAttribute("user");
 		if (user!=null){
-			flag=vacationServices.startVac(user.getAccount(),vac,processkey);
+			flag=vacationServices.startVac(user.getAccount(),list,processkey);
 		}
 		return flag;
 	}
@@ -46,30 +53,44 @@ public class VacationController
 	 **/
 	@RequestMapping("/myVac")
 	public @ResponseBody
-	List<Vacation> myVac( HttpSession session){
+	TableMsg myVac(int limit,int page, HttpSession session){
 		List<Vacation> list=null;
 		User user = (User)session.getAttribute("user");
+		PageHelper.startPage(page,limit);
 		if (user!=null){
 			list = ( List<Vacation>)vacationServices.myVac(user.getAccount());
 		}
-		return list;
+		PageInfo p = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)p.getTotal());
+		tableMsg.setData(p.getList());
+		return tableMsg;
 	}
 	/** 
 	 * @Description  查询用户申请结束的审核信息
 	 * @author xlx
 	 * @Date 上午 7:12 2020/2/25 0025
 	 * @Param 
-	 * @return 
+	 * @return  ,String processkey
 	 **/
 	@RequestMapping("/myVacRecord")
 	public @ResponseBody
-	List<Vacation> myVacRecord(String processkey, HttpSession session){
+	TableMsg myVacRecord(int limit,int page, HttpSession session){
 		List<Vacation> list=null;
 		User user = (User)session.getAttribute("user");
+		PageHelper.startPage(page,limit);
 		if (user!=null){
-			list = ( List<Vacation>)vacationServices.myVacRecord(user.getAccount(),processkey);
+			list = ( List<Vacation>)vacationServices.myVacRecord(user.getAccount());
 		}
-		return list;
+		PageInfo p = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)p.getTotal());
+		tableMsg.setData(p.getList());
+		return tableMsg;
 	}
 	/**
 	 * @Description  查询等待用户的审核信息
@@ -80,30 +101,47 @@ public class VacationController
 	 **/
 	@RequestMapping("/myAudit")
 	public @ResponseBody
-	List<VacTask> myAudit(HttpSession session){
+	TableMsg myAudit(int limit,int page,HttpSession session){
 		List<VacTask> list=null;
 		User user = (User)session.getAttribute("user");
+		PageHelper.startPage(page,limit);
 		if (user!=null){
 			list = vacationServices.myAudit(user.getAccount());
 		}
-		return list;
+		PageInfo p = new PageInfo(list);
+		System.out.println(11111111);
+		System.out.println(p.getList());
+		System.out.println(11111111);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)p.getTotal());
+		tableMsg.setData(p.getList());
+		return tableMsg;
 	}
 	/**
 	 * @Description  查询用户的审核记录
 	 * @author xlx
 	 * @Date 上午 7:12 2020/2/25 0025
 	 * @Param
-	 * @return
+	 * @return ,String processkey
 	 **/
 	@RequestMapping("/myAuditRecord")
 	public @ResponseBody
-	List<Vacation> myAuditRecord( HttpSession session,String processkey){
+	TableMsg myAuditRecord(int limit,int page, HttpSession session){
 		List<Vacation> list=null;
 		User user = (User)session.getAttribute("user");
+		PageHelper.startPage(page,limit);
 		if (user!=null){
-			list = ( List<Vacation>)vacationServices.myAuditRecord(user.getAccount(),processkey);
+			list = ( List<Vacation>)vacationServices.myAuditRecord(user.getAccount());
 		}
-		return list;
+		PageInfo p = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)p.getTotal());
+		tableMsg.setData(p.getList());
+		return tableMsg;
 	}
 	/**
 	 * @Description  审核通过
@@ -119,11 +157,16 @@ public class VacationController
 		User user = (User)session.getAttribute("user");
 		if (user!=null){
 			flag = (boolean)vacationServices.passAudit(user.getAccount(),vacTask);
-			if (user.getAccount().equals("issuer")&&vacTask.getVac().getNowResult().equals("同意")){
+			if (user.getAccount().equals(TimeUtil.ROLE_ISSUER)&&vacTask.getVac().getNowResult().equals("同意")){
 				//判断是否是同意发药，同意则进入药品出库
 				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
-				int i = drugServices.insertOutbound(vacation);
-
+				drugServices.insertOutbound(vacation);
+				//开启药房入库的审核流程
+				vacationServices.startVac(vacation.getApplyUser(),vacation.getList(),"pharmacystorage");
+			}else if (user.getAccount().equals(TimeUtil.ROLE_PHMANAGER)&&vacTask.getVac().getNowResult().equals("同意")){
+				//判断药房是否是同意入库，同意则进入药房药品入库
+				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
+				drugServices.insertAndUpdate(vacation);
 			}
 		}
 		return flag;

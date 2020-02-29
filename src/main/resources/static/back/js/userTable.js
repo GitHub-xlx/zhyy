@@ -6,21 +6,22 @@
  * @create: 2019-12-28 16:10
  * @Version 1.0
  **/
-layui.use(['table', 'jquery','form'], function () {
+layui.use(['table', 'jquery', 'form'], function () {
 	var table = layui.table
 		, $ = layui.jquery
-	    , form = layui.form;
+		, form = layui.form;
 
 	table.render({
 		elem: '#demo'//指定表格
+		, id :'idTest'
 		, url: 'userController/manageUsers'//指定对应servlet
+		, limit: 5//要传向后台的每页显示条数
+		//,page: true //开启分页
 		, page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-			layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-			//,curr: 5 //设定初始在第 5 页
-			, groups: 1 //只显示 1 个连续页码
-			, first: false //不显示首页
-			, last: false //不显示尾页
-
+			layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']//自定义分页布局
+			, limits: [5, 10]
+			// ,first: false //不显示首页
+			// ,last: false //不显示尾页
 		}
 		, cols: [[
 			{field: 'account', width: 80, title: '账号', sort: true, fixed: "left"}
@@ -31,11 +32,10 @@ layui.use(['table', 'jquery','form'], function () {
 			, {field: 'department', width: 200, title: '部门', sort: true}
 			, {field: 'position', width: 200, title: '职位', sort: true}
 			, {field: 'rolecode', width: 100, title: '角色编码', sort: true}
-			,{field:'state', width:150, title: '状态', sort: true}
+			, {field: 'state', width: 150, title: '状态', sort: true}
 			, {title: '操作', fixed: 'right', width: 400, align: 'center', toolbar: '#barDemo'}
-		]]
-		, limit: 5
-		, limits: [5, 10, 15, 20, 25]
+		 ]]
+
 	});
 	table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 		var data = obj.data //获得当前行数据
@@ -50,7 +50,7 @@ layui.use(['table', 'jquery','form'], function () {
 				success: function (msg) {
 					if (msg === '1') {
 						layer.alert("启用成功");
-						table.reload();
+						table.reload('idTest');
 					} else {
 						layer.alert("启用失败，请重新尝试");
 					}
@@ -70,7 +70,7 @@ layui.use(['table', 'jquery','form'], function () {
 				success: function (msg) {
 					if (msg === '1') {
 						layer.alert("禁用成功");
-						table.reload();
+						table.reload('idTest');
 					} else {
 						layer.alert("禁用失败，请重新尝试");
 					}
@@ -92,7 +92,7 @@ layui.use(['table', 'jquery','form'], function () {
 					success: function (msg) {
 						if (msg === '1') {
 							layer.alert("密码重置成功");
-							table.reload();
+							// table.reload();
 						} else {
 							layer.alert("密码重置失败，请重新尝试");
 						}
@@ -114,7 +114,7 @@ layui.use(['table', 'jquery','form'], function () {
 				$.ajax({
 					type: "POST", //请求方式
 					url: 'userController/adjustmentPrice', // 请求路径
-					data: {price:val},
+					data: {price: val},
 					success: function (msg) {
 						if (msg === '1') {
 							layer.alert("调价成功");
@@ -130,7 +130,6 @@ layui.use(['table', 'jquery','form'], function () {
 				});
 
 
-
 			});
 		}
 
@@ -144,7 +143,7 @@ layui.use(['table', 'jquery','form'], function () {
 				success: function (msg) {
 					if (msg === '1') {
 						layer.alert("停用成功");
-						table.reload();
+						 table.reload();
 					} else {
 						layer.alert("停用失败，请重新尝试");
 					}
@@ -164,9 +163,9 @@ layui.use(['table', 'jquery','form'], function () {
 	$("#distribution").click(function () {
 
 		layer.open({
-			type: 1, //设置类型 默认为0， 1：页面层  2：iframe层
+			type: 2, //设置类型 默认为0， 1：页面层  2：iframe层
 			title: "新增人员界面",
-			content: $("#addstaffdiv"),
+			content: "jump/back/addStaff",
 			skin: 'layui-layer-molv',
 			area: ['700px', '500px'],
 			offset: 'auto',
@@ -178,37 +177,7 @@ layui.use(['table', 'jquery','form'], function () {
 
 			}
 		});
-		$('#docInfo').css('display', 'block');
-	});
-
-
-	//获取下拉框的值
-	var role = 10;
-	form.on('select(role)', function (data) {
-		role = data.value;
-		if (role === '10') {
-			$('#docInfo2').css('display', 'none');
-			$('#docInfo').css('display', 'block');
-		} else if (role === '20') {
-			$('#docInfo2').css('display', 'block');
-			$('#docInfo').css('display', 'none');
-		}
 
 	});
-	//获取下拉框职称的值
-	var title = '';
-	form.on('select(title)', function (data) {
-		title = data.value;
-	});
-
-	//获取下拉框职称的值
-	var title2 = '';
-	form.on('select(title2)', function (data) {
-		title2 = data.value;
-	});
-
-	//重新渲染
-	form.render();
-
 
 });
