@@ -113,7 +113,7 @@ public class DrugServicesImpl implements DrugServices
 		User user = userServices.queryUserByAccount(vac.getApplyUser());
 		String time = TimeUtil.getTime(new Date());
 		drugMapper.insertPharmacyDrug(vac,user.getPharmacycode(),time);
-		return drugMapper.updatePharmacy(vac.getList());
+		return drugMapper.updatePharmacy(vac.getList(),user.getPharmacycode());
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import com.zhyy.entity.Vacation;
 import com.zhyy.utils.ActivitiUtil;
 import com.zhyy.utils.CustomProcessDiagramGenerator;
 import com.zhyy.utils.TimeUtil;
+import com.zhyy.utils.WorkflowConstants;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.bpmn.model.FlowNode;
 import org.activiti.bpmn.model.SequenceFlow;
@@ -27,9 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.awt.*;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Created by yawn on 2018-01-08 13:44
@@ -310,21 +314,28 @@ public class VacationServiceImpl
 
 			List<HistoricProcessInstance> historicFinishedProcessInstances = historyService.createHistoricProcessInstanceQuery().processInstanceId(processInstanceId).finished()
 					.list();
-			ProcessDiagramGenerator processDiagramGenerator = null;
+//			ProcessDiagramGenerator processDiagramGenerator = null;
+			CustomProcessDiagramGenerator processDiagramGenerator = null;
+			processDiagramGenerator = new CustomProcessDiagramGenerator();
 			// 如果还没完成，流程图高亮颜色为绿色，如果已经完成为红色
-			if (!CollectionUtils.isEmpty(historicFinishedProcessInstances)) {
-				// 如果不为空，说明已经完成
-				processDiagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
-			} else {
-				processDiagramGenerator = new CustomProcessDiagramGenerator();
-			}
+//			if (!CollectionUtils.isEmpty(historicFinishedProcessInstances)) {
+//				// 如果不为空，说明已经完成
+//				processDiagramGenerator = processEngineConfiguration.getProcessDiagramGenerator();
+//			} else {
+//				processDiagramGenerator = new CustomProcessDiagramGenerator();
+//			}
 
 			BpmnModel bpmnModel = repositoryService.getBpmnModel(historicProcessInstance.getProcessDefinitionId());
 			// 高亮流程已发生流转的线id集合
 			List<String> highLightedFlowIds = getHighLightedFlows(bpmnModel, historicActivityInstances);
 
+			Set<String> currIds = runtimeService.createExecutionQuery().processInstanceId(processInstanceId).list()
+					.stream().map(e->e.getActivityId()).collect(Collectors.toSet());
 			// 使用默认配置获得流程图表生成器，并生成追踪图片字符流
-			InputStream imageStream = processDiagramGenerator.generateDiagram(bpmnModel, "png", highLightedActivitiIds, highLightedFlowIds, "宋体", "微软雅黑", "黑体", null, 2.0);
+			InputStream imageStream = processDiagramGenerator.generateDiagram(bpmnModel,
+					"png", highLightedActivitiIds, highLightedFlowIds,
+					"宋体", "微软雅黑", "黑体",
+					null, 2.0,new Color[] { WorkflowConstants.COLOR_NORMAL, WorkflowConstants.COLOR_CURRENT }, currIds);
 
 			// 输出图片内容
 			byte[] b = new byte[1024];

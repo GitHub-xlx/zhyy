@@ -170,16 +170,25 @@ public interface DrugMapper
 	 * @Date 上午 7:08 2020/2/27 0027
 	 * @Param
 	 * @return
+	 * 	"<script>" +
+	 * 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+	 * 			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number} " +
+	 * 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
+	 * 			"</foreach></script>"
+	 *
 	 **/
 	@Update({
 			"<script>" +
-			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
-			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
-			"</foreach></script>"
-
+					"<foreach collection='list' separator=';' item='i' >" +
+					"INSERT INTO drugstoredruginventory" +
+					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
+					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"druginventorynumber=(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number}" +
+					"</foreach>" +
+					"</script>"
 	})
-	int updatePharmacy(List<Druginformation> list);
+	int updatePharmacy(List<Druginformation> list,String pharmacycode);
 
 
 	/**
