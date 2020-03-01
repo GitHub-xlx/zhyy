@@ -355,7 +355,7 @@ public class DrugController
 	 */
 	@RequestMapping("/selectDrugStoreInventory")
 	@ResponseBody
-	public  TableMsg   selectDrugStoreInventory(int page,int limit)
+	public  TableMsg  selectDrugStoreInventory(int page,int limit)
 	{
 
 		//开启分页
@@ -392,7 +392,7 @@ public class DrugController
 
 	@RequestMapping("/selectInventorycheck")
 	@ResponseBody
-	TableMsg selectInventorycheck (int page,int limit,String commonname,String specialmedicine)
+	public TableMsg selectInventorycheck (int page,int limit,String commonname,String specialmedicine)
 	{
 		//开启分页
 		PageHelper.startPage(page,limit);
@@ -408,6 +408,29 @@ public class DrugController
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
 	}
+	/**
+	 * @Description  查询药房出入库明细
+	 * @author xlx
+	 * @Date 下午 21:52 2020/3/1 0001
+	 * @Param
+	 * @return
+	 **/
+	@RequestMapping("/selectPharmacyd")
+	@ResponseBody
+	public TableMsg selectPharmacyd (int page,int limit,String drugcode, String lotnumber, String asker, String outbound, String start, String end)
+	{
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List<Pharmacydrugschedule> list = drugServices.selectPharmacyd(drugcode, lotnumber,  asker,  outbound, start, end);
+		PageInfo pageInfo = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
+	}
+
 
 
 	//盘点

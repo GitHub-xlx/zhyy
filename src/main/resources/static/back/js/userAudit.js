@@ -264,13 +264,13 @@ layui.use('table', function(){
 						}else {
 							var data1={
 								'id':data.id
-								,'vac.list':data.vac.list
+								,'gsonList':JSON.stringify(data.vac.list)
 								,'vac.applyUser':data.vac.applyUser
 								,'vac.reason':data.vac.reason
 								,'vac.nowResult':'同意'
 								,'vac.result':opinionText
 							};
-							review(data1);
+							review(data1,obj);
 							$("#text1").innerText='';
 							layer.closeAll();
 						}
@@ -301,7 +301,7 @@ layui.use('table', function(){
 		}
 	});
 	//审核确认的ajax
-	function review(data1){
+	function review(data1,obj){
 		$.ajax({
 			url:'/vacationController/passAudit',
 			method:'post',
@@ -311,6 +311,7 @@ layui.use('table', function(){
 					layer.msg('审核成功', {
 						time: 1500, //1500ms后自动关闭
 					});
+					obj.del();
 				}
 				else
 					layer.msg('审核失败，请重新尝试', {

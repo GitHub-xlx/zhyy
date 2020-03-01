@@ -158,8 +158,10 @@ public class VacationController
 	 **/
 	@RequestMapping("/passAudit")
 	public @ResponseBody
-	boolean passAudit( HttpSession session,VacTask vacTask){
+	boolean passAudit( HttpSession session,VacTask vacTask,String gsonList){
 		boolean flag=false;
+		List<Druginformation> list = new Gson().fromJson(gsonList,new TypeToken< List<Druginformation>>(){}.getType());
+		vacTask.getVac().setList(list);
 		User user = (User)session.getAttribute("user");
 		System.out.println(11111111);
 		System.out.println("vacTask"+vacTask.toString());

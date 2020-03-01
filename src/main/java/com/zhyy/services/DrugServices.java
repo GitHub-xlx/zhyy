@@ -189,17 +189,18 @@ public interface DrugServices
 	int insertAndUpdate(Vacation vac);
 
 	/**
-	 * @Description  查询药房出入库明细
+	 * @return
+	 * @Description 查询药房出入库明细
 	 * @author xlx
 	 * @Date 下午 16:12 2020/2/28 0028
-	 * @Param  drugcode 药品编号
+	 * @Param drugcode 药品编号
 	 * @Param lotnumber 批号
 	 * @Param asker 申请人
 	 * @Param outbound 出入库
 	 * @Param start，end 操作时间的开始和结束
-	 * @return
 	 **/
-	List<Pharmacydrugschedule> selectPharmacyd(String drugcode,String lotnumber,String asker,String outbound,String start,String end);
+	 List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end);
+
 
 	/**
 	 * @Description  药房库存查询（通过常用名称和是否为特殊药品）
