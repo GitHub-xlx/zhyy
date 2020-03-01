@@ -2,6 +2,7 @@ package com.zhyy.mapper;
 
 
 import com.zhyy.entity.*;
+import com.zhyy.sqlifclass.DrugDistributionIfClass;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
 import org.apache.ibatis.annotations.Mapper;
@@ -82,6 +83,74 @@ public interface DrugMapper
 	 */
 	@SelectProvider(type = DrugSaleIfClass.class,method = "countsalelist")
 	public int countDrugSaleList(String pharmacycode,String drugcode,String commoname,String specialmedicine,String idcard,String consumername,String salesperson,String start,String end);
+
+
+	/**
+	 * 药品分药查询
+	 * @param pharmacycode 药房编号
+	 * @param classcode  药品种类
+	 * @param commoname 药品常用名称
+	 * @param nowpage   当前页数
+	 * @param size  当前页数的大小
+	 * @return
+	 */
+	@SelectProvider(type = DrugDistributionIfClass.class,method = "selectdruginventorylist")
+	public List<DruginventoryDruginformation> querydruginventorylist(String pharmacycode,String classcode,String commoname, int nowpage, int size);
+
+	/**
+	 *  药品分药总数查询
+	 * @param pharmacycode 药房编号
+	 * @param classcode  药品种类
+	 * @param commoname 药品常用名称
+	 * @return
+	 */
+	@SelectProvider(type = DrugDistributionIfClass.class,method = "countdruginventorylist")
+	public int countdruginventorylist(String pharmacycode,String classcode,String commoname);
+
+	/**
+	 * 批量插入药房发药出库
+	 * @param drugcode
+	 * @param time
+	 * @param number
+	 * @param lotnumber
+	 * @param specialmedicine
+	 * @param asktime
+	 * @param receivetime
+	 * @param operatingtime
+	 * @param pharmacynumber
+	 * @param asker
+	 * @return
+	 */
+	@Insert({
+			"<script>",
+			"insert into pharmacydrugschedule(drugcode,time,number,outbound,lotnumber,specialmedicine,outboundtype,auditor,asktime,reviewtime,receivetime,operatingtime,pharmacynumber,asker) values ",
+			"(#{drugcode}, #{time},#{number},'出库',#{lotnumber},#{specialmedicine},'出库','无',#{asktime},null,#{receivetime},#{operatingtime},#{pharmacynumber},#{asker})",
+			"</script>"
+	})
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker);
+
+	/**
+	 * 更改药房药品库存数量
+	 * @param drugcode
+	 * @param number
+	 * @param lotnumber
+	 * @return
+	 */
+	@Update({
+			"<script>",
+			"update druginventorytable set druginventorynumber = druginventorynumber-#{number} where drugcode = #{drugcode} and lotnumber = #{lotnumber}",
+			"</script>"
+	})
+	int updateDruginventoryNumber(String drugcode,String number,String lotnumber);
+
+	/**
+	 * 查找药品配伍禁忌
+	 * @param drugcode
+	 * @return
+	 */
+	@Select("select count(*) from drugcompatibilitycontraindications  where drugcodeA= '${drugcode}'")
+	int selectDrugcompatibilitycontraindications(String drugcode);
+
 
 	/**
 	 * @Description  查找药品信息表

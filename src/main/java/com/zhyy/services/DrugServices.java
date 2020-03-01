@@ -69,6 +69,60 @@ public interface DrugServices
 	public int countDrugSaleList(String pharmacycode,String drugcode,String commoname,String specialmedicine,String idcard,String consumername,String salesperson,String start,String end);
 
 	/**
+	 * 药品发药查询
+	 * @param pharmacycode 药房编号
+	 * @param classcode  药品种类
+	 * @param commoname 药品常用名称
+	 * @param nowpage   当前页数
+	 * @param size  当前页数的大小
+	 * @return
+	 */
+	public List<DruginventoryDruginformation> querydruginventorylist(String pharmacycode,String classcode,String commoname, int nowpage, int size);
+
+	/**
+	 * 药品发药总数查询
+	 * @param pharmacycode 药房编号
+	 * @param classcode  药品种类
+	 * @param commoname 药品常用名称
+	 * @return
+	 */
+	public int countdruginventorylist(String pharmacycode,String classcode,String commoname);
+
+	/**
+	 * 药房药品发药出库
+	 * @param drugcode
+	 * @param time
+	 * @param number
+	 * @param lotnumber
+	 * @param specialmedicine
+	 * @param asktime
+	 * @param reviewtime
+	 * @param operatingtime
+	 * @param pharmacynumber
+	 * @param asker
+	 * @return
+	 */
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker);
+
+	/**
+	 * 药房药品发药出库库存减少
+	 * @param drugcode
+	 * @param number
+	 * @param lotnumber
+	 * @return
+	 */
+	int updateDruginventoryNumber(String drugcode,String number,String lotnumber);
+
+	/**
+	 * 配伍禁忌
+	 * @param drugcode
+	 * @return
+	 */
+	int selectDrugcompatibilitycontraindications(String drugcode);
+
+
+
+	/**
 	 * @Description  通过药品常用名称和拼音码查找药品信息表
 	 * @author xlx
 	 * @Date 下午 22:28 2020/2/20 0020

@@ -4,15 +4,22 @@ package com.zhyy.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -61,6 +68,97 @@ public class DrugController
 		tableMsg.setCount(count);
 		tableMsg.setData(drugsales);
 		return tableMsg;
+	}
+	@RequestMapping("/selectdruginventory")
+	public @ResponseBody
+	TableMsg selectdruginventory(String classcode, String commoname,String page,String limit, HttpServletRequest request){
+
+		int pageInt=Integer.valueOf(page);
+		int limitInt=Integer.valueOf(limit);
+		User user=(User)request.getSession().getAttribute("user");
+		List<DruginventoryDruginformation> druginventory=null;
+		int count=0;
+		druginventory =drugServices.querydruginventorylist(user.getPharmacycode(),classcode,commoname,pageInt,limitInt);
+
+		count=drugServices.countdruginventorylist(user.getPharmacycode(),classcode,commoname);
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventory);
+		return tableMsg;
+	}
+	@RequestMapping("/confirmsendmedicine")
+	public @ResponseBody
+	String confirmsendmedicine(@RequestParam(name="list") String list, HttpServletRequest request){
+		Gson gson = new Gson();
+		List<DruginventoryDruginformation> list1 = gson.fromJson(list,new TypeToken<ArrayList<DruginventoryDruginformation>>(){}.getType());
+		User user=(User)request.getSession().getAttribute("user");
+		int j=0;
+		int k=0;
+		String res="";
+		int count=0;
+		int[] countnum = new int[list1.size()];
+		for (int i = 0; i < list1.size() ; i++)
+		{
+			count=drugServices.selectDrugcompatibilitycontraindications(list1.get(i).getDrugcode());
+			countnum[i]=count;
+		}
+
+		for (int i = 0; i < countnum.length; i++)
+		{
+			count = countnum[i]+count;
+		}
+		if(count==0){
+			for (int i = 0; i < list1.size(); i++)
+			{
+				String asktime="";
+				String receivetime="";
+				String operatingtime="";
+				String datearr = (new Date().toLocaleString().split(" ")[0]);
+				try
+				{
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(datearr);
+					Calendar c = Calendar.getInstance();
+					c.setTime(date);
+					int year = c.get(Calendar.YEAR);
+					int month = c.get(Calendar.MONTH) + 1;
+					int day = c.get(Calendar.DATE);
+					String month2 = "";
+					String day2 = "";
+					if (month < 10)
+					{
+						month2 = "0" + month;
+					} else
+					{
+						month2 = String.valueOf(month);
+					}
+					if (day < 10)
+					{
+						day2 = "0" + day;
+					} else
+					{
+						day2 = String.valueOf(day);
+					}
+
+					receivetime=operatingtime=asktime= year + "-" + month2 + "-" + day2;
+				} catch (ParseException e)
+				{
+					e.printStackTrace();
+				}
+				j = drugServices.insertDruginventoryOutbound(list1.get(i).getDrugcode(),list1.get(i).getProductiondate(),list1.get(i).getNumber(),list1.get(i).getLotnumber(),list1.get(i).getSpecialmedicine(),asktime,receivetime,operatingtime,user.getPharmacycode(),user.getUsername());
+				k = drugServices.updateDruginventoryNumber(list1.get(i).getDrugcode(),list1.get(i).getNumber(),list1.get(i).getLotnumber());
+			}
+			if(j>0&&k>0){
+				res="success";
+			}else{
+				res="failed";
+			}
+		}else{
+			res = "conflict";
+		}
+		return res;
 	}
 	/**
 	 * @Description  药品请领查询
@@ -310,16 +408,4 @@ public class DrugController
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 }

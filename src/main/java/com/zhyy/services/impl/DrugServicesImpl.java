@@ -52,6 +52,36 @@ public class DrugServicesImpl implements DrugServices
 	{
 		return drugMapper.countDrugSaleList(pharmacycode,drugcode,commoname,specialmedicine,idcard,consumername,salesperson,start,end);
 	}
+	@Override
+	public List<DruginventoryDruginformation> querydruginventorylist(String pharmacycode, String classcode, String commoname, int nowpage, int size)
+	{
+		return drugMapper.querydruginventorylist(pharmacycode,classcode,commoname,nowpage,size);
+	}
+
+	@Override
+	public int countdruginventorylist(String pharmacycode, String classcode, String commoname)
+	{
+		return drugMapper.countdruginventorylist(pharmacycode, classcode, commoname);
+	}
+
+	@Override
+	public int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker)
+	{
+		return drugMapper.insertDruginventoryOutbound(drugcode, time, number, lotnumber, specialmedicine, asktime, receivetime, operatingtime, pharmacynumber, asker);
+	}
+
+	@Override
+	public int updateDruginventoryNumber(String drugcode, String number, String lotnumber)
+	{
+		return drugMapper.updateDruginventoryNumber(drugcode, number, lotnumber);
+	}
+
+	@Override
+	public int selectDrugcompatibilitycontraindications(String drugcode)
+	{
+		return drugMapper.selectDrugcompatibilitycontraindications(drugcode);
+	}
+
 
 	@Override
 	public List<Druginformation> selectDruginformation(String commonname, String pincode)
