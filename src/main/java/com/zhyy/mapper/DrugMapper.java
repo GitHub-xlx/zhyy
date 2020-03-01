@@ -2,6 +2,7 @@ package com.zhyy.mapper;
 
 
 import com.zhyy.entity.*;
+import com.zhyy.sqlifclass.CompatibilityIfClass;
 import com.zhyy.sqlifclass.DrugDistributionIfClass;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
@@ -145,11 +146,42 @@ public interface DrugMapper
 
 	/**
 	 * 查找药品配伍禁忌
-	 * @param drugcode
+	 * @param drugcode1
+	 * @param drugcode2
 	 * @return
 	 */
 	@Select("select count(*) from drugcompatibilitycontraindications  where drugcodeA= '${drugcode1}' and drugcodeB= '${drugcode2}'")
 	int selectDrugcompatibilitycontraindications(String drugcode1,String drugcode2);
+
+	/**
+	 * 药品配伍禁忌列表
+	 */
+	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
+	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+
+	/**
+	 * 药品配伍禁忌列表总数
+	 */
+	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcountcompatibilityList")
+	int selectcountcompatibilityList(String drugcode);
+
+	/**
+	 * 查找药品信息表中所有的drugcode
+	 */
+	@Select("select * from druginformation where ${where}")
+	List<Druginformation> queryDrugcode(String where);
+
+	/**
+	 * 新增配伍禁忌
+	 */
+	@Insert({
+			"<script>",
+			"insert into drugcompatibilitycontraindications(drugcodeA,drugcodeB,contraindications) values ",
+			"(#{drugcodeA}, #{drugcodeB},#{contraindications})",
+			"</script>"
+	})
+	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
+
 
 
 	/**

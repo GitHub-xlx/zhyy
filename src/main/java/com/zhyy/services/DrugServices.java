@@ -96,7 +96,7 @@ public interface DrugServices
 	 * @param lotnumber
 	 * @param specialmedicine
 	 * @param asktime
-	 * @param reviewtime
+	 * @param receivetime
 	 * @param operatingtime
 	 * @param pharmacynumber
 	 * @param asker
@@ -121,7 +121,29 @@ public interface DrugServices
 	 */
 	int selectDrugcompatibilitycontraindications(String drugcode1,String drugcode2);
 
+	/**
+	 * 配伍禁忌列表
+	 * @return
+	 */
+	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
+	/**
+	 * 配伍禁忌列表总数
+	 * @return
+	 */
+	int selectcountcompatibilityList(String drugcode);
+
+	/**
+	 * 查找药品信息表中的drugcode
+	 * @param drugcode
+	 * @return
+	 */
+	List<Druginformation> queryDrugcode(String drugcode);
+
+	/**
+	 * 新增配伍禁忌
+	 */
+	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
 
 	/**
 	 * @Description  通过药品常用名称和拼音码查找药品信息表

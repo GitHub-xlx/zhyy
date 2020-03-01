@@ -29,6 +29,10 @@ public class DrugController
 	@Autowired
 	private DrugServices drugServices;
 
+	/**
+	 * 药房价格查询
+	 * @return
+	 */
 	@RequestMapping("/selectprice")
 	public @ResponseBody
 	TableMsg selectprice(String drugcode,String commoname, String start,String end,String page,String limit, HttpServletRequest request){
@@ -49,6 +53,11 @@ public class DrugController
 		tableMsg.setData(drugprices);
 		return tableMsg;
 	}
+
+	/**
+	 * 药房销售登记表查询
+	 * @return
+	 */
 	@RequestMapping("/selectsale")
 	public @ResponseBody
 	TableMsg selectsale(String drugcode, String commoname, String specialmedicine, String idcard, String consumername,String salesperson, String start, String end,String page,String limit, HttpServletRequest request){
@@ -69,6 +78,16 @@ public class DrugController
 		tableMsg.setData(drugsales);
 		return tableMsg;
 	}
+
+	/**
+	 * 药房药品发药信息查询
+	 * @param classcode
+	 * @param commoname
+	 * @param page
+	 * @param limit
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/selectdruginventory")
 	public @ResponseBody
 	TableMsg selectdruginventory(String classcode, String commoname,String page,String limit, HttpServletRequest request){
@@ -89,6 +108,13 @@ public class DrugController
 		tableMsg.setData(druginventory);
 		return tableMsg;
 	}
+
+	/**
+	 * 药房确认发药
+	 * @param list
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/confirmsendmedicine")
 	public @ResponseBody
 	String confirmsendmedicine(@RequestParam(name="list") String list, HttpServletRequest request){
@@ -187,6 +213,62 @@ public class DrugController
 		}
 		return res;
 	}
+
+	/**
+	 * 配伍禁忌查询
+	 * @return
+	 */
+	@RequestMapping("/selectcompatibility")
+	public @ResponseBody
+	TableMsg selectcompatibility(String drugcode,String page,String limit, HttpServletRequest request){
+
+		int pageInt=Integer.valueOf(page);
+		int limitInt=Integer.valueOf(limit);
+		List<Drugcompatibilitycontraindications> list=null;
+		int count=0;
+		list =drugServices.selectcompatibilityList(drugcode,pageInt,limitInt);
+
+		count=drugServices.selectcountcompatibilityList(drugcode);
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(list);
+		return tableMsg;
+	}
+
+	@RequestMapping("/queryDrugcode")
+	public @ResponseBody List<Druginformation> queryDrugcode(){
+		return drugServices.queryDrugcode(null);
+	}
+
+	@RequestMapping("/queryDrugcodeIf")
+	public @ResponseBody List<Druginformation> queryDrugcodeIf(HttpServletRequest request){
+		String choosedrugcodeA=request.getParameter("choosedrugcodeA");
+		return drugServices.queryDrugcode(choosedrugcodeA);
+	}
+
+	@RequestMapping("/insertcompatibility")
+	public @ResponseBody String insertcompatibility(HttpServletRequest request){
+		String choosedrugcodeA=request.getParameter("choosedrugcodeA");
+		String choosedrugcodeB=request.getParameter("choosedrugcodeB");
+		String msg = request.getParameter("msg");
+
+		String res="";
+		int i = drugServices.selectDrugcompatibilitycontraindications(choosedrugcodeA,choosedrugcodeB);
+
+		if(i==0){
+			drugServices.insertcompatibility(choosedrugcodeA,choosedrugcodeB,msg);
+			drugServices.insertcompatibility(choosedrugcodeB,choosedrugcodeA,msg);
+			res="success";
+		}else{
+			res = "exist";
+		}
+
+		return res;
+	}
+
 	/**
 	 * @Description  药品请领查询
 	 * @author xlx
@@ -271,8 +353,6 @@ public class DrugController
 		}
 		return msg;
 	}
-
-
 
 	/**
 	 * 查询药品分类信息
