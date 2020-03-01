@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>药房发药</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+</head>
+<body>
+<h3 style=" font-size: 45px;
+    font-family: 幼圆;
+    text-align: center;
+    margin-top: 3%;">药房发药</h3>
+<form class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">请选择药品种类：</label>
+                <div class="layui-input-inline">
+                    <select name="classcode" id="classcode">
+                        <option value="-1">请选择</option>
+                        <option value="感冒">感冒</option>
+                        <option value="五官科">五官科</option>
+                        <option value="抗过敏">抗过敏</option>
+                        <option value="精神系">精神系</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">药品名称 ：</label>
+                <div class="layui-input-inline">
+                    <input name="commoname" id="commoname" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn " id="query_bt" type="button">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<table class="layui-hide" id="test" lay-filter="drug"></table>
+
+<h3 id="fun_title1">发药单</h3>
+<table class="layui-hide" id="test1" lay-filter="drug1"></table>
+
+<div class="layui-form-item">
+    <div class="layui-inline" style="text-align: center">
+        <button class="layui-btn " id="confirmation" type="button">确认发药</button>
+    </div>
+</div>
+<div id="tb" style="display: none">
+    <table class="layui-hide" id="test2" lay-filter="drug2"></table>
+</div>
+<script th:src="@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/drugdistribution.js}"></script>
+</body>
+<script type="text/html" id="toolbar1">
+    <a class="layui-btn layui-btn-sm background-style" lay-event="add">添加</a>
+</script>
+<script type="text/html" id="toolbar2">
+    <a class="layui-btn layui-btn-sm background-style" lay-event="delete">删除</a>
+</script>
+</html>

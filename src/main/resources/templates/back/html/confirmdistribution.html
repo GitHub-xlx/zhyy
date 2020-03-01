@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>确认发药</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+</head>
+<body>
+<form class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">药品编号：</label>
+                <div class="layui-input-inline">
+                    <input name="drugcode" id="drugcode" class="layui-input drugcode" type="text" autocomplete="off"
+                           disabled>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">药品名称：</label>
+                <div class="layui-input-inline">
+                    <input name="commoname" id="commoname" class="layui-input commoname" type="text" autocomplete="off"
+                           disabled>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">库存数量：</label>
+                <div class="layui-input-inline">
+                    <input name="druginventorynumber" id="druginventorynumber" class="layui-input druginventorynumber"
+                           type="text" autocomplete="off" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">发药数量：</label>
+                <div class="layui-input-inline">
+                    <input name="send" id="send" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script th:src="@{static/layui/layui.js}"></script>
+</body>
+</html>
