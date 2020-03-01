@@ -1,5 +1,6 @@
 package com.zhyy.controller;
 
+import com.zhyy.aspect.IgnoreLog;
 import com.zhyy.entity.*;
 import com.zhyy.services.SysServices;
 import com.zhyy.utils.List2TreeUtil;
@@ -291,6 +292,7 @@ public class SysController
 	}
 
 	@RequestMapping("/exit")
+	@IgnoreLog
 	public String exit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		request.getSession().invalidate();

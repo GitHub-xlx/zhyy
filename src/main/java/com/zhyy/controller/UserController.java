@@ -2,6 +2,7 @@ package com.zhyy.controller;
 
 
 import com.google.gson.JsonObject;
+import com.zhyy.aspect.IgnoreLog;
 import com.zhyy.entity.*;
 import com.zhyy.services.UserServices;
 import com.zhyy.test.MyJobDetail;
@@ -31,6 +32,7 @@ public class UserController
 	@Autowired
 	private UserServices userServices;
 	@RequestMapping("/welcome")
+	@IgnoreLog
 	public String welcome(){
 		return "back/html/login";
 	}
