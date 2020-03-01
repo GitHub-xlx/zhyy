@@ -312,7 +312,29 @@ public class DrugController
 	}
 
 
+	//盘点
+	@RequestMapping("/doInventory")
+	public @ResponseBody
+	TableMsg doInventory(String page, String limit, HttpServletRequest request){
+		System.out.println("执行到盘点");
+		System.out.println("page:"+page+", limit:"+limit);
+		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
 
+
+		List<Druginventorytable> inventorytables=null;
+		int count=0;
+		inventorytables =drugServices.queryInventoryTableList(pageInt,limitInt);
+		count=drugServices.countInventoryTableList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(inventorytables);
+		return tableMsg;
+
+	}
 
 
 

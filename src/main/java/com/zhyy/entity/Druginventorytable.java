@@ -8,7 +8,7 @@ public class Druginventorytable
 	private String drugcode;
 	private double druginventorynumber;
 	private double drugminimums;
-	private String drugunit;
+	private String drugunit;//单位
 	private String lotnumber;
 	private String specialmedicine;
 	private String productiondate;
@@ -17,6 +17,8 @@ public class Druginventorytable
 	private String commoname;//药品名称
     private String shelflife;//保质期
     private String receivetime;//入库时间
+	private String specification;//规格
+	private double wholesaleprice;//批发价
 
 	public long getDitid()
 	{
@@ -153,5 +155,26 @@ public class Druginventorytable
 	public void setReceivetime(String receivetime)
 	{
 		this.receivetime = receivetime;
+	}
+
+
+	public String getSpecification()
+	{
+		return specification;
+	}
+
+	public void setSpecification(String specification)
+	{
+		this.specification = specification;
+	}
+
+	public double getWholesaleprice()
+	{
+		return wholesaleprice;
+	}
+
+	public void setWholesaleprice(double wholesaleprice)
+	{
+		this.wholesaleprice = wholesaleprice;
 	}
 }

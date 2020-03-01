@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>盘点库存数量界面</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+</head>
+<body>
+
+<form class="layui-form" action="" method="post" >
+    <table class="layui-hide" id="demo" lay-filter="test"></table>
+    <button class="layui-btn" id='enterSubmit' lay-submit lay-filter="formDemo">保存</button>
+</form>
+
+
+
+<script type="text/html" id="toolbarDemo">
+</script>
+
+<script th:src="@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/inventory.js}"></script>
+</body>
+</html>
