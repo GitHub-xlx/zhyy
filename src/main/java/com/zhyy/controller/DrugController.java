@@ -462,7 +462,7 @@ public class DrugController
 	 */
 	@RequestMapping("/selectDrugStoreInventory")
 	@ResponseBody
-	public  TableMsg  selectDrugStoreInventory(int page,int limit)
+	public  TableMsg   selectDrugStoreInventory(int page,int limit)
 	{
 
 		//开启分页
@@ -476,6 +476,7 @@ public class DrugController
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
 	}
+
 	/**
 	 * 根据药库入库信息对象作为参数保存入库信息
 	 * @author cbd
@@ -497,72 +498,8 @@ public class DrugController
 		return state;
 	}
 
-	@RequestMapping("/selectInventorycheck")
-	@ResponseBody
-	public TableMsg selectInventorycheck (int page,int limit,String commonname,String specialmedicine)
-	{
-		//开启分页
-		PageHelper.startPage(page,limit);
-		List<Inventorycheck> list = drugServices.selectInventorycheck(commonname,specialmedicine);
-		PageInfo pageInfo = new PageInfo(list);
-		System.out.println(111111);
-		System.out.println(pageInfo.getList());
-		System.out.println(111111);
-		TableMsg tableMsg = new TableMsg();
-		tableMsg.setCode(0);
-		tableMsg.setMsg("");
-		tableMsg.setCount((int)pageInfo.getTotal());
-		tableMsg.setData(pageInfo.getList());
-		return tableMsg;
-	}
-	/**
-	 * @Description  查询药房出入库明细
-	 * @author xlx
-	 * @Date 下午 21:52 2020/3/1 0001
-	 * @Param
-	 * @return
-	 **/
-	@RequestMapping("/selectPharmacyd")
-	@ResponseBody
-	public TableMsg selectPharmacyd (int page,int limit,String drugcode, String lotnumber, String asker, String outbound, String start, String end)
-	{
-		//开启分页
-		PageHelper.startPage(page,limit);
-		List<Pharmacydrugschedule> list = drugServices.selectPharmacyd(drugcode, lotnumber,  asker,  outbound, start, end);
-		PageInfo pageInfo = new PageInfo(list);
-		TableMsg tableMsg = new TableMsg();
-		tableMsg.setCode(0);
-		tableMsg.setMsg("");
-		tableMsg.setCount((int)pageInfo.getTotal());
-		tableMsg.setData(pageInfo.getList());
-		return tableMsg;
-	}
 
 
-
-	//盘点
-	@RequestMapping("/doInventory")
-	public @ResponseBody
-	TableMsg doInventory(String page, String limit, HttpServletRequest request){
-		System.out.println("执行到盘点");
-		System.out.println("page:"+page+", limit:"+limit);
-		int limitInt=Integer.valueOf(limit);
-		int pageInt=(Integer.valueOf(page)-1)* limitInt;
-
-
-		List<Druginventorytable> inventorytables=null;
-		int count=0;
-		inventorytables =drugServices.queryInventoryTableList(pageInt,limitInt);
-		count=drugServices.countInventoryTableList();
-
-		TableMsg tableMsg = new TableMsg();
-		tableMsg.setCode(0);
-		tableMsg.setMsg("");
-		tableMsg.setCount(count);
-		tableMsg.setData(inventorytables);
-		return tableMsg;
-
-	}
 
 
 

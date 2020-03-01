@@ -379,5 +379,22 @@ public interface DrugMapper
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
 
+	/**
+	 * 药品采购登记,即新增采购药品信息
+	 * @author cbd
+	 * @param purchaseStatistics 药品采购信息对象
+	 * @return 返回int型 判断
+	 */
+	@Insert("INSERT INTO `purchasestatistics`( `drugcode`, `purchasenumber`, `totalpurchasemount`, `purchasetime`, `buyer`, `operator`, `state`, `lotnumber`, `date`)  VALUES  ( #{drugcode},#{ purchasenumber},#{ totalpurchasemount},#{ purchasetime},#{ buyer},#{ operator},#{ state},#{ lotnumber},#{ date})")
+	int  savePurchaseStatistics(Purchasestatistics purchaseStatistics);
+
+	/**
+	 * 查询采购登记表的信息
+	 * @author cbd
+	 * @return 返回采购登记表的所有数据list
+	 */
+	@Select("select * from purchasestatistics ")
+	List<Purchasestatistics> selectPurchaseStatistics();
+
 
 }

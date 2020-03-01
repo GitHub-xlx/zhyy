@@ -1,6 +1,8 @@
 package com.zhyy.services;
 
 import com.zhyy.entity.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -268,5 +270,20 @@ public interface DrugServices
 	 * @return 返回保存结果状态int值 作为判断成功
 	 */
 	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
+
+	/**
+	 * 药品采购登记
+	 * @author cbd
+	 * @param purchaseStatistics 药品采购信息对象
+	 * @return 返回int型 判断
+	 */
+	public  int  savePurchaseStatistics(Purchasestatistics purchaseStatistics);
+
+	/**
+	 * 查询采购登记表的信息
+	 * @author cbd
+	 * @return 返回采购登记表的所有数据list
+	 */
+	public List<Purchasestatistics> selectPurchaseStatistics();
 
 }

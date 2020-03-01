@@ -170,7 +170,7 @@ public class DrugServicesImpl implements DrugServices
 		User user = userServices.queryUserByAccount(vac.getApplyUser());
 		String time = TimeUtil.getTime(new Date());
 		drugMapper.insertPharmacyDrug(vac,user.getPharmacycode(),time);
-		return drugMapper.updatePharmacy(vac.getList(),user.getPharmacycode());
+		return drugMapper.updatePharmacy(vac.getList());
 	}
 
 	@Override
@@ -267,5 +267,15 @@ public class DrugServicesImpl implements DrugServices
 		return drugMapper.countInventoryTableList();
 	}
 
+	@Override
+	public int savePurchaseStatistics(Purchasestatistics purchaseStatistics)
+	{
+		return drugMapper.savePurchaseStatistics(purchaseStatistics);
+	}
 
+	@Override
+	public List<Purchasestatistics> selectPurchaseStatistics()
+	{
+		return drugMapper.selectPurchaseStatistics();
+	}
 }
