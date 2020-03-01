@@ -223,8 +223,12 @@ public interface DrugServices
 	//药品低限设置
 	boolean lowestSetting(String drugCode,String setData);
 
-	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
 
+	//盘点列表
+	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
+	int countInventoryTableList();
+
+	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
 
 	/**
 	 * 查询药库药品库存表信息

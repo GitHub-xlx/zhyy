@@ -228,5 +228,17 @@ public class DrugServicesImpl implements DrugServices
 		return drugMapper.lowestSetting(drugCode,setData);
 	}
 
+	@Override
+	public List<Druginventorytable> queryInventoryTableList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryInventoryTableList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countInventoryTableList()
+	{
+		return drugMapper.countInventoryTableList();
+	}
+
 
 }

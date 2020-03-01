@@ -181,6 +181,12 @@ public interface DrugMapper
 	@Update("update drugstoredruginventory set drugminimums = #{setData} where drugcode = #{drugCode}")
 	boolean lowestSetting(String drugCode,String setData);
 
+	//盘点列表
+	@Select("select A.drugcode,B.commoname,B.specification,A.drugunit,A.lotnumber,A.druginventorynumber,B.wholesaleprice from druginventorytable A,druginformation B where A.drugcode=B.drugcode")
+	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
+	@Select("select count(*) from druginventorytable")
+	int countInventoryTableList();
+
 
 	/**
 	 * @Description  批量插入药库出库
