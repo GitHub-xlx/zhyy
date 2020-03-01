@@ -25,7 +25,7 @@ layui.use('table', function(){
 		,cols: [[
 
 			{field:'ditid', width:80, title: 'ID', sort: true}
-			,{field:'commonname', width:100, title: '药品名称'}
+			,{field:'commoname', width:100, title: '药品名称'}
 			,{field:'drugcode', width:100, title: '药品编码'}
 			,{field:'druginventorynumber', width:100, title: '药品库存数量', sort: true}
 			,{field:'drugminimums', width:100, title: '药品最低限量', sort: true}

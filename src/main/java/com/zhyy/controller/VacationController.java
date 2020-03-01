@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -45,7 +47,7 @@ public class VacationController
 		return flag;
 	}
 	/** 
-	 * @Description  查询用户审核信息
+	 * @Description  查询用户申请信息
 	 * @author xlx
 	 * @Date 上午 7:02 2020/2/25 0025
 	 * @Param 
@@ -85,6 +87,9 @@ public class VacationController
 			list = ( List<Vacation>)vacationServices.myVacRecord(user.getAccount());
 		}
 		PageInfo p = new PageInfo(list);
+		System.out.println(22222222);
+		System.out.println(p.getList());
+		System.out.println(22222222);
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
@@ -109,9 +114,7 @@ public class VacationController
 			list = vacationServices.myAudit(user.getAccount());
 		}
 		PageInfo p = new PageInfo(list);
-		System.out.println(11111111);
-		System.out.println(p.getList());
-		System.out.println(11111111);
+
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
@@ -136,6 +139,9 @@ public class VacationController
 			list = ( List<Vacation>)vacationServices.myAuditRecord(user.getAccount());
 		}
 		PageInfo p = new PageInfo(list);
+		System.out.println(11111111);
+		System.out.println(p.getList());
+		System.out.println(11111111);
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
@@ -155,6 +161,9 @@ public class VacationController
 	boolean passAudit( HttpSession session,VacTask vacTask){
 		boolean flag=false;
 		User user = (User)session.getAttribute("user");
+		System.out.println(11111111);
+		System.out.println("vacTask"+vacTask.toString());
+		System.out.println(11111111);
 		if (user!=null){
 			flag = (boolean)vacationServices.passAudit(user.getAccount(),vacTask);
 			if (user.getAccount().equals(TimeUtil.ROLE_ISSUER)&&vacTask.getVac().getNowResult().equals("同意")){
@@ -170,5 +179,28 @@ public class VacationController
 			}
 		}
 		return flag;
+	}
+	/**
+	 * @Description  获取流程实时进度
+	 * @author xlx
+	 * @Date 下午 15:15 2020/3/1 0001
+	 * @Param
+	 * @return
+	 **/
+	@RequestMapping("/getFlowChart")
+	public void getFlowChart (String id, HttpServletRequest request, HttpServletResponse response){
+		response.setContentType("image/png");//设置相应类型,告诉浏览器输出的内容为图片
+		response.setHeader("Pragma", "No-cache");//设置响应头信息，告诉浏览器不要缓存此内容
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expire", 0);
+		try
+		{
+			vacationServices.getFlowImgByInstanceId(id,response.getOutputStream());
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+
 	}
 }

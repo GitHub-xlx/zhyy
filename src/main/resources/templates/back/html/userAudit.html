@@ -26,6 +26,13 @@
     <h3 id="fun_title4">审核意见</h3>
     <textarea id="text1" placeholder="请输入意见（必填）"></textarea>
 </div>
+<div id="tb1" style="display: none">
+    <table class="layui-hide" id="test5" lay-filter="drug5"></table>
+</div>
+<div id="img" style="display: none">
+    <h3 id="fun_title5">流程状态</h3>
+    <img id="imgProcess" src=""  alt="流程已结束"/>
+</div>
 
 <script th:src="@{static/back/js/jquery-3.4.1.js}"></script>
 <script th:src= "@{static/layui/layui.js}"></script>
@@ -33,8 +40,17 @@
 <script type="text/html" id="toolbar1">
 	<a class="layui-btn layui-btn-sm background-style" lay-event="schedule">查看进度</a>
 </script>
-<script type="text/html" id="toolbar2">
+<!--<script type="text/html" id="toolbar2">-->
+<!--    <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>-->
+<!--</script>-->
+<script type="text/html" id="titleTpl">
+    {{#  if(d.start = 1){ }}
     <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
+    <a class="layui-btn layui-btn-sm background-style" lay-event="modify">修改</a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
+    {{#  } }}
 </script>
+
 </body>
 </html>

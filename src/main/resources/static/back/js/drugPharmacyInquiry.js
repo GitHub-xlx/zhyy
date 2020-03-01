@@ -5,7 +5,7 @@
  * @Param
  * @return
  **/
-layui.use('table', function(){
+layui.use(['form', 'layer', 'jquery', 'table', 'laydate'], function () {
 	var table = layui.table;
 	var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 	var form = layui.form;

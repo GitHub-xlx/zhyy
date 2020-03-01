@@ -14,7 +14,7 @@ public class Inventorycheck
 
   private long ditid;
   private String drugcode;
-  private String commonname;
+  private String commoname;
   private long druginventorynumber;
   private long drugminimums;
   private String drugunit;
@@ -24,14 +24,14 @@ public class Inventorycheck
   private String drugstatus;
   private String pharmacynumber;
 
-  public String getCommonname()
+  public String getCommoname()
   {
-    return commonname;
+    return commoname;
   }
 
-  public void setCommonname(String commonname)
+  public void setCommoname(String commoname)
   {
-    this.commonname = commonname;
+    this.commoname = commoname;
   }
 
   public long getDitid() {

@@ -62,6 +62,13 @@ public class DrugController
 		tableMsg.setData(drugsales);
 		return tableMsg;
 	}
+	/**
+	 * @Description  药品请领查询
+	 * @author xlx
+	 * @Date 上午 11:31 2020/2/29 0029
+	 * @Param
+	 * @return
+	 **/
 	@RequestMapping("/selectclaim")
 	public @ResponseBody
 	TableMsg selectclaim(int limit,int page,String commoname,String pincode, HttpServletRequest request){
@@ -264,7 +271,6 @@ public class DrugController
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
 	}
-
 	/**
 	 * 根据药库入库信息对象作为参数保存入库信息
 	 * @author cbd
@@ -284,6 +290,25 @@ public class DrugController
 		}
 
 		return state;
+	}
+
+	@RequestMapping("/selectInventorycheck")
+	@ResponseBody
+	TableMsg selectInventorycheck (int page,int limit,String commonname,String specialmedicine)
+	{
+		//开启分页
+		PageHelper.startPage(page,limit);
+		List<Inventorycheck> list = drugServices.selectInventorycheck(commonname,specialmedicine);
+		PageInfo pageInfo = new PageInfo(list);
+		System.out.println(111111);
+		System.out.println(pageInfo.getList());
+		System.out.println(111111);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int)pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
 	}
 
 
