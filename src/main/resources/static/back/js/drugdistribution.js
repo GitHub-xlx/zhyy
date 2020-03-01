@@ -61,22 +61,17 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 		]]
 		, data: drugDate
 	});
-	var classcode = $('#classcode').val();
 	$("#query_bt").click(function () {
-		if (classcode != "-1") {
-			table.reload('drugTable', {
-				url: "drugController/selectdruginventory"
-				, where: { //设定异步数据接口的额外参数，任意设
-					classcode: $('#classcode').val(),
-					commoname: $('#commoname').val()
-				}
-				, page: {
-					curr: 1 //重新从第 1 页开始
-				}
-			});
-		} else {
-			layer.alert("请选择药品种类");
-		}
+		table.reload('drugTable', {
+			url: "drugController/selectdruginventory"
+			, where: { //设定异步数据接口的额外参数，任意设
+				classcode: $('#classcode').val(),
+				commoname: $('#commoname').val()
+			}
+			, page: {
+				curr: 1 //重新从第 1 页开始
+			}
+		});
 	});
 	// 最终确认发药
 	$("#confirmation").click(function () {
@@ -104,10 +99,11 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 						},
 						success: function (res) {
 							if (res === "success") {
-								layer.alert("发药成功！");
-							}else if(res==="failed"){
+								alert("发药成功！");
+								window.location.reload();
+							} else if (res === "failed") {
 								layer.alert("发药失败！");
-							}else if(res==="conflict"){
+							} else if (res === "conflict") {
 								layer.alert("药品有冲突，请重新选择！")
 							}
 						},

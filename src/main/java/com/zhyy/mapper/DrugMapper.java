@@ -148,8 +148,8 @@ public interface DrugMapper
 	 * @param drugcode
 	 * @return
 	 */
-	@Select("select count(*) from drugcompatibilitycontraindications  where drugcodeA= '${drugcode}'")
-	int selectDrugcompatibilitycontraindications(String drugcode);
+	@Select("select count(*) from drugcompatibilitycontraindications  where drugcodeA= '${drugcode1}' and drugcodeB= '${drugcode2}'")
+	int selectDrugcompatibilitycontraindications(String drugcode1,String drugcode2);
 
 
 	/**

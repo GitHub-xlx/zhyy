@@ -99,16 +99,43 @@ public class DrugController
 		int k=0;
 		String res="";
 		int count=0;
-		int[] countnum = new int[list1.size()];
-		for (int i = 0; i < list1.size() ; i++)
+		int size = list1.size();
+		int[] countnum = new int[size];
+		int[] countnum2 = new int[size];
+		for (int i = 0; i < countnum2.length; i++)
 		{
-			count=drugServices.selectDrugcompatibilitycontraindications(list1.get(i).getDrugcode());
-			countnum[i]=count;
+			countnum2[i]=0;
+		}
+
+		for (int i = 0; i < size ; i++)
+		{
+			if(size==1){
+				break;
+			}else if(size>1){
+				if(i<size-1){
+					count=drugServices.selectDrugcompatibilitycontraindications(list1.get(i).getDrugcode(),list1.get(i+1).getDrugcode());
+					countnum[i]=count;
+				}else if(i==size-1){
+					for (int l = size; l > 0 ; l--)
+					{
+						if(l>1){
+							count=drugServices.selectDrugcompatibilitycontraindications(list1.get(l-1).getDrugcode(),list1.get(l-2).getDrugcode());
+							countnum2[l-1]=count;
+						}else{
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		for (int i = 0; i < countnum.length; i++)
 		{
 			count = countnum[i]+count;
+		}
+		for (int i = 0; i < countnum2.length; i++)
+		{
+			count = countnum2[i]+count;
 		}
 		if(count==0){
 			for (int i = 0; i < list1.size(); i++)

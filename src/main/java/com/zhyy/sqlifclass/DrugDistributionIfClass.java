@@ -13,7 +13,7 @@ public class DrugDistributionIfClass
 	 */
 	public String selectdruginventorylist(String pharmacycode,String classcode,String commoname, int nowpage, int size) {
 		StringBuffer sql = new StringBuffer("SELECT  * FROM  (SELECT * FROM druginventorytable where pharmacynumber = "+pharmacycode+")B left join druginformation A on A.drugcode=B.drugcode where 1=1 ");
-		if (classcode != null && !("".equals(classcode))) {
+		if (classcode != null && !("-1".equals(classcode))  && !("".equals(classcode))) {
 			sql.append(" AND A.classcode = '" + classcode + "'");
 		}
 		if (commoname != null && !("".equals(commoname))) {
@@ -33,7 +33,7 @@ public class DrugDistributionIfClass
 	 */
 	public String countdruginventorylist(String pharmacycode,String classcode,String commoname) {
 		StringBuffer sql = new StringBuffer("SELECT  COUNT(*) FROM  (SELECT * FROM druginventorytable where pharmacynumber = "+pharmacycode+")B left join druginformation A on A.drugcode=B.drugcode where 1=1 ");
-		if (classcode != null && !("".equals(classcode))) {
+		if (classcode != null && !("-1".equals(classcode)) && !("".equals(classcode))) {
 			sql.append(" AND A.classcode = '" + classcode + "'");
 		}
 		if (commoname != null && !("".equals(commoname))) {

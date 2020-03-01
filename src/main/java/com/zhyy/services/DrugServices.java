@@ -115,10 +115,11 @@ public interface DrugServices
 
 	/**
 	 * 配伍禁忌
-	 * @param drugcode
+	 * @param drugcode1
+	 * @param drugcode2
 	 * @return
 	 */
-	int selectDrugcompatibilitycontraindications(String drugcode);
+	int selectDrugcompatibilitycontraindications(String drugcode1,String drugcode2);
 
 
 

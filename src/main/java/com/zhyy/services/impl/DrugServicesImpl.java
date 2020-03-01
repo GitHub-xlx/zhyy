@@ -77,9 +77,9 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public int selectDrugcompatibilitycontraindications(String drugcode)
+	public int selectDrugcompatibilitycontraindications(String drugcode1,String drugcode2)
 	{
-		return drugMapper.selectDrugcompatibilitycontraindications(drugcode);
+		return drugMapper.selectDrugcompatibilitycontraindications(drugcode1, drugcode2);
 	}
 
 
