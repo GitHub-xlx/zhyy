@@ -66,7 +66,7 @@ layui.use(['table', 'jquery', 'form'], function () {
 			$.ajax({
 				type: "POST", //请求方式
 				url: 'userController/disable', // 请求路径
-				data: {account: data.account},
+				data: {account: data.account,},
 				success: function (msg) {
 					if (msg === '1') {
 						layer.alert("禁用成功");
@@ -83,23 +83,55 @@ layui.use(['table', 'jquery', 'form'], function () {
 
 		}else if (layEvent === 'update') {
 			// layer.msg('修改操作');
-			$.ajax({
-				type: "POST", //请求方式
-				url: 'userController/', // 请求路径
-				// data: {:},
-				success: function (msg) {
-					if (msg === '1') {
-						layer.alert("修改成功");
-						table.reload('idTest');
-					} else {
-						layer.alert("修改失败，请重新尝试");
-					}
-				},//响应成功后的回调函数
-				error: function () {
-					alert("服务器繁忙")
-				},//表示如果请求响应出现错误，会执行的回调函数
-				dataType: "text"//设置接受到的响应数据的格式
+
+			layer.open({
+				type: 2, //设置类型 默认为0， 1：页面层  2：iframe层
+				title: "用户信息修改",
+				content: "jump/back/updateStaff",
+				skin: 'layui-layer-molv',
+				area: ['700px', '500px'],
+				offset: 'auto',
+				icon: 1,//只对type=0的有效
+				shadeClose: true
+				, anim: 4
+				, maxmin: true //是否显示最大化和最小化的按钮 对type=1 type=2有效
+				, success: function () {
+					JSON.stringify(data);
+					layer.alert('编辑行：<br>'+ JSON.stringify(data));
+
+				// 	//将数据赋值到新页面上
+				// 	$.ajax({
+				// 		type: "POST", //请求方式
+				// 		url: 'userController/assignment', // 请求路径
+				// 		data: {account: data.account,username:data.username,phone:data.phone,sex:data.sex,age:data.age
+				// 			,department:data.department,position:data.position,rolecode:data.rolecode},
+				// 		success: function (msg) {
+				//
+				// 		},//响应成功后的回调函数
+				// 		error: function () {
+				// 			alert("服务器繁忙")
+				// 		},//表示如果请求响应出现错误，会执行的回调函数
+				// 		dataType: "text"//设置接受到的响应数据的格式
+				// 	});
+				}
 			});
+			// $.ajax({
+			// 	type: "POST", //请求方式
+			// 	url: 'userController/', // 请求路径
+			// 	// data: {:},
+			// 	success: function (msg) {
+			// 		if (msg === '1') {
+			// 			layer.alert("修改成功");
+			// 			table.reload('idTest');
+			// 		} else {
+			// 			layer.alert("修改失败，请重新尝试");
+			// 		}
+			// 	},//响应成功后的回调函数
+			// 	error: function () {
+			// 		alert("服务器繁忙")
+			// 	},//表示如果请求响应出现错误，会执行的回调函数
+			// 	dataType: "text"//设置接受到的响应数据的格式
+			// });
 
 		} else if (layEvent === 'info') {
 			// layer.msg('重置密码操作');

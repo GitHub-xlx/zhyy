@@ -45,15 +45,16 @@ layui.use(['form', 'layer', 'jquery', 'table', 'laydate'], function () {
 		//药品调价 注意!!! 大于成本价 小于政府指导价？修改的价格可以是带小数点？修改的是哪个药品的价格？
 		if (layEvent === 'adjustment') {
 			layer.prompt(function (val, index) {
-				// layer.msg('得到了'+val+"当前价格："+data.currentprice+",政府指导价:"+data.governmentpricing);
+				layer.msg('得到了'+val+"当前价格："+data.currentprice+",政府指导价:"+data.governmentpricing);
 				layer.close(index);
-				if(val>data.governmentpricing){
+
+				if(parseFloat(val)>data.governmentpricing){
 					alert("当前调价价格不能大于政府指导价")
 				}else{
 					$.ajax({
 						type: "POST", //请求方式
 						url: 'userController/adjustmentPrice', // 请求路径
-						data: {price: val,beforePrice:data.currentprice,drugCode:data.drugcode},
+						data: {price:val,beforePrice:data.currentprice,drugCode:data.drugcode},
 						success: function (msg) {
 							if (msg === '1') {
 								layer.alert("调价成功");

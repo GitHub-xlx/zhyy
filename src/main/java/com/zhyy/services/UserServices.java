@@ -18,6 +18,7 @@ public interface UserServices
 	public List<User> checkUser();
 	public boolean regStaff(String account,String password,String username,String phone,String sex,
 	                        String age,String role,String title,String rolecode,String pharmacycode,String state);
+	public boolean updateStaff(String password,String username,String phone,String sex,String age,String role,String title,String rolecode);
 	public boolean resetPassword(String account);
 	public boolean enableUser(String account);
 	public boolean disableUser(String account);
@@ -25,6 +26,8 @@ public interface UserServices
 	public boolean adjustmentPrice2(double priceNow,double beforeprice,String drugCode,String dataTime);
 	public boolean drugDiscontinuation(String drugcode);
 	public boolean drug2Discontinuation(String drugcode);
+	public boolean drugEnable(String drugcode);
+	public boolean drugEnable2(String drugcode);
 	public List<Drugstoredruginventory> checkInventoryCount();
 	public List<Druginventorytable> checkPharmacyInventoryCount();
 	public String findDrugNameByDrugCode(String drugcode);

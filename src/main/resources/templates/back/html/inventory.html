@@ -9,13 +9,33 @@
 <body>
 
 <div class="layui-btn-group demoTable">
-    <button class="layui-btn" data-type="getCheckData">保存</button>
+    <button class="layui-btn layui-btn-warm" data-type="getCheckData">保存</button>
 </div>
 
     <table class="layui-hide" id="demo2" lay-filter="test2"></table>
 
+<h1  align="center">盘点清单</h1>
+<h3>红色表示盘盈，绿色表示盘亏</h3>
+    <table class="layui-hide" id="demo" lay-filter="test"></table>
+
+<script type="text/html" id="Top1">
+    {{#  if(d.druginventorynumber > d.finishedquantity){ }}
+    <span style="background-color: #00FF00;">{{ d.relativequantity }}</span>
+    {{#  } else { }}
+    <span style="background-color: #FF5722;">{{ d.relativequantity }}</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="Top2">
+    {{#  if(d.druginventorynumber > d.finishedquantity){ }}
+    <span style="color: #00FF00;">{{ d.relativeamount }}</span>
+    {{#  } else { }}
+    <span style="color: #FF5722;">{{ d.relativeamount }}</span>
+    {{#  } }}
+</script>
 
 <script type="text/html" id="toolbarDemo">
+
 </script>
 
 <script th:src="@{static/layui/layui.js}"></script>

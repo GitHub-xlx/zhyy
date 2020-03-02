@@ -325,6 +325,69 @@ public class UserController
 		}
 		return msg;
 	}
+
+//	//赋值
+//	@ResponseBody
+//	@RequestMapping("/assignment")
+//	public void assignment(String account,String username, String phone,
+//	                       String sex,String age,String department,String position,String rolecode,HttpServletRequest request){
+//		System.out.println("执行到赋值");
+//		request.setAttribute("account",account);
+//		request.setAttribute("username",username);
+//		request.setAttribute("phone",phone);
+//		request.setAttribute("sex",sex);
+//		request.setAttribute("age",age);
+//		request.setAttribute("department",department);
+//		request.setAttribute("position",position);
+//		request.setAttribute("rolecode",rolecode);
+//
+//	}
+
+
+//	//用户修改
+//	@ResponseBody
+//	@RequestMapping("/updateStaff")
+//	public String updateStaff(String password2,String username2, String phone2,
+//	                       String sex2,String age2,String roles,String titles){
+//		System.out.println("执行到用户修改");
+//
+//		String wheres="";
+//
+//		String role="";
+//		String title="";
+//		if(roles.equals("01")){
+//			role="药库";
+//			if(titles.equals("001")){
+//				title="库管人员";
+//
+//			}else if(titles.equals("002")){
+//				title="仓库经理";
+//			}else{
+//				title="采购人员";
+//			}
+//
+//		}else{
+//			role="药房";
+//			if(titles.equals("003"))
+//			{
+//				title = "药房销售";
+//			}else{
+//				title="药房经理";
+//			}
+//		}
+//
+//
+//		boolean b=userServices.updateStaff(password2,username2,phone2,sex2,age2,role,title,titles);
+//		System.out.println("b:"+b);
+//		String msg="";
+//		if(b){
+//			msg="1";
+//		}else{
+//			msg="2";
+//		}
+//		return msg;
+//	}
+
 	//重置密码
 	@ResponseBody
 	@RequestMapping("/resetPassword")
@@ -391,7 +454,7 @@ public class UserController
 
 		String dataTime = dateFormat.format(date);
 
-        if(Integer.valueOf(str)>priceNow){
+        if(Double.valueOf(str)>priceNow){
 	        msg="3";
         }else{
 	        boolean b=userServices.adjustmentPrice(priceNow,drugCode);
@@ -431,5 +494,24 @@ public class UserController
 		return msg;
 	}
 
-
+	//药品启用
+	@ResponseBody
+	@RequestMapping("/drugEnable")
+	public String drugEnable(String drugcode){
+		System.out.println("药品启用");
+		boolean b=userServices.drugEnable(drugcode);
+		System.out.println("b:"+b);
+		String msg="";
+		if(b){
+			boolean b2=userServices.drugEnable2(drugcode);
+			if(b2){
+				msg="1";
+			}else{
+				msg="2";
+			}
+		}else{
+			msg="2";
+		}
+		return msg;
+	}
 }

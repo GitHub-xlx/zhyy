@@ -50,6 +50,12 @@ public class UserServicesImpl implements UserServices
 		return userMapper.regStaff(account,password,username,phone,sex,age,role,title,rolecode,pharmacycode,state);
 	}
 
+	@Override
+	public boolean updateStaff(String password, String username, String phone, String sex, String age, String role, String title, String rolecode)
+	{
+		return userMapper.updateStaff(password,username,phone,sex,age,role,title,rolecode);
+	}
+
 	//重置密码
 	@Override
 	public boolean resetPassword(String account)
@@ -91,6 +97,19 @@ public class UserServicesImpl implements UserServices
 	public boolean drug2Discontinuation(String drugcode)
 	{
 		return userMapper.drug2Discontinuation(drugcode);
+	}
+
+	//药品启用(药库的药品状态)
+	@Override
+	public boolean drugEnable(String drugcode)
+	{
+		return userMapper.drugEnable(drugcode);
+	}
+	//药品启用(药房的药品状态)
+	@Override
+	public boolean drugEnable2(String drugcode)
+	{
+		return userMapper.drugEnable2(drugcode);
 	}
 
 	//查询药库库存数量不足的药品

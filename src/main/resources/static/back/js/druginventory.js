@@ -38,74 +38,7 @@ layui.use(['table', 'jquery','form'], function () {
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25]
 	});
-	// table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-	// 	var data = obj.data //获得当前行数据
-	// 		, layEvent = obj.event; //获得 lay-event 对应的值
-	//
-	// 	if (layEvent === 'open') {
-	// 		// layer.msg('启用操作');
-	// 		$.ajax({
-	// 			type: "POST", //请求方式
-	// 			url: 'userController/enable', // 请求路径
-	// 			data: {account: data.account},
-	// 			success: function (msg) {
-	// 				if (msg === '1') {
-	// 					layer.alert("启用成功");
-	// 					table.reload();
-	// 				} else {
-	// 					layer.alert("启用失败，请重新尝试");
-	// 				}
-	// 			},//响应成功后的回调函数
-	// 			error: function () {
-	// 				alert("服务器繁忙")
-	// 			},//表示如果请求响应出现错误，会执行的回调函数
-	// 			dataType: "text"//设置接受到的响应数据的格式
-	// 		});
-	//
-	// 	} else if (layEvent === 'close') {
-	// 		// layer.msg('禁用操作');
-	// 		$.ajax({
-	// 			type: "POST", //请求方式
-	// 			url: 'userController/disable', // 请求路径
-	// 			data: {account: data.account},
-	// 			success: function (msg) {
-	// 				if (msg === '1') {
-	// 					layer.alert("禁用成功");
-	// 					table.reload();
-	// 				} else {
-	// 					layer.alert("禁用失败，请重新尝试");
-	// 				}
-	// 			},//响应成功后的回调函数
-	// 			error: function () {
-	// 				alert("服务器繁忙")
-	// 			},//表示如果请求响应出现错误，会执行的回调函数
-	// 			dataType: "text"//设置接受到的响应数据的格式
-	// 		});
-	//
-	// 	} else if (layEvent === 'info') {
-	// 		// layer.msg('重置密码操作');
-	// 		layer.confirm('确定重置' + data.account + '密码？', function (index) {
-	// 			layer.close(index);
-	// 			$.ajax({
-	// 				type: "POST", //请求方式
-	// 				url: 'userController/resetPassword', // 请求路径
-	// 				data: {uaccount: data.account},
-	// 				success: function (msg) {
-	// 					if (msg === '1') {
-	// 						layer.alert("密码重置成功");
-	// 						table.reload();
-	// 					} else {
-	// 						layer.alert("密码重置失败，请重新尝试");
-	// 					}
-	// 				},//响应成功后的回调函数
-	// 				error: function () {
-	// 					alert("服务器繁忙")
-	// 				},//表示如果请求响应出现错误，会执行的回调函数
-	// 				dataType: "text"//设置接受到的响应数据的格式
-	// 			});
-	//  		});
-	//  	}
-	//
-	// })
+
+
 
 });

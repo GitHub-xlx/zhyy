@@ -234,7 +234,6 @@ public interface DrugServices
 	//统计药房--库存列表数量
 	int countDrugInventoryList();
 
-
 	///低限报警的-------------------
 	//查询药房--库存列表
 	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
@@ -266,7 +265,19 @@ public interface DrugServices
 	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
 	int countInventoryTableList();
 
-	List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine);
+	boolean deleteAfterInventory();
+    //盘点之后
+	List <AfterInventory>queryAfterInventoryList(int pageInt,int limitInt);
+	int countAfterInventoryList();
+
+	//盘点之后药房库存数量变更
+	boolean updateDruginventoryCount(String drugcode,int finishedquantity);
+
+
+	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
+	//List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine);
+
+	boolean insertInventory(String drugcode,String specification,String drugunit,String lotnumber,int druginventorynumber,int relativequantity,int finishedquantity,double wholesaleprice,double relativeamount);
 
 	/**
 	 * 查询药库药品库存表信息

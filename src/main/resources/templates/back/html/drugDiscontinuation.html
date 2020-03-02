@@ -11,7 +11,11 @@
 
 <table class="layui-hide" id="demo" lay-filter="test"></table>
 <script type="text/html" id="barDemo">
+    {{# if(d.drugstatus =='已过期' || d.drugstatus =='已滞销' || d.drugstatus =='已报损'){  }}
+    {{#      }else{      }}
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="disable">停用</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="open">启用</a>
+    {{#      }      }}
 </script>
 
 <script th:src="@{static/layui/layui.js}"></script>

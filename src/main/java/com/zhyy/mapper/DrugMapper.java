@@ -244,6 +244,28 @@ public interface DrugMapper
 	@Select("select count(*) from druginventorytable")
 	int countInventoryTableList();
 
+	//清理盘点数据
+	@Delete("delete from afterinventory")
+	boolean deleteAfterInventory();
+
+	//盘点之后查询
+	@Select("select A.*,B.commoname,B.specification,B.wholesaleprice from afterinventory A,druginformation B where A.drugcode=B.drugcode")
+	List <AfterInventory>queryAfterInventoryList(int pageInt,int limitInt);
+	@Select("select count(*) from afterinventory")
+	int countAfterInventoryList();
+
+
+	//盘点之后插入数据
+    @Insert("insert into afterinventory (drugcode,specification,drugunit,lotnumber,druginventorynumber,relativequantity,finishedquantity,wholesaleprice,relativeamount)" +
+		    " values (#{drugcode},#{specification},#{drugunit},#{lotnumber},#{druginventorynumber},#{relativequantity},#{finishedquantity},#{wholesaleprice},#{relativeamount})")
+    boolean insertInventory(String drugcode,String specification,String drugunit,String lotnumber,int druginventorynumber,int relativequantity,int finishedquantity,double wholesaleprice,double relativeamount);
+
+	//盘点之后药房库存数量调整
+	@Update("update druginventorytable set druginventorynumber = #{finishedquantity} where drugcode = #{drugcode}")
+	boolean updateDruginventoryCount(String drugcode,int finishedquantity);
+
+
+
 
 	/**
 	 * @Description  批量插入药库出库

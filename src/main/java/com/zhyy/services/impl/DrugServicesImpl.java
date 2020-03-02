@@ -212,6 +212,12 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
+	public boolean insertInventory(String drugcode, String specification, String drugunit, String lotnumber, int druginventorynumber, int relativequantity, int finishedquantity, double wholesaleprice, double relativeamount)
+	{
+		return drugMapper.insertInventory(drugcode,specification,drugunit,lotnumber,druginventorynumber,relativequantity,finishedquantity,wholesaleprice,relativeamount);
+	}
+
+	@Override
 	public List<Drugstoredruginventory> selectDrugStoreInventory()
 	{
 		return drugMapper.selectDrugStoreInventory();
@@ -300,6 +306,30 @@ public class DrugServicesImpl implements DrugServices
 	public int countInventoryTableList()
 	{
 		return drugMapper.countInventoryTableList();
+	}
+
+	@Override
+	public boolean deleteAfterInventory()
+	{
+		return drugMapper.deleteAfterInventory();
+	}
+
+	@Override
+	public List<AfterInventory> queryAfterInventoryList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryAfterInventoryList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countAfterInventoryList()
+	{
+		return drugMapper.countAfterInventoryList();
+	}
+
+	@Override
+	public boolean updateDruginventoryCount(String drugcode, int finishedquantity)
+	{
+		return drugMapper.updateDruginventoryCount(drugcode,finishedquantity);
 	}
 
 	@Override
