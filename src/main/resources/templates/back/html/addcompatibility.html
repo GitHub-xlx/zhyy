@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新增配伍禁忌</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}"/>
+</head>
+<body>
+<h3 id="fun_title">新增配伍禁忌</h3>
+<form class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="margin-left:20px;text-align: left">选择药品编号A：</label>
+            <div class="layui-input-inline">
+                <select lay-filter="choosedrugcodeA" id="choosedrugcodeA" name="choosedrugcodeA">
+                    <option value="请选择药品编号A">请选择药品编号A</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="margin-left:20px;text-align: left">选择药品编号B：</label>
+            <div class="layui-input-inline">
+                <select lay-filter="choosedrugcodeB" id="choosedrugcodeB" name="choosedrugcodeB">
+                    <option value="">请选择药品编号B</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">禁忌说明：</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请填写禁忌说明" autocomplete="off"
+                          lay-verify="required" id="msg" type="text" name="msg" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item" align="center" style="margin-left: 100px">
+            <div class="layui-input-inline">
+                <button class="layui-btn " id="confirm_bt" type="button">确认添加</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script th:src="@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/addCompatibility.js}"></script>
+</body>
+</html>

@@ -11,12 +11,20 @@
 
 <div id="addstaffdiv" style=" padding: 10px">
 
-    <form class="layui-form" action="">
+    <form class="layui-form" >
         <div class="layui-form-item">
             <label class="layui-form-label">账号</label>
             <div class="layui-input-inline">
                 <input type="text" id="account" name="account" required lay-verify="required" autocomplete="off"
                        class="layui-input">
+            </div>
+            <!-- 对号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="ri" style="color: green;font-weight: bolder;" hidden></i>
+            </div>
+            <!-- 错号 -->
+            <div class="layui-inline">
+                <i class="layui-icon" id="wr" style="color: red; font-weight: bolder;" hidden>ဆ</i>
             </div>
         </div>
         <div class="layui-form-item">
@@ -101,7 +109,7 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit" >保存</button>
+                <button class="layui-btn" lay-filter="formDemo" id="submit" >保存</button>
             </div>
         </div>
     </form>

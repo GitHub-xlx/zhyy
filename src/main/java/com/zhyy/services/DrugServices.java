@@ -1,6 +1,8 @@
 package com.zhyy.services;
 
 import com.zhyy.entity.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,7 +98,7 @@ public interface DrugServices
 	 * @param lotnumber
 	 * @param specialmedicine
 	 * @param asktime
-	 * @param reviewtime
+	 * @param receivetime
 	 * @param operatingtime
 	 * @param pharmacynumber
 	 * @param asker
@@ -121,7 +123,29 @@ public interface DrugServices
 	 */
 	int selectDrugcompatibilitycontraindications(String drugcode1,String drugcode2);
 
+	/**
+	 * 配伍禁忌列表
+	 * @return
+	 */
+	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
+	/**
+	 * 配伍禁忌列表总数
+	 * @return
+	 */
+	int selectcountcompatibilityList(String drugcode);
+
+	/**
+	 * 查找药品信息表中的drugcode
+	 * @param drugcode
+	 * @return
+	 */
+	List<Druginformation> queryDrugcode(String drugcode);
+
+	/**
+	 * 新增配伍禁忌
+	 */
+	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
 
 	/**
 	 * @Description  通过药品常用名称和拼音码查找药品信息表
@@ -217,6 +241,25 @@ public interface DrugServices
 	//统计药房--库存列表数量
 	int countDrugInventoryList();
 
+
+	///低限报警的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countPharmacyLowLimitDrugsList();
+
+	///过期的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryExpiredList();
+
+	///滞销的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryUnsalableList();
+
 	//查询药库--库存列表
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
 	//统计药库--库存列表数量
@@ -246,5 +289,20 @@ public interface DrugServices
 	 * @return 返回保存结果状态int值 作为判断成功
 	 */
 	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
+
+	/**
+	 * 药品采购登记
+	 * @author cbd
+	 * @param purchaseStatistics 药品采购信息对象
+	 * @return 返回int型 判断
+	 */
+	public  int  savePurchaseStatistics(Purchasestatistics purchaseStatistics);
+
+	/**
+	 * 查询采购登记表的信息
+	 * @author cbd
+	 * @return 返回采购登记表的所有数据list
+	 */
+	public List<Purchasestatistics> selectPurchaseStatistics();
 
 }

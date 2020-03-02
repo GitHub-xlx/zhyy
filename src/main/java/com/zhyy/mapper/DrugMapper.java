@@ -2,6 +2,7 @@ package com.zhyy.mapper;
 
 
 import com.zhyy.entity.*;
+import com.zhyy.sqlifclass.CompatibilityIfClass;
 import com.zhyy.sqlifclass.DrugDistributionIfClass;
 import com.zhyy.sqlifclass.DrugPriceIfClass;
 import com.zhyy.sqlifclass.DrugSaleIfClass;
@@ -145,11 +146,42 @@ public interface DrugMapper
 
 	/**
 	 * 查找药品配伍禁忌
-	 * @param drugcode
+	 * @param drugcode1
+	 * @param drugcode2
 	 * @return
 	 */
 	@Select("select count(*) from drugcompatibilitycontraindications  where drugcodeA= '${drugcode1}' and drugcodeB= '${drugcode2}'")
 	int selectDrugcompatibilitycontraindications(String drugcode1,String drugcode2);
+
+	/**
+	 * 药品配伍禁忌列表
+	 */
+	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
+	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+
+	/**
+	 * 药品配伍禁忌列表总数
+	 */
+	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcountcompatibilityList")
+	int selectcountcompatibilityList(String drugcode);
+
+	/**
+	 * 查找药品信息表中所有的drugcode
+	 */
+	@Select("select * from druginformation where ${where}")
+	List<Druginformation> queryDrugcode(String where);
+
+	/**
+	 * 新增配伍禁忌
+	 */
+	@Insert({
+			"<script>",
+			"insert into drugcompatibilitycontraindications(drugcodeA,drugcodeB,contraindications) values ",
+			"(#{drugcodeA}, #{drugcodeB},#{contraindications})",
+			"</script>"
+	})
+	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
+
 
 
 	/**
@@ -169,6 +201,31 @@ public interface DrugMapper
 	//统计药房--库存列表数量
 	@Select("select count(*) from druginventorytable")
 	int countDrugInventoryList();
+
+	///低于最低数量的---------------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums  limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countPharmacyLowLimitDrugsList();
+
+	///过期的---------------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname,B.shelflife from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.drugstatus= '已过期' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryExpiredList();
+
+	///滞销的-------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname,C.receivetime from druginventorytable A,druginformation B,pharmacydrugschedule C where A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryUnsalableList();
+
 
 	//查询药库--库存列表
 	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
@@ -346,6 +403,23 @@ public interface DrugMapper
 	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where #{where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
+
+	/**
+	 * 药品采购登记,即新增采购药品信息
+	 * @author cbd
+	 * @param purchaseStatistics 药品采购信息对象
+	 * @return 返回int型 判断
+	 */
+	@Insert("INSERT INTO `purchasestatistics`( `drugcode`, `purchasenumber`, `totalpurchasemount`, `purchasetime`, `buyer`, `operator`, `state`, `lotnumber`, `date`)  VALUES  ( #{drugcode},#{ purchasenumber},#{ totalpurchasemount},#{ purchasetime},#{ buyer},#{ operator},#{ state},#{ lotnumber},#{ date})")
+	int  savePurchaseStatistics(Purchasestatistics purchaseStatistics);
+
+	/**
+	 * 查询采购登记表的信息
+	 * @author cbd
+	 * @return 返回采购登记表的所有数据list
+	 */
+	@Select("select * from purchasestatistics ")
+	List<Purchasestatistics> selectPurchaseStatistics();
 
 
 }

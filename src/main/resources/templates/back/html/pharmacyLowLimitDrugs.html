@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>药房药品低限报警</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+</head>
+<body>
+
+
+<table class="layui-hide" id="demo" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="withdrawal">请领</a>
+</script>
+
+<script th:src="@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/pharmacyLowLimitDrugs.js}"></script>
+</body>
+</html>

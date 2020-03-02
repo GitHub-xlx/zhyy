@@ -3,6 +3,7 @@ package com.test;
 import com.zhyy.MySpringbootApplication;
 import com.zhyy.entity.Druginformation;
 import com.zhyy.entity.Drugstoredruginventory;
+import com.zhyy.entity.Purchasestatistics;
 import com.zhyy.entity.User;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.mapper.UserMapper;
@@ -58,13 +59,22 @@ public class MySpringbootApplicationTest
 //		int i = drugMapper.saveDrugInfo(druginformation);
 //		List<Drugstoredruginventory> list = drugMapper.selectDrugStoreInventory();
 		////		System.out.println("DrugInformation的结果="+list.toString());
+//
+//		Drugstoredruginventory test = new Drugstoredruginventory();
+//		test.setDrugcode("测试国字号");
+//		test.setDrugstatus("启用");
+//		test.setDruginventory(1);
+//		int i = drugMapper.saveDrugStoreInventory(test);
+//		System.out.println("test测试结果="+i);
 
-		Drugstoredruginventory test = new Drugstoredruginventory();
-		test.setDrugcode("测试国字号");
-		test.setDrugstatus("启用");
-		test.setDruginventory(1);
-		int i = drugMapper.saveDrugStoreInventory(test);
-		System.out.println("test测试结果="+i);
+//		Purchasestatistics test = new Purchasestatistics();
+//		test.setDrugcode("001国药准字H20070077");
+//		test.setOperator("药库管理员");
+//		test.setDate("2020-02-09");
+//		int i = drugMapper.savePurchaseStatistics(test);
+		List<Purchasestatistics> list = drugMapper.selectPurchaseStatistics();
+		System.out.println("测试查询结果的：===="+list.size());
+
 
 
 	}

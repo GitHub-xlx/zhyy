@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -58,12 +59,14 @@ public class UserController
 					if(user.getState().equals("已启用")){
 						request.getSession().setAttribute("user",user);
 
-                        //登录成功检测库存
+                        //登录成功检测药库库存低限检测
 						checkInventory();
 						//药房过期药品检测
 						expiredCheck();
 						//药房滞销药品检测
 						unsalableCheck();
+						//药房库存低限检测
+						checkPharmacyInventory();
 
 						return new ResultInfo(200,"登录成功");
 					}else{
@@ -102,7 +105,8 @@ public class UserController
 		return "back/html/manage";
 	}
 
-	//检差库存的方法（不足则发送邮件警告）
+
+	//检差药库库存的方法（不足则发送邮件警告）
 	public void checkInventory(){
 		ArrayList<String>arrayList = new ArrayList<>();
 		//查询药库库存的药品的当前数量和最低数量
@@ -114,11 +118,30 @@ public class UserController
 				//根据药品编码查询药品名称
 				arrayList.add(userServices.findDrugNameByDrugCode(list.get(i).getDrugcode()));
 			}
-			QuartzTest.sendMail(String.valueOf(arrayList));
+			QuartzTest.sendMail(arrayList+"等这些药库库存数量");
 		}else{
 			System.out.println("库存足够!");
 		}
 	}
+
+	//检差药房库存的方法（不足则发送邮件警告）
+	public void checkPharmacyInventory(){
+		ArrayList<String>arrayList = new ArrayList<>();
+		//查询药房库存的药品的当前数量和最低数量
+		List<Druginventorytable>list=userServices.checkPharmacyInventoryCount();
+		if(list.size()>0){//遍历药库的药品数量是否小于最低限量
+			System.out.println(list.size()+"样药品库存不足!");
+			for (int i = 0; i <list.size(); i++)
+			{
+				//根据药品编码查询药品名称
+				arrayList.add(userServices.findDrugNameByDrugCode(list.get(i).getDrugcode()));
+			}
+			QuartzTest.sendMail(arrayList+"等这些药房库存数量");
+		}else{
+			System.out.println("库存足够!");
+		}
+	}
+
 	//检查药房药品是否过期的方法（如过期则发送邮件警告）
 	public void expiredCheck(){
 	List<Druginventorytable>list=userServices.expiredCheck();
@@ -142,10 +165,29 @@ public class UserController
 		if(yearNow==year){
 			System.out.println(list.get(i).getCommoname()+"等药品过期了！");
 			//接下来走药品停用的方法
-			drugDiscontinuation(list.get(i).getDrugcode());
+			expiredStatus(list.get(i).getDrugcode());
 		}
 	}
 	}
+	//设置药房药品状态为过期状态
+	public void expiredStatus(String drugcode){
+
+		System.out.println("执行到设置药房药品状态为过期状态");
+
+		boolean b=userServices.expiredStatus(drugcode);
+		boolean b2=userServices.expiredStatus2(drugcode);
+		if(b){
+			if(b2){
+				System.out.println("修改成功");
+			}else{
+				System.out.println("修改失败2");
+			}
+		}else{
+			System.out.println("修改失败");
+		}
+
+	}
+
 	//检查药房药品是否滞销方法（如滞销则发送邮件警告）
 	public void unsalableCheck(){
 		List<Druginventorytable>list=userServices.unsalableCheck();
@@ -165,14 +207,29 @@ public class UserController
 	            if (month == monthNow)
 	            {
 		            System.out.println(list.get(i).getCommoname() + "等药品已超过90天了！");
+		            unsalableStatus(list.get(i).getDrugcode());
 	            }
             }else
             {
 	            if ((month + 3) == monthNow)
 	            {
 		            System.out.println(list.get(i).getCommoname() + "等药品已超过90天了！");
+		            unsalableStatus(list.get(i).getDrugcode());
 	            }
             }
+		}
+	}
+
+	//设置药房药品状态为滞销状态
+	public void unsalableStatus(String drugcode){
+
+		System.out.println("执行到设置药房药品状态为过期状态");
+
+		boolean b=userServices.unsalableStatus(drugcode);
+		if(b){
+			System.out.println("修改成功");
+		}else{
+			System.out.println("修改失败");
 		}
 	}
 
@@ -209,6 +266,26 @@ public class UserController
 
 	}
 
+	//检测用户是否存在
+	@ResponseBody
+	@RequestMapping("/checkUser")
+	public String checkUser(String account){
+		System.out.println("执行到检测用户是否存在");
+		System.out.println("account:"+account);
+		List<User>list= userServices.checkUser();
+		String msg="";
+		for (int i = 0; i <list.size() ; i++)
+		{
+			if(list.get(i).getAccount().equals(account)){
+				msg="1";
+				break;
+			}else{
+				msg="2";
+			}
+		}
+		System.out.println("msg:"+msg);
+		return msg;
+	}
 
 	//新增人员
 	@ResponseBody
@@ -239,7 +316,7 @@ public class UserController
 			}
 		}
 		boolean b=userServices.regStaff(account2,password2,username2,phone2,sex2,age2,role,title,titles,"001","已启用");
-		System.out.println("b:"+b);
+		System.out.println("注册为:"+b);
 		String msg="";
 		if(b){
 			msg="1";
@@ -298,17 +375,39 @@ public class UserController
 	//药品调价
 	@ResponseBody
 	@RequestMapping("/adjustmentPrice")
-	public String adjustmentPrice(String price,String drugcode){
+	public String adjustmentPrice(String price,String beforePrice,String drugCode){
 		System.out.println("调价");
-		double priceNow =Double.valueOf(price);
-		boolean b=userServices.adjustmentPrice(priceNow,drugcode);
-		System.out.println("b:"+b);
 		String msg="";
-		if(b){
-			msg="1";
-		}else{
-			msg="2";
-		}
+		double priceNow =Double.valueOf(price);
+		double beforeprice =Double.valueOf(beforePrice);
+		String str=userServices.findDrugPriceByDrugCode(drugCode);
+
+		//得到long类型当前时间
+		long l = System.currentTimeMillis();
+		//new日期对象
+		Date date = new Date(l);
+		//转换提日期输出格式
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		String dataTime = dateFormat.format(date);
+
+        if(Integer.valueOf(str)>priceNow){
+	        msg="3";
+        }else{
+	        boolean b=userServices.adjustmentPrice(priceNow,drugCode);
+	        boolean b2=userServices.adjustmentPrice2(priceNow,beforeprice,drugCode,dataTime);
+	        System.out.println("b:"+b+",b2:"+b2);
+
+	        if(b){
+		        if(b2){
+			        msg="1";
+		        }else{
+			        msg="2";
+		        }
+	        }else{
+		        msg="2";
+	        }
+        }
 		return msg;
 	}
 	//药品停用

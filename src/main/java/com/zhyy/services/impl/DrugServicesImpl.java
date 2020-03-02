@@ -82,6 +82,33 @@ public class DrugServicesImpl implements DrugServices
 		return drugMapper.selectDrugcompatibilitycontraindications(drugcode1, drugcode2);
 	}
 
+	@Override
+	public List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode,int nowpage, int size)
+	{
+		return drugMapper.selectcompatibilityList(drugcode, nowpage, size);
+	}
+
+	@Override
+	public int selectcountcompatibilityList(String drugcode)
+	{
+		return drugMapper.selectcountcompatibilityList(drugcode);
+	}
+
+	@Override
+	public List<Druginformation> queryDrugcode(String drugcode)
+	{
+		String where="1=1 ";
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and drugcode <> '"+drugcode+"'" : where;
+		}
+		return drugMapper.queryDrugcode(where);
+	}
+
+	@Override
+	public int insertcompatibility(String drugcodeA, String drugcodeB, String contraindications)
+	{
+		return drugMapper.insertcompatibility(drugcodeA, drugcodeB, contraindications);
+	}
 
 	@Override
 	public List<Druginformation> selectDruginformation(String commonname, String pincode)
@@ -209,6 +236,42 @@ public class DrugServicesImpl implements DrugServices
 		return drugMapper.countDrugInventoryList();
 	}
 
+	@Override
+	public List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryPharmacyLowLimitDrugsList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countPharmacyLowLimitDrugsList()
+	{
+		return drugMapper.countPharmacyLowLimitDrugsList();
+	}
+
+	@Override
+	public List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryDrugInventoryExpiredList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countDrugInventoryExpiredList()
+	{
+		return drugMapper.countDrugInventoryExpiredList();
+	}
+
+	@Override
+	public List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryDrugInventoryUnsalableList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countDrugInventoryUnsalableList()
+	{
+		return drugMapper.countDrugInventoryUnsalableList();
+	}
+
 
 	@Override
 	public List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt, int limitInt)
@@ -240,5 +303,15 @@ public class DrugServicesImpl implements DrugServices
 		return drugMapper.countInventoryTableList();
 	}
 
+	@Override
+	public int savePurchaseStatistics(Purchasestatistics purchaseStatistics)
+	{
+		return drugMapper.savePurchaseStatistics(purchaseStatistics);
+	}
 
+	@Override
+	public List<Purchasestatistics> selectPurchaseStatistics()
+	{
+		return drugMapper.selectPurchaseStatistics();
+	}
 }
