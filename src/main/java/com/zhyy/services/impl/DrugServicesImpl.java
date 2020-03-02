@@ -170,7 +170,7 @@ public class DrugServicesImpl implements DrugServices
 		User user = userServices.queryUserByAccount(vac.getApplyUser());
 		String time = TimeUtil.getTime(new Date());
 		drugMapper.insertPharmacyDrug(vac,user.getPharmacycode(),time);
-		return drugMapper.updatePharmacy(vac.getList());
+		return drugMapper.updatePharmacy(vac.getList(),user.getPharmacycode());
 	}
 
 	@Override
@@ -234,6 +234,42 @@ public class DrugServicesImpl implements DrugServices
 	public int countDrugInventoryList()
 	{
 		return drugMapper.countDrugInventoryList();
+	}
+
+	@Override
+	public List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryPharmacyLowLimitDrugsList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countPharmacyLowLimitDrugsList()
+	{
+		return drugMapper.countPharmacyLowLimitDrugsList();
+	}
+
+	@Override
+	public List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryDrugInventoryExpiredList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countDrugInventoryExpiredList()
+	{
+		return drugMapper.countDrugInventoryExpiredList();
+	}
+
+	@Override
+	public List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt, int limitInt)
+	{
+		return drugMapper.queryDrugInventoryUnsalableList(pageInt,limitInt);
+	}
+
+	@Override
+	public int countDrugInventoryUnsalableList()
+	{
+		return drugMapper.countDrugInventoryUnsalableList();
 	}
 
 

@@ -37,6 +37,12 @@ public class UserServicesImpl implements UserServices
 		return userMapper.countUserList();
 	}
 
+	@Override
+	public List<User> checkUser()
+	{
+		return userMapper.checkUser();
+	}
+
 	//新增人员
 	@Override
 	public boolean regStaff(String account, String password, String username, String phone, String sex, String age, String role, String title, String rolecode, String pharmacycode, String state)
@@ -67,7 +73,14 @@ public class UserServicesImpl implements UserServices
 	public boolean adjustmentPrice(double price,String drugcode){
 		return userMapper.adjustmentPrice(price,drugcode);
 	}
-    //药品停用(药库的药品状态)
+
+	@Override
+	public boolean adjustmentPrice2(double priceNow, double beforeprice, String drugCode,String dataTime)
+	{
+		return userMapper.adjustmentPrice2(priceNow,beforeprice,drugCode,dataTime);
+	}
+
+	//药品停用(药库的药品状态)
 	@Override
 	public boolean drugDiscontinuation( String drugcode)
 	{
@@ -86,6 +99,13 @@ public class UserServicesImpl implements UserServices
 	{
 		return userMapper.checkInventoryCount();
 	}
+
+	@Override
+	public List<Druginventorytable> checkPharmacyInventoryCount()
+	{
+		return userMapper.checkPharmacyInventoryCount();
+	}
+
 	//根据药品编码查询药品名称
 	@Override
 	public String findDrugNameByDrugCode(String drugcode)
@@ -105,6 +125,28 @@ public class UserServicesImpl implements UserServices
 		return userMapper.unsalableCheck();
 	}
 
+	@Override
+	public boolean expiredStatus(String drugcode)
+	{
+		return  userMapper.expiredStatus(drugcode);
+	}
+	@Override
+	public boolean expiredStatus2(String drugcode)
+	{
+		return userMapper.expiredStatus2(drugcode);
+	}
+
+	@Override
+	public boolean unsalableStatus(String drugcode)
+	{
+		return userMapper.unsalableStatus(drugcode);
+	}
+
+	@Override
+	public String findDrugPriceByDrugCode(String drugCode)
+	{
+		return userMapper.findDrugPriceByDrugCode(drugCode);
+	}
 
 	@Override
 	public List<Menu> queryMenuList(String rolecode)

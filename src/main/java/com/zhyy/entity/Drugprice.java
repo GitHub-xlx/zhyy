@@ -5,9 +5,9 @@ public class Drugprice {
 
   private long dpid;
   private String drugcode;
-  private String currentprice;
-  private String previousprice;
-  private String governmentpricing;
+  private Double currentprice;
+  private Double previousprice;
+  private Double governmentpricing;
   private String priceadjustmentdate;
   private String operator;
   private String pharmacycode;
@@ -31,32 +31,35 @@ public class Drugprice {
   }
 
 
-  public String getCurrentprice() {
+  public Double getCurrentprice()
+  {
     return currentprice;
   }
 
-  public void setCurrentprice(String currentprice) {
+  public void setCurrentprice(Double currentprice)
+  {
     this.currentprice = currentprice;
   }
 
-
-  public String getPreviousprice() {
+  public Double getPreviousprice()
+  {
     return previousprice;
   }
 
-  public void setPreviousprice(String previousprice) {
+  public void setPreviousprice(Double previousprice)
+  {
     this.previousprice = previousprice;
   }
 
-
-  public String getGovernmentpricing() {
+  public Double getGovernmentpricing()
+  {
     return governmentpricing;
   }
 
-  public void setGovernmentpricing(String governmentpricing) {
+  public void setGovernmentpricing(Double governmentpricing)
+  {
     this.governmentpricing = governmentpricing;
   }
-
 
   public String getPriceadjustmentdate() {
     return priceadjustmentdate;

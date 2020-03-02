@@ -202,6 +202,31 @@ public interface DrugMapper
 	@Select("select count(*) from druginventorytable")
 	int countDrugInventoryList();
 
+	///低于最低数量的---------------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums  limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countPharmacyLowLimitDrugsList();
+
+	///过期的---------------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname,B.shelflife from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.drugstatus= '已过期' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryExpiredList();
+
+	///滞销的-------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname,C.receivetime from druginventorytable A,druginformation B,pharmacydrugschedule C where A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryUnsalableList();
+
+
 	//查询药库--库存列表
 	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);

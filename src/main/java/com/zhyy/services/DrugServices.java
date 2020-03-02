@@ -241,6 +241,25 @@ public interface DrugServices
 	//统计药房--库存列表数量
 	int countDrugInventoryList();
 
+
+	///低限报警的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countPharmacyLowLimitDrugsList();
+
+	///过期的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryExpiredList();
+
+	///滞销的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryUnsalableList();
+
 	//查询药库--库存列表
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
 	//统计药库--库存列表数量
