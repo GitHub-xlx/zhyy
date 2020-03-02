@@ -127,7 +127,7 @@ public interface DrugServices
 	 * 配伍禁忌列表
 	 * @return
 	 */
-//	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
 	/**
 	 * 配伍禁忌列表总数

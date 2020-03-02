@@ -82,11 +82,11 @@ public class DrugServicesImpl implements DrugServices
 		return drugMapper.selectDrugcompatibilitycontraindications(drugcode1, drugcode2);
 	}
 
-//	@Override
-//	public List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode,int nowpage, int size)
-//	{
-//		return drugMapper.selectcompatibilityList(drugcode, nowpage, size);
-//	}
+	@Override
+	public List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode,int nowpage, int size)
+	{
+		return drugMapper.selectcompatibilityList(drugcode, nowpage, size);
+	}
 
 	@Override
 	public int selectcountcompatibilityList(String drugcode)

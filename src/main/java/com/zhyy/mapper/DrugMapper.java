@@ -156,8 +156,8 @@ public interface DrugMapper
 	/**
 	 * 药品配伍禁忌列表
 	 */
-//	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
-//	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
+	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
 	/**
 	 * 药品配伍禁忌列表总数
