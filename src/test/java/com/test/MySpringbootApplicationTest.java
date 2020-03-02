@@ -33,23 +33,13 @@ public class MySpringbootApplicationTest
 	@Autowired
 //	private UserMapper userMapper;
 	private DrugMapper drugMapper;
-//	@Resource
-//	private RepositoryService repositoryService;
+	@Resource
+	private RepositoryService repositoryService;
+	@Resource
+	private ProcessEngine processEngine;
 	@Test
 	public void test()
 	{
-		List<ProcessDefinition> pdList=processEngine.getRepositoryService() // 获取service类
-				.createProcessDefinitionQuery() // 创建流程定义查询
-				.processDefinitionKey("drugclaim") // 通过key查询
-				.list(); // 返回一个集合
-		for(ProcessDefinition pd:pdList){
-			System.out.println("ID_："+pd.getId());
-			repositoryService.deleteDeployment(pd.getDeploymentId(),true);
-			System.out.println("NAME_："+pd.getName());
-			System.out.println("KEY_："+pd.getKey());
-			System.out.println("VERSION_："+pd.getVersion());
-			System.out.println("===================");
-		}
 
 //		System.out.println(111);
 //		repositoryService.deleteDeployment("drugclaim",true);
@@ -93,8 +83,8 @@ public class MySpringbootApplicationTest
 //		test.setOperator("药库管理员");
 //		test.setDate("2020-02-09");
 //		int i = drugMapper.savePurchaseStatistics(test);
-		List<Purchasestatistics> list = drugMapper.selectPurchaseStatistics();
-		System.out.println("测试查询结果的：===="+list.size());
+//		List<Purchasestatistics> list = drugMapper.selectPurchaseStatistics();
+//		System.out.println("测试查询结果的：===="+list.size());
 
 
 	}

@@ -194,7 +194,6 @@ public class DrugServicesImpl implements DrugServices
 		if (end!=null){
 			where = end.length()>0 ? where+" and operatingtime < '"+end+"'" : where;
 		}
-		System.out.println("where----------"+where);
 		return drugMapper.selectPharmacyd(where);
 	}
 
@@ -208,7 +207,6 @@ public class DrugServicesImpl implements DrugServices
 		if (specialmedicine!=null){
 			where = specialmedicine.length()>0 ? where+" and specialmedicine = '"+specialmedicine+"'" : where;
 		}
-		System.out.println("where----------"+where);
 		return drugMapper.selectInventorycheck(where);
 
 	}

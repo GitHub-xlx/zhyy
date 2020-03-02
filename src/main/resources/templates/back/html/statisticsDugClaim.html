@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head >
+    <meta charset="UTF-8">
+    <title>药品请领统计表</title>
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/echarts.js"></script>
+</head>
+<body>
+
+
+<h3>药品请领统计表</h3>
+
+<div id="vue_det">
+    <div >
+        <select v-model="select" @change="f1(select)" name="interest"  >
+            <option value="1" selected="selected">本周</option>
+            <option value="2" >本月</option>
+            <option value="3" >本季度</option>
+        </select>
+    </div>
+    <div id="echarts_div"></div>
+</div>
+
+
+</body>
+<script type="text/javascript" >
+	var nameArr = [];
+	var valueArr = [];
+	var obArr = [];
+	var vm = new Vue({
+		el: '#vue_det',
+		data: {
+
+		},
+		methods: {
+			createEchars: function() {
+				//基于准备好的dom，初始化echarts实例
+				var myChart = echarts.init(document.getElementById('echarts_div'),'dark');//dark为暗黑主题 不要可以去掉
+
+				// 指定图表的配置项和数据
+				var option = {
+					title : {
+						text : 'ECharts 基础柱状图'
+					},
+					tooltip : {},
+					legend : {
+						data : [ '柱状数据表' ]
+					},
+					xAxis : {
+						data : nameArr
+					},
+					yAxis : {},
+					series : [ {
+						name : '数据',
+						type : 'bar',
+						data : valueArr
+					} ],
+				};
+
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+			},
+			f1:function(select){
+				axios.post('/statisticsController/claim', {
+					time: select       // 参数
+				})
+					.then(function (msg) {
+						var arr = JSON.parse(msg);
+						nameArr=[];
+						valueArr=[];
+						for (var i = 0; i < arr.length; i++) {
+							// 普通柱状图使用的数据
+							nameArr.push(arr[i].name);
+							valueArr.push(arr[i].record);
+						}
+						// this.$options.methods.createEchars(current)// 带参数
+						this.createEchars();// 创建普通柱状图
+					})
+					.catch(function (error) {
+						console.log(error);
+					})
+            }
+		},
+		mounted(){
+			//自动加载indexs方法
+			this.f1(1);
+		}
+	})
+</script>
+</html>
