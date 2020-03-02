@@ -156,8 +156,8 @@ public interface DrugMapper
 	/**
 	 * 药品配伍禁忌列表
 	 */
-	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
-	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+//	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
+//	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
 	/**
 	 * 药品配伍禁忌列表总数
@@ -201,6 +201,31 @@ public interface DrugMapper
 	//统计药房--库存列表数量
 	@Select("select count(*) from druginventorytable")
 	int countDrugInventoryList();
+
+	///低于最低数量的---------------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums  limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countPharmacyLowLimitDrugsList();
+
+	///过期的---------------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname,B.shelflife from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.drugstatus= '已过期' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryExpiredList();
+
+	///滞销的-------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname,C.receivetime from druginventorytable A,druginformation B,pharmacydrugschedule C where A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable")
+	int countDrugInventoryUnsalableList();
+
 
 	//查询药库--库存列表
 	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
@@ -247,7 +272,7 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
+			"update drugstoredruginventory set druginventory =druginventory- #{item.number} " +
 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 
@@ -291,7 +316,7 @@ public interface DrugMapper
 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"druginventorynumber=(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number}" +
+					"druginventorynumber=druginventorynumber+ #{i.number}" +
 					"</foreach>" +
 					"</script>"
 	})
@@ -348,7 +373,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
+	@Select("SELECT * FROM pharmacydrugschedule where ${where}")
 	List<Pharmacydrugschedule> selectPharmacyd(String where);
 	/**
 	 * 查询药库药品库存表信息
@@ -375,9 +400,26 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where #{where}) a,"
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
+
+	/**
+	 * 药品采购登记,即新增采购药品信息
+	 * @author cbd
+	 * @param purchaseStatistics 药品采购信息对象
+	 * @return 返回int型 判断
+	 */
+	@Insert("INSERT INTO `purchasestatistics`( `drugcode`, `purchasenumber`, `totalpurchasemount`, `purchasetime`, `buyer`, `operator`, `state`, `lotnumber`, `date`)  VALUES  ( #{drugcode},#{ purchasenumber},#{ totalpurchasemount},#{ purchasetime},#{ buyer},#{ operator},#{ state},#{ lotnumber},#{ date})")
+	int  savePurchaseStatistics(Purchasestatistics purchaseStatistics);
+
+	/**
+	 * 查询采购登记表的信息
+	 * @author cbd
+	 * @return 返回采购登记表的所有数据list
+	 */
+	@Select("select * from purchasestatistics ")
+	List<Purchasestatistics> selectPurchaseStatistics();
 
 
 }

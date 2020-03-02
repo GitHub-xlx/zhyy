@@ -36,7 +36,7 @@ public class TestSend
 			mail.setTo("1147175250@qq.com");// 接受者
 			mail.setFrom("1147175250@qq.com");// 发送者
 			mail.setSubject("库存不足警告!");// 主题
-			mail.setText(drugCode+"等数量不足，请及时添加库存");// 邮件内容
+			mail.setText(drugCode+"不足，请及时添加");// 邮件内容
 			sender.send(mail);
 			System.out.println("发送完毕");
 		} catch (Exception e) {

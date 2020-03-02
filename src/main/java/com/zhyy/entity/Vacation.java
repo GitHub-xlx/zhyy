@@ -23,7 +23,7 @@ public class Vacation implements Serializable
     /**
      *  流程实例id
      */
-    private String id;
+    private String instanceId;
     //申请药品集合
     private List<Druginformation> list;
     //申请原因
@@ -36,31 +36,42 @@ public class Vacation implements Serializable
     /**
      * 审核人
      */
-    private String auditor;
+    private String auditor="";
     /**
      * 审核结果
      */
-    private String result;
+    private String result="";
     /**
      * 审核时间
      */
-    private String auditTime;
+    private String auditTime="";
     /**
      * 发药人
      */
-    private String dispenser;
+    private String dispenser="";
     /**
      * 发药结果
      */
-    private String durgResult;
+    private String durgResult="";
     /**
      * 发药时间
      */
-    private String medicineTime;
+    private String medicineTime="";
     /**
      * 当前结果
      */
     private String nowResult;
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
 
     public String getNowResult()
     {
@@ -104,17 +115,17 @@ public class Vacation implements Serializable
         this.list = list;
     }
 
-    public String getId()
-    {
-        return id;
-    }
+	public String getInstanceId()
+	{
+		return instanceId;
+	}
 
-    public void setId(String id)
-    {
-        this.id = id;
-    }
+	public void setInstanceId(String instanceId)
+	{
+		this.instanceId = instanceId;
+	}
 
-    public String getApplyStatus() {
+	public String getApplyStatus() {
         return applyStatus;
     }
 

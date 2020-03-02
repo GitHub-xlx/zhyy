@@ -81,6 +81,26 @@ layui.use(['table', 'jquery', 'form'], function () {
 				dataType: "text"//设置接受到的响应数据的格式
 			});
 
+		}else if (layEvent === 'update') {
+			// layer.msg('修改操作');
+			$.ajax({
+				type: "POST", //请求方式
+				url: 'userController/', // 请求路径
+				// data: {:},
+				success: function (msg) {
+					if (msg === '1') {
+						layer.alert("修改成功");
+						table.reload('idTest');
+					} else {
+						layer.alert("修改失败，请重新尝试");
+					}
+				},//响应成功后的回调函数
+				error: function () {
+					alert("服务器繁忙")
+				},//表示如果请求响应出现错误，会执行的回调函数
+				dataType: "text"//设置接受到的响应数据的格式
+			});
+
 		} else if (layEvent === 'info') {
 			// layer.msg('重置密码操作');
 			layer.confirm('确定重置' + data.account + '密码？', function (index) {
@@ -104,58 +124,6 @@ layui.use(['table', 'jquery', 'form'], function () {
 				});
 			});
 		}
-
-
-		//药品调价 注意!!! 大于成本价 小于政府指导价？修改的价格可以是带小数点？修改的是哪个药品的价格？
-		if (layEvent === 'adjustment') {
-			layer.prompt(function (val, index) {
-				// layer.msg('得到了'+val);
-				layer.close(index);
-				$.ajax({
-					type: "POST", //请求方式
-					url: 'userController/adjustmentPrice', // 请求路径
-					data: {price: val},
-					success: function (msg) {
-						if (msg === '1') {
-							layer.alert("调价成功");
-							table.reload();
-						} else {
-							layer.alert("调价失败，请重新尝试");
-						}
-					},//响应成功后的回调函数
-					error: function () {
-						alert("服务器繁忙")
-					},//表示如果请求响应出现错误，会执行的回调函数
-					dataType: "text"//设置接受到的响应数据的格式
-				});
-
-
-			});
-		}
-
-		//药品停用
-		if (layEvent === 'disable') {
-			layer.msg('停用操作');
-			$.ajax({
-				type: "POST", //请求方式
-				url: 'userController/drugDiscontinuation', // 请求路径
-				data: {account: data.account},
-				success: function (msg) {
-					if (msg === '1') {
-						layer.alert("停用成功");
-						 table.reload();
-					} else {
-						layer.alert("停用失败，请重新尝试");
-					}
-				},//响应成功后的回调函数
-				error: function () {
-					alert("服务器繁忙")
-				},//表示如果请求响应出现错误，会执行的回调函数
-				dataType: "text"//设置接受到的响应数据的格式
-			});
-
-		}
-
 
 	});
 

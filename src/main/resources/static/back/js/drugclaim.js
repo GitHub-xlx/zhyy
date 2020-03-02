@@ -128,8 +128,9 @@ layui.use('table', function(){
 	});
 	// 最终确认请领
 	$("#confirmation").click(function () {
+		drugDate=layui.table.cache['test1']
 		table.reload("test2", {
-			data: drugDate,
+			data: drugDate
 		});
 		layui.use(['table', 'form'], function() {
 			var form = layui.form;
@@ -154,14 +155,11 @@ layui.use('table', function(){
 						},
 						success:function(res){
 							if(res){
-								layer.msg('请领成功，等待审核', {
-									time: 1500, //1500ms后自动关闭
-								});
+								layer.alert('请领成功，等待审核');
 							}
-							else
-								layer.msg('请领失败，请重新尝试', {
-									time: 1500, //1500ms后自动关闭
-								});
+							else{
+								layer.alert('请领失败，请重新尝试');
+							}
 						},
 						error:function (data) {
 						}

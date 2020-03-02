@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,16 +36,17 @@ public class DrugController
 	 */
 	@RequestMapping("/selectprice")
 	public @ResponseBody
-	TableMsg selectprice(String drugcode,String commoname, String start,String end,String page,String limit, HttpServletRequest request){
+	TableMsg selectprice(String drugcode, String commoname, String start, String end, String page, String limit, HttpServletRequest request)
+	{
 
-		int pageInt=Integer.valueOf(page);
-		int limitInt=Integer.valueOf(limit);
-		User user=(User)request.getSession().getAttribute("user");
-		List<DrugpriceDruginformation> drugprices=null;
-		int count=0;
-		drugprices =drugServices.queryDrugprice(user.getPharmacycode(),drugcode,commoname,start,end,pageInt,limitInt);
+		int pageInt = Integer.valueOf(page);
+		int limitInt = Integer.valueOf(limit);
+		User user = (User) request.getSession().getAttribute("user");
+		List<DrugpriceDruginformation> drugprices = null;
+		int count = 0;
+		drugprices = drugServices.queryDrugprice(user.getPharmacycode(), drugcode, commoname, start, end, pageInt, limitInt);
 
-		count=drugServices.countDrugprice(user.getPharmacycode(),drugcode,commoname,start,end);
+		count = drugServices.countDrugprice(user.getPharmacycode(), drugcode, commoname, start, end);
 
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
@@ -60,16 +62,17 @@ public class DrugController
 	 */
 	@RequestMapping("/selectsale")
 	public @ResponseBody
-	TableMsg selectsale(String drugcode, String commoname, String specialmedicine, String idcard, String consumername,String salesperson, String start, String end,String page,String limit, HttpServletRequest request){
+	TableMsg selectsale(String drugcode, String commoname, String specialmedicine, String idcard, String consumername, String salesperson, String start, String end, String page, String limit, HttpServletRequest request)
+	{
 
-		int pageInt=Integer.valueOf(page);
-		int limitInt=Integer.valueOf(limit);
-		User user=(User)request.getSession().getAttribute("user");
-		List<Drugsale> drugsales=null;
-		int count=0;
-		drugsales =drugServices.queryDrugSaleList(user.getPharmacycode(),drugcode,commoname,specialmedicine,idcard,consumername,salesperson,start,end,pageInt,limitInt);
+		int pageInt = Integer.valueOf(page);
+		int limitInt = Integer.valueOf(limit);
+		User user = (User) request.getSession().getAttribute("user");
+		List<Drugsale> drugsales = null;
+		int count = 0;
+		drugsales = drugServices.queryDrugSaleList(user.getPharmacycode(), drugcode, commoname, specialmedicine, idcard, consumername, salesperson, start, end, pageInt, limitInt);
 
-		count=drugServices.countDrugSaleList(user.getPharmacycode(),drugcode,commoname,specialmedicine,idcard,consumername,salesperson,start,end);
+		count = drugServices.countDrugSaleList(user.getPharmacycode(), drugcode, commoname, specialmedicine, idcard, consumername, salesperson, start, end);
 
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
@@ -90,14 +93,15 @@ public class DrugController
 	 */
 	@RequestMapping("/selectdruginventory")
 	public @ResponseBody
-	TableMsg selectdruginventory(String classcode, String commoname,String page,String limit, HttpServletRequest request){
+	TableMsg selectdruginventory(String classcode, String commoname, String page, String limit, HttpServletRequest request)
+	{
 
-		int pageInt=Integer.valueOf(page);
-		int limitInt=Integer.valueOf(limit);
-		User user=(User)request.getSession().getAttribute("user");
-		List<DruginventoryDruginformation> druginventory=null;
-		int count=0;
-		druginventory =drugServices.querydruginventorylist(user.getPharmacycode(),classcode,commoname,pageInt,limitInt);
+		int pageInt = Integer.valueOf(page);
+		int limitInt = Integer.valueOf(limit);
+		User user = (User) request.getSession().getAttribute("user");
+		List<DruginventoryDruginformation> druginventory = null;
+		int count = 0;
+		druginventory = drugServices.querydruginventorylist(user.getPharmacycode(), classcode, commoname, pageInt, limitInt);
 
 		count=drugServices.countdruginventorylist(user.getPharmacycode(),classcode,commoname);
 
@@ -117,14 +121,15 @@ public class DrugController
 	 */
 	@RequestMapping("/confirmsendmedicine")
 	public @ResponseBody
-	String confirmsendmedicine(@RequestParam(name="list") String list, HttpServletRequest request){
+	String confirmsendmedicine(@RequestParam(name = "list") String list, HttpServletRequest request)
+	{
 		Gson gson = new Gson();
-		List<DruginventoryDruginformation> list1 = gson.fromJson(list,new TypeToken<ArrayList<DruginventoryDruginformation>>(){}.getType());
-		User user=(User)request.getSession().getAttribute("user");
-		int j=0;
-		int k=0;
-		String res="";
-		int count=0;
+		List<DruginventoryDruginformation> list1 = gson.fromJson(list, new TypeToken<ArrayList<DruginventoryDruginformation>>() {}.getType());
+		User user = (User) request.getSession().getAttribute("user");
+		int j = 0;
+		int k = 0;
+		String res = "";
+		int count = 0;
 		int size = list1.size();
 		int[] countnum = new int[size];
 		int[] countnum2 = new int[size];
@@ -222,11 +227,11 @@ public class DrugController
 	public @ResponseBody
 	TableMsg selectcompatibility(String drugcode,String page,String limit, HttpServletRequest request){
 
-		int pageInt=Integer.valueOf(page);
-		int limitInt=Integer.valueOf(limit);
-		List<Drugcompatibilitycontraindications> list=null;
-		int count=0;
-		list =drugServices.selectcompatibilityList(drugcode,pageInt,limitInt);
+		int pageInt = Integer.valueOf(page);
+		int limitInt = Integer.valueOf(limit);
+		List<Drugcompatibilitycontraindications> list = null;
+		int count = 0;
+		list = drugServices.selectcompatibilityList(drugcode, pageInt, limitInt);
 
 		count=drugServices.selectcountcompatibilityList(drugcode);
 
@@ -499,15 +504,12 @@ public class DrugController
 
 	@RequestMapping("/selectInventorycheck")
 	@ResponseBody
-	public TableMsg selectInventorycheck (int page,int limit,String commonname,String specialmedicine)
+	public TableMsg selectInventorycheck (int page,int limit,String commoname,String specialmedicine)
 	{
 		//开启分页
 		PageHelper.startPage(page,limit);
-		List<Inventorycheck> list = drugServices.selectInventorycheck(commonname,specialmedicine);
+		List<Inventorycheck> list = drugServices.selectInventorycheck(commoname,specialmedicine);
 		PageInfo pageInfo = new PageInfo(list);
-		System.out.println(111111);
-		System.out.println(pageInfo.getList());
-		System.out.println(111111);
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
@@ -564,12 +566,52 @@ public class DrugController
 
 	}
 
+	//已滞销列表
+	@RequestMapping("/doDrugInventoryUnsalable")
+	public @ResponseBody
+	TableMsg doDrugInventoryUnsalable(String page, String limit, HttpServletRequest request)
+	{
+		System.out.println("已滞销列表");
+		System.out.println("page:" + page + ", limit:" + limit);
+		int pageInt = Integer.valueOf(page) - 1;
+		int limitInt = Integer.valueOf(limit);
+
+		List<Druginventorytable> druginventorytableList = null;
+		int count = 0;
+		druginventorytableList = drugServices.queryDrugInventoryUnsalableList(pageInt, limitInt);
+		count = drugServices.countDrugInventoryUnsalableList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventorytableList);
+		return tableMsg;
+	}
 
 
-
-
-
-
+	//	//盘点
+	//	@RequestMapping("/doInventory")
+	//	public @ResponseBody
+	//	TableMsg doInventory(String page, String limit, HttpServletRequest request)
+	//	{
+	//		System.out.println("执行到盘点");
+	//		System.out.println("page:" + page + ", limit:" + limit);
+	//		int limitInt = Integer.valueOf(limit);
+	//		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+	//
+	//	}
+	//	//盘点后调整库存数量
+	//	@ResponseBody
+	//	@RequestMapping("/adjustmentQuantity")
+	//	public String adjustmentQuantity(Druginventorytable druginventorytable){
+	//		System.out.println("执行到盘点后调整库存数量");
+	//
+	//
+	//
+	//
+	//		return msg;
+	//	}
 
 
 }

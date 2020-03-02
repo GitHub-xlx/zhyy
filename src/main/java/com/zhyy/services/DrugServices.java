@@ -1,6 +1,8 @@
 package com.zhyy.services;
 
 import com.zhyy.entity.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,7 +127,7 @@ public interface DrugServices
 	 * 配伍禁忌列表
 	 * @return
 	 */
-	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+//	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
 	/**
 	 * 配伍禁忌列表总数
@@ -225,19 +227,31 @@ public interface DrugServices
 	 List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end);
 
 
-	/**
-	 * @Description  药房库存查询（通过常用名称和是否为特殊药品）
-	 * @author xlx
-	 * @Date 下午 18:13 2020/2/28 0028
-	 * @Param
-	 * @return
-	 **/
-//	List<Druginformation> selectDruginformation(String commonname, String pincode);
+
 
 	//查询药房--库存列表
 	List<Druginventorytable> queryDrugInventoryList(int pageInt,int limitInt);
 	//统计药房--库存列表数量
 	int countDrugInventoryList();
+
+
+	///低限报警的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countPharmacyLowLimitDrugsList();
+
+	///过期的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryExpiredList();
+
+	///滞销的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryUnsalableList();
 
 	//查询药库--库存列表
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
@@ -252,7 +266,7 @@ public interface DrugServices
 	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
 	int countInventoryTableList();
 
-	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
+	List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine);
 
 	/**
 	 * 查询药库药品库存表信息
@@ -268,5 +282,20 @@ public interface DrugServices
 	 * @return 返回保存结果状态int值 作为判断成功
 	 */
 	public int saveDrugStoreInventory(Drugstoredruginventory drugStoreDrugInventory);
+
+	/**
+	 * 药品采购登记
+	 * @author cbd
+	 * @param purchaseStatistics 药品采购信息对象
+	 * @return 返回int型 判断
+	 */
+	public  int  savePurchaseStatistics(Purchasestatistics purchaseStatistics);
+
+	/**
+	 * 查询采购登记表的信息
+	 * @author cbd
+	 * @return 返回采购登记表的所有数据list
+	 */
+	public List<Purchasestatistics> selectPurchaseStatistics();
 
 }

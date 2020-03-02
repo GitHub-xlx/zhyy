@@ -32,8 +32,36 @@ layui.use(['table', 'jquery', 'form'], function () {
 //重新渲染
 	form.render();
 
+
+	$('#account').blur(function () {
+		var account = $(this).val().trim();
+		$.ajax({
+			type: "POST",
+			url: "userController/checkUser",
+			//发送的数据（同时也将数据发送出去）
+			data: {account: account},
+			success: function (msg) {
+				if (msg === '2') {
+					$('#ri').removeAttr('hidden');
+					$('#wr').attr('hidden', 'hidden');
+					flag = true;
+				} else {
+					$('#wr').removeAttr('hidden');
+					$('#ri').attr('hidden', 'hidden');
+					layer.msg('当前账号已存在!');
+					flag = false;
+				}
+			},
+			error: function (msg) {
+				alert("服务器正忙。。。。" + msg);
+			}
+			, dataType: "text"//设置接受到的响应数据的格式
+		})
+	});
+
 //新增人员确定提交
 	$("#submit").click(function () {
+
 		var account = $('#account').val();
 		var password = $('#password').val();
 		var confirmPassword = $('#confirmPassword').val();
@@ -45,8 +73,8 @@ layui.use(['table', 'jquery', 'form'], function () {
 		// var title = $('#title').val();
 		// var title2 = $('#title2').val();
 
-		// alert(account + "," + password + "," + confirmPassword + "," + username + "," + phone + "," + sex
-		// 	+ "," + age + "," + role + ",职位为：" + title);
+		alert(account + "," + password + "," + confirmPassword + "," + username + "," + phone + "," + sex
+			+ "," + age + "," + role + ",职位为：" + title);
 
 		if (account.length >= 6 && account.length <= 12) {
 
