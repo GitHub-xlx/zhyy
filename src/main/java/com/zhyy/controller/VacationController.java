@@ -8,12 +8,15 @@ import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import com.zhyy.services.impl.VacationServiceImpl;
 import com.zhyy.utils.TimeUtil;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,6 +31,8 @@ public class VacationController
 	private VacationServiceImpl vacationServices;
 	@Autowired
 	private DrugServices drugServices;
+	@Resource
+	private TaskService taskService;
 	/**
 	 * @Description  开启流程
 	 * @author xlx
@@ -167,16 +172,23 @@ public class VacationController
 		System.out.println("vacTask"+vacTask.toString());
 		System.out.println(11111111);
 		if (user!=null){
+			Task task=taskService.createTaskQuery() // 创建任务查询
+					.taskId(vacTask.getId()) // 根据任务id查询
+					.singleResult();
 			flag = (boolean)vacationServices.passAudit(user.getAccount(),vacTask);
 			if (user.getAccount().equals(TimeUtil.ROLE_ISSUER)&&vacTask.getVac().getNowResult().equals("同意")){
 				//判断是否是同意发药，同意则进入药品出库
-				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getVac().getId());
+				System.out.println("2222222222");
+				System.out.println(task.getProcessInstanceId());
+				System.out.println("111111111");
+				Vacation vacation = vacationServices.queryHistoryProcess(task.getProcessInstanceId());
+
 				drugServices.insertOutbound(vacation);
 				//开启药房入库的审核流程
 				vacationServices.startVac(vacation.getApplyUser(),vacation.getList(),"pharmacystorage");
 			}else if (user.getAccount().equals(TimeUtil.ROLE_PHMANAGER)&&vacTask.getVac().getNowResult().equals("同意")){
 				//判断药房是否是同意入库，同意则进入药房药品入库
-				Vacation vacation = vacationServices.queryHistoryProcess(vacTask.getId());
+				Vacation vacation = vacationServices.queryHistoryProcess(task.getProcessInstanceId());
 				drugServices.insertAndUpdate(vacation);
 			}
 		}

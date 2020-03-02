@@ -156,8 +156,8 @@ public interface DrugMapper
 	/**
 	 * 药品配伍禁忌列表
 	 */
-	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
-	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+//	@SelectProvider(type = CompatibilityIfClass.class,method = "selectcompatibilityList")
+//	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
 	/**
 	 * 药品配伍禁忌列表总数
@@ -272,7 +272,7 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
+			"update drugstoredruginventory set druginventory =druginventory- #{item.number} " +
 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 
@@ -316,7 +316,7 @@ public interface DrugMapper
 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"druginventorynumber=(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number}" +
+					"druginventorynumber=druginventorynumber+ #{i.number}" +
 					"</foreach>" +
 					"</script>"
 	})
@@ -373,7 +373,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
+	@Select("SELECT * FROM pharmacydrugschedule where ${where}")
 	List<Pharmacydrugschedule> selectPharmacyd(String where);
 	/**
 	 * 查询药库药品库存表信息
@@ -400,7 +400,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where #{where}) a,"
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
 

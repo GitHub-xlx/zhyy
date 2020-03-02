@@ -24,7 +24,7 @@
 <div id="tb" style="display: none">
     <table class="layui-hide" id="test4" lay-filter="drug4"></table>
     <h3 id="fun_title4">审核意见</h3>
-    <textarea id="text1" placeholder="请输入意见（必填）"></textarea>
+    <textarea id="text1" placeholder="请输入意见（必填）" style="size: 100px"></textarea>
 </div>
 <div id="tb1" style="display: none">
     <table class="layui-hide" id="test5" lay-filter="drug5"></table>
@@ -44,7 +44,7 @@
 <!--    <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>-->
 <!--</script>-->
 <script type="text/html" id="titleTpl">
-    {{#  if(d.start = 1){ }}
+    {{#  if(d.start === 1){ }}
     <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
     <a class="layui-btn layui-btn-sm background-style" lay-event="modify">修改</a>
     {{#  } else { }}

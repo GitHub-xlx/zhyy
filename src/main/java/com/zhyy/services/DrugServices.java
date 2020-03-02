@@ -127,7 +127,7 @@ public interface DrugServices
 	 * 配伍禁忌列表
 	 * @return
 	 */
-	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
+//	List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode, int nowpage, int size);
 
 	/**
 	 * 配伍禁忌列表总数
@@ -227,14 +227,7 @@ public interface DrugServices
 	 List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end);
 
 
-	/**
-	 * @Description  药房库存查询（通过常用名称和是否为特殊药品）
-	 * @author xlx
-	 * @Date 下午 18:13 2020/2/28 0028
-	 * @Param
-	 * @return
-	 **/
-//	List<Druginformation> selectDruginformation(String commonname, String pincode);
+
 
 	//查询药房--库存列表
 	List<Druginventorytable> queryDrugInventoryList(int pageInt,int limitInt);
@@ -273,7 +266,7 @@ public interface DrugServices
 	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
 	int countInventoryTableList();
 
-	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
+	List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine);
 
 	/**
 	 * 查询药库药品库存表信息

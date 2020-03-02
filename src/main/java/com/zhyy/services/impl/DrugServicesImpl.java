@@ -82,11 +82,11 @@ public class DrugServicesImpl implements DrugServices
 		return drugMapper.selectDrugcompatibilitycontraindications(drugcode1, drugcode2);
 	}
 
-	@Override
-	public List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode,int nowpage, int size)
-	{
-		return drugMapper.selectcompatibilityList(drugcode, nowpage, size);
-	}
+//	@Override
+//	public List<Drugcompatibilitycontraindications> selectcompatibilityList(String drugcode,int nowpage, int size)
+//	{
+//		return drugMapper.selectcompatibilityList(drugcode, nowpage, size);
+//	}
 
 	@Override
 	public int selectcountcompatibilityList(String drugcode)
@@ -111,14 +111,14 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public List<Druginformation> selectDruginformation(String commonname, String pincode)
+	public List<Druginformation> selectDruginformation(String commoname, String pincode)
 	{
 		String where="1=1 ";
-		if(commonname!=null){
-			where = commonname.length()>0 ? where+" and commonname = '"+commonname+"'" : where;
+		if(commoname!=null){
+			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where;
 		}
 		if (pincode!=null){
-			where = pincode.length()>0 ? where+" and pincode = '"+pincode+"'" : where;
+			where = pincode.length()>0 ? where+" and pincode like '%"+pincode+"%'" : where;
 		}
 		return drugMapper.selectDruginformation(where);
 
@@ -127,10 +127,9 @@ public class DrugServicesImpl implements DrugServices
 	@Override
 	public int insertOutbound(Vacation vac)
 	{
-		String[] split = vac.getDurgResult().split(",");
-		String pharmacycode = split[1];
+		User user = userServices.queryUserByAccount(vac.getApplyUser());
 		String time = TimeUtil.getTime(new Date());
-		drugMapper.insertOutbound(vac, pharmacycode, time);
+		drugMapper.insertOutbound(vac, user.getPharmacycode(), time);
 		return drugMapper.updatePharmacyInventory(vac.getList());
 	}
 
@@ -195,19 +194,21 @@ public class DrugServicesImpl implements DrugServices
 		if (end!=null){
 			where = end.length()>0 ? where+" and operatingtime < '"+end+"'" : where;
 		}
+		System.out.println("where----------"+where);
 		return drugMapper.selectPharmacyd(where);
 	}
 
 	@Override
-	public List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine)
+	public List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine)
 	{
 		String where="1=1 ";
-		if(commonname!=null){
-			where = commonname.length()>0 ? where+" and commonname like '%"+commonname+"%'" : where+" and commonname like '%%'";
+		if(commoname!=null){
+			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where+" and commoname like '%%'";
 		}
 		if (specialmedicine!=null){
 			where = specialmedicine.length()>0 ? where+" and specialmedicine = '"+specialmedicine+"'" : where;
 		}
+		System.out.println("where----------"+where);
 		return drugMapper.selectInventorycheck(where);
 
 	}

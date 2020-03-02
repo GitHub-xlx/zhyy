@@ -3,11 +3,13 @@ package com.test;
 import com.zhyy.MySpringbootApplication;
 import com.zhyy.entity.Druginformation;
 import com.zhyy.entity.Drugstoredruginventory;
-import com.zhyy.entity.Purchasestatistics;
 import com.zhyy.entity.User;
 import com.zhyy.mapper.DrugMapper;
 import com.zhyy.mapper.UserMapper;
+import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,19 @@ public class MySpringbootApplicationTest
 	@Test
 	public void test()
 	{
+		List<ProcessDefinition> pdList=processEngine.getRepositoryService() // 获取service类
+				.createProcessDefinitionQuery() // 创建流程定义查询
+				.processDefinitionKey("drugclaim") // 通过key查询
+				.list(); // 返回一个集合
+		for(ProcessDefinition pd:pdList){
+			System.out.println("ID_："+pd.getId());
+			repositoryService.deleteDeployment(pd.getDeploymentId(),true);
+			System.out.println("NAME_："+pd.getName());
+			System.out.println("KEY_："+pd.getKey());
+			System.out.println("VERSION_："+pd.getVersion());
+			System.out.println("===================");
+		}
+
 //		System.out.println(111);
 //		repositoryService.deleteDeployment("drugclaim",true);
 //		System.out.println(1121);
@@ -67,6 +82,12 @@ public class MySpringbootApplicationTest
 //		int i = drugMapper.saveDrugStoreInventory(test);
 //		System.out.println("test测试结果="+i);
 
+//		Drugstoredruginventory test = new Drugstoredruginventory();
+//		test.setDrugcode("测试国字号");
+//		test.setDrugstatus("启用");
+//		test.setDruginventory(1);
+//		int i = drugMapper.saveDrugStoreInventory(test);
+//		System.out.println("test测试结果="+i);
 //		Purchasestatistics test = new Purchasestatistics();
 //		test.setDrugcode("001国药准字H20070077");
 //		test.setOperator("药库管理员");
@@ -76,6 +97,46 @@ public class MySpringbootApplicationTest
 		System.out.println("测试查询结果的：===="+list.size());
 
 
+	}
 
+	/**
+	 * @Description  流程部署的方法
+	 * @author xlx
+	 * @Date 上午 8:08 2020/3/2 0002
+	 * @Param
+	 * @return
+	 **/
+	@Test
+	public void start()
+	{
+		//pharmacystorage drugclaim
+		String processkey = "pharmacystorage";
+		Deployment deployment = processEngine.getRepositoryService().createDeployment().name(processkey)
+				.addClasspathResource("processes/"+processkey+".bpmn")
+				.addClasspathResource("processes/"+processkey+".png")
+				.deploy();
+	}
+	/**
+	 * @Description  删除流程定义的方法
+	 * @author xlx
+	 * @Date 上午 8:10 2020/3/2 0002
+	 * @Param
+	 * @return
+	 **/
+	@Test
+	public void delete()
+	{
+		List<ProcessDefinition> pdList=processEngine.getRepositoryService() // 获取service类
+				.createProcessDefinitionQuery() // 创建流程定义查询
+				.processDefinitionKey("pharmacystorage") // 通过key查询
+				.list(); // 返回一个集合
+		for(ProcessDefinition pd:pdList){
+			System.out.println("ID_："+pd.getId());
+			repositoryService.deleteDeployment(pd.getDeploymentId(),true);
+			System.out.println("NAME_："+pd.getName());
+			System.out.println("KEY_："+pd.getKey());
+			System.out.println("VERSION_："+pd.getVersion());
+			System.out.println("===================");
+		}
 	}
 }
