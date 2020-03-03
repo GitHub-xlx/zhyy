@@ -104,7 +104,7 @@ public interface DrugServices
 	 * @param asker
 	 * @return
 	 */
-	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker);
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price);
 
 	/**
 	 * 药房药品发药出库库存减少
@@ -135,6 +135,8 @@ public interface DrugServices
 	 */
 	int selectcountcompatibilityList(String drugcode);
 
+	List<Druginformation> selectclasscode();
+
 	/**
 	 * 查找药品信息表中的drugcode
 	 * @param drugcode
@@ -146,6 +148,19 @@ public interface DrugServices
 	 * 新增配伍禁忌
 	 */
 	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
+
+	/**
+	 * 根据drugcode和commoname查询药品信息
+	 * @return
+	 */
+	List<Druginformation> selectdrugstore(String drugcode,String commoname);
+
+	/**
+	 * 更改药品的医保状态
+	 * @return
+	 */
+	int updateDruginformationhealthinsurance(String healthinsurance,String drugcode,String commoname);
+
 
 	/**
 	 * @Description  通过药品常用名称和拼音码查找药品信息表

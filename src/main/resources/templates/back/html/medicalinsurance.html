@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>医保药品核对</title>
+    <base th:href="@{/}">
+    <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}" />
+
+</head>
+<body>
+<h3 style=" font-size: 45px;
+    font-family: 幼圆;
+    text-align: center;
+    margin-top: 3%;">医保药品核对</h3>
+<form class="layui-form" style="margin-top: 80px;">
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">药品编号：</label>
+                <div class="layui-input-inline">
+                    <input name="drugcode" id="drugcode" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">药品名称：</label>
+                <div class="layui-input-inline">
+                    <input name="commoname" id="commoname" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn " id="query_bt" type="button">查询</button>
+            </div>
+        </div>
+    </div>
+</form>
+<table class="layui-hide" id="test" lay-filter="table-user"></table>
+<script type="text/html" id="toolbar">
+    {{# if(d.healthinsurance == "是"){  }}
+    <a class="layui-btn layui-btn-sm background-style" lay-event="able">禁用</a>
+    {{# }else if(d.healthinsurance == "否"){             }}
+    <a class="layui-btn layui-btn-sm background-style" lay-event="able">启用</a>
+    {{#      }      }}
+</script>
+<script th:src= "@{static/layui/layui.js}"></script>
+<script th:src="@{static/back/js/medicalinsurance.js}"></script>
+</body>
+</html>

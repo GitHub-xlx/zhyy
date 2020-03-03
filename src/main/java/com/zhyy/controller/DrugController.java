@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -113,6 +115,17 @@ public class DrugController
 	}
 
 	/**
+	 * 药房发药的分类
+	 * @return
+	 */
+	@RequestMapping("/selectclasscode")
+	public @ResponseBody
+	List<Druginformation> selectclasscode(HttpServletRequest request)
+	{
+		return drugServices.selectclasscode();
+	}
+
+	/**
 	 * 药房确认发药
 	 * @param list
 	 * @param request
@@ -134,24 +147,30 @@ public class DrugController
 		int[] countnum2 = new int[size];
 		for (int i = 0; i < countnum2.length; i++)
 		{
-			countnum2[i]=0;
+			countnum2[i] = 0;
 		}
 
-		for (int i = 0; i < size ; i++)
+		for (int i = 0; i < size; i++)
 		{
-			if(size==1){
+			if (size == 1)
+			{
 				break;
-			}else if(size>1){
-				if(i<size-1){
-					count=drugServices.selectDrugcompatibilitycontraindications(list1.get(i).getDrugcode(),list1.get(i+1).getDrugcode());
-					countnum[i]=count;
-				}else if(i==size-1){
-					for (int l = size; l > 0 ; l--)
+			} else if (size > 1)
+			{
+				if (i < size - 1)
+				{
+					count = drugServices.selectDrugcompatibilitycontraindications(list1.get(i).getDrugcode(), list1.get(i + 1).getDrugcode());
+					countnum[i] = count;
+				} else if (i == size - 1)
+				{
+					for (int l = size; l > 0; l--)
 					{
-						if(l>1){
-							count=drugServices.selectDrugcompatibilitycontraindications(list1.get(l-1).getDrugcode(),list1.get(l-2).getDrugcode());
-							countnum2[l-1]=count;
-						}else{
+						if (l > 1)
+						{
+							count = drugServices.selectDrugcompatibilitycontraindications(list1.get(l - 1).getDrugcode(), list1.get(l - 2).getDrugcode());
+							countnum2[l - 1] = count;
+						} else
+						{
 							break;
 						}
 					}
@@ -161,18 +180,19 @@ public class DrugController
 
 		for (int i = 0; i < countnum.length; i++)
 		{
-			count = countnum[i]+count;
+			count = countnum[i] + count;
 		}
 		for (int i = 0; i < countnum2.length; i++)
 		{
-			count = countnum2[i]+count;
+			count = countnum2[i] + count;
 		}
-		if(count==0){
+		if (count == 0)
+		{
 			for (int i = 0; i < list1.size(); i++)
 			{
-				String asktime="";
-				String receivetime="";
-				String operatingtime="";
+				String asktime = "";
+				String receivetime = "";
+				String operatingtime = "";
 				String datearr = (new Date().toLocaleString().split(" ")[0]);
 				try
 				{
@@ -199,20 +219,23 @@ public class DrugController
 						day2 = String.valueOf(day);
 					}
 
-					receivetime=operatingtime=asktime= year + "-" + month2 + "-" + day2;
+					receivetime = operatingtime = asktime = year + "-" + month2 + "-" + day2;
 				} catch (ParseException e)
 				{
 					e.printStackTrace();
 				}
-				j = drugServices.insertDruginventoryOutbound(list1.get(i).getDrugcode(),list1.get(i).getProductiondate(),list1.get(i).getNumber(),list1.get(i).getLotnumber(),list1.get(i).getSpecialmedicine(),asktime,receivetime,operatingtime,user.getPharmacycode(),user.getUsername());
-				k = drugServices.updateDruginventoryNumber(list1.get(i).getDrugcode(),list1.get(i).getNumber(),list1.get(i).getLotnumber());
+				j = drugServices.insertDruginventoryOutbound(list1.get(i).getDrugcode(), list1.get(i).getProductiondate(), list1.get(i).getNumber(), list1.get(i).getLotnumber(), list1.get(i).getSpecialmedicine(), asktime, receivetime, operatingtime, user.getPharmacycode(), user.getUsername(), list1.get(i).getPrice());
+				k = drugServices.updateDruginventoryNumber(list1.get(i).getDrugcode(), list1.get(i).getNumber(), list1.get(i).getLotnumber());
 			}
-			if(j>0&&k>0){
-				res="success";
-			}else{
-				res="failed";
+			if (j > 0 && k > 0)
+			{
+				res = "success";
+			} else
+			{
+				res = "failed";
 			}
-		}else{
+		} else
+		{
 			res = "conflict";
 		}
 		return res;
@@ -224,7 +247,8 @@ public class DrugController
 	 */
 	@RequestMapping("/selectcompatibility")
 	public @ResponseBody
-	TableMsg selectcompatibility(String drugcode,String page,String limit, HttpServletRequest request){
+	TableMsg selectcompatibility(String drugcode, String page, String limit, HttpServletRequest request)
+	{
 
 		int pageInt = Integer.valueOf(page);
 		int limitInt = Integer.valueOf(limit);
@@ -232,7 +256,7 @@ public class DrugController
 		int count = 0;
 		list = drugServices.selectcompatibilityList(drugcode, pageInt, limitInt);
 
-		count=drugServices.selectcountcompatibilityList(drugcode);
+		count = drugServices.selectcountcompatibilityList(drugcode);
 
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
@@ -243,29 +267,83 @@ public class DrugController
 	}
 
 	@RequestMapping("/queryDrugcode")
-	public @ResponseBody List<Druginformation> queryDrugcode(){
+	public @ResponseBody
+	List<Druginformation> queryDrugcode()
+	{
 		return drugServices.queryDrugcode(null);
 	}
 
 	@RequestMapping("/queryDrugcodeIf")
-	public @ResponseBody List<Druginformation> queryDrugcodeIf(HttpServletRequest request){
-		String choosedrugcodeA=request.getParameter("choosedrugcodeA");
+	public @ResponseBody
+	List<Druginformation> queryDrugcodeIf(HttpServletRequest request)
+	{
+		String choosedrugcodeA = request.getParameter("choosedrugcodeA");
 		return drugServices.queryDrugcode(choosedrugcodeA);
 	}
 
 	@RequestMapping("/insertcompatibility")
-	public @ResponseBody String insertcompatibility(HttpServletRequest request){
-		String choosedrugcodeA=request.getParameter("choosedrugcodeA");
-		String choosedrugcodeB=request.getParameter("choosedrugcodeB");
+	public @ResponseBody
+	String insertcompatibility(HttpServletRequest request)
+	{
+		String choosedrugcodeA = request.getParameter("choosedrugcodeA");
+		String choosedrugcodeB = request.getParameter("choosedrugcodeB");
 		String msg = request.getParameter("msg");
 
-		String res="";
-		int i = drugServices.selectDrugcompatibilitycontraindications(choosedrugcodeA,choosedrugcodeB);
+		String res = "";
+		int i = drugServices.selectDrugcompatibilitycontraindications(choosedrugcodeA, choosedrugcodeB);
 
-		if(i==0){
-			drugServices.insertcompatibility(choosedrugcodeA,choosedrugcodeB,msg);
-			drugServices.insertcompatibility(choosedrugcodeB,choosedrugcodeA,msg);
-			res="success";
+		if (i == 0)
+		{
+			drugServices.insertcompatibility(choosedrugcodeA, choosedrugcodeB, msg);
+			drugServices.insertcompatibility(choosedrugcodeB, choosedrugcodeA, msg);
+			res = "success";
+		} else
+		{
+			res = "exist";
+		}
+
+		return res;
+	}
+
+	/**
+	 * 医保药品核对的药品信息查询
+	 * @return
+	 */
+	@RequestMapping("/selectdrugstore")
+	public @ResponseBody
+	TableMsg selectdrugstore(String drugcode,String commoname, String page, String limit, HttpServletRequest request)
+	{
+		int pageInt = Integer.valueOf(page);
+		int limitInt = Integer.valueOf(limit);
+
+		PageHelper.startPage(pageInt, limitInt);
+		List all = drugServices.selectdrugstore(drugcode, commoname);
+		PageInfo p = new PageInfo(all);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int) p.getTotal());
+		tableMsg.setData(p.getList());
+		return tableMsg;
+	}
+
+	/**
+	 * 更改药品医保状态
+	 * @return
+	 */
+	@RequestMapping("/updatehealthinsurance")
+	public @ResponseBody
+	String updatehealthinsurance(HttpServletRequest request)
+	{
+		String status = request.getParameter("status");
+		String drugcode = request.getParameter("drugcode");
+		String commoname = request.getParameter("commoname");
+		String res="";
+
+		int i = drugServices.updateDruginformationhealthinsurance(status,drugcode,commoname);
+
+		if(i>0){
+			res ="success";
 		}else{
 			res = "exist";
 		}

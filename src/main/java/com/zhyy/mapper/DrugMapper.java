@@ -124,11 +124,11 @@ public interface DrugMapper
 	 */
 	@Insert({
 			"<script>",
-			"insert into pharmacydrugschedule(drugcode,time,number,outbound,lotnumber,specialmedicine,outboundtype,auditor,asktime,reviewtime,receivetime,operatingtime,pharmacynumber,asker) values ",
-			"(#{drugcode}, #{time},#{number},'出库',#{lotnumber},#{specialmedicine},'出库','无',#{asktime},null,#{receivetime},#{operatingtime},#{pharmacynumber},#{asker})",
+			"insert into pharmacydrugschedule(drugcode,time,number,outbound,lotnumber,specialmedicine,outboundtype,auditor,asktime,reviewtime,receivetime,operatingtime,pharmacynumber,asker,price) values ",
+			"(#{drugcode}, #{time},#{number},'出库',#{lotnumber},#{specialmedicine},'出库','无',#{asktime},null,#{receivetime},#{operatingtime},#{pharmacynumber},#{asker},#{price})",
 			"</script>"
 	})
-	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker);
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price);
 
 	/**
 	 * 更改药房药品库存数量
@@ -182,6 +182,22 @@ public interface DrugMapper
 	})
 	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
 
+	@Select("select distinct classcode from druginformation")
+	List<Druginformation> selectclasscode();
+
+	@Select("select * from druginformation where ${where}")
+	List<Druginformation> selectdrugstore(String where);
+
+	/**
+	 * 更改药品的医保状态
+	 * @return
+	 */
+	@Update({
+			"<script>",
+			"update druginformation set healthinsurance = #{healthinsurance} where drugcode = #{drugcode} and commoname = #{commoname}",
+			"</script>"
+	})
+	int updateDruginformationhealthinsurance(String healthinsurance,String drugcode,String commoname);
 
 
 	/**

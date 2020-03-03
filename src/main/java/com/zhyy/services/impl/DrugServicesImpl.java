@@ -65,9 +65,9 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker)
+	public int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price)
 	{
-		return drugMapper.insertDruginventoryOutbound(drugcode, time, number, lotnumber, specialmedicine, asktime, receivetime, operatingtime, pharmacynumber, asker);
+		return drugMapper.insertDruginventoryOutbound(drugcode, time, number, lotnumber, specialmedicine, asktime, receivetime, operatingtime, pharmacynumber, asker,price);
 	}
 
 	@Override
@@ -108,6 +108,31 @@ public class DrugServicesImpl implements DrugServices
 	public int insertcompatibility(String drugcodeA, String drugcodeB, String contraindications)
 	{
 		return drugMapper.insertcompatibility(drugcodeA, drugcodeB, contraindications);
+	}
+
+	@Override
+	public List<Druginformation> selectclasscode()
+	{
+		return drugMapper.selectclasscode();
+	}
+
+	@Override
+	public List<Druginformation> selectdrugstore(String drugcode, String commoname)
+	{
+		String where="1=1 ";
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (commoname!=null){
+			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where;
+		}
+		return drugMapper.selectdrugstore(where);
+	}
+
+	@Override
+	public int updateDruginformationhealthinsurance(String healthinsurance, String drugcode, String commoname)
+	{
+		return drugMapper.updateDruginformationhealthinsurance(healthinsurance,drugcode,commoname);
 	}
 
 	@Override
