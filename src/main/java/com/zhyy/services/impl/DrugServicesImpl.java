@@ -136,6 +136,12 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
+	public List<InventoryDruginformation> selectinventorylist(String pharmacycode, String drugcode, String inventoryresults, String commoname ,String start,String end)
+	{
+		return drugMapper.selectinventorylist(pharmacycode, drugcode, inventoryresults, commoname, start, end);
+	}
+
+	@Override
 	public List<Druginformation> selectDruginformation(String commoname, String pincode)
 	{
 		String where="1=1 ";

@@ -161,6 +161,11 @@ public interface DrugServices
 	 */
 	int updateDruginformationhealthinsurance(String healthinsurance,String drugcode,String commoname);
 
+	/**
+	 * 药房盘盈盘亏表
+	 * @return
+	 */
+	List<InventoryDruginformation> selectinventorylist(String pharmacycode, String drugcode, String inventoryresults, String commoname ,String start,String end);
 
 	/**
 	 * @Description  通过药品常用名称和拼音码查找药品信息表

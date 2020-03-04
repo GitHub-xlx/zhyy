@@ -2,10 +2,7 @@ package com.zhyy.mapper;
 
 
 import com.zhyy.entity.*;
-import com.zhyy.sqlifclass.CompatibilityIfClass;
-import com.zhyy.sqlifclass.DrugDistributionIfClass;
-import com.zhyy.sqlifclass.DrugPriceIfClass;
-import com.zhyy.sqlifclass.DrugSaleIfClass;
+import com.zhyy.sqlifclass.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -13,7 +10,6 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -199,6 +195,12 @@ public interface DrugMapper
 	})
 	int updateDruginformationhealthinsurance(String healthinsurance,String drugcode,String commoname);
 
+	/**
+	 * 药房盘盈盘亏表
+	 * @return
+	 */
+	@SelectProvider(type = InventoryDruginformationIfClass.class,method = "selectinventorylist")
+	List<InventoryDruginformation> selectinventorylist(String pharmacycode, String drugcode, String inventoryresults, String commoname ,String start,String end);
 
 	/**
 	 * @Description  查找药品信息表
