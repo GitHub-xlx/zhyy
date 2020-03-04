@@ -4,11 +4,32 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 	var $ = layui.jquery;
 	var layer = layui.layer;
 	var drugDate = [];
+	$(function () {
+		$('#classcode').empty();
+		$('#classcode').append('<option value="-1">请选择</option>');
+		//ajax
+		$.ajax({
+			type: "POST",
+			url: "drugController/selectclasscode",
+			dataType: "text",
+			data: {},
+			success: function (msg) {
+				var list = JSON.parse(msg);
+				for (var i = 0; i < list.length; i++) {
+					$('#classcode').append('<option value="' + list[i].classcode + '">' + list[i].classcode + '</option>');
+				}
+				form.render();
+			},
+			error: function () {
+				layer.msg('服务器繁忙');
+			}
+		});
+	});
 	table.render({
 		elem: '#test'
 		, even: true
 		, page: true
-		, width: 920
+		, width: 1070
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25, 30]
 		, cols: [[
@@ -17,7 +38,9 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 			, {field: 'specification', width: 120, title: '规格'}
 			, {field: 'druginventorynumber', width: 120, title: '库存数量'}
 			, {field: 'drugunit', width: 120, title: '药品单位'}
+			, {field: 'price', width: 60, title: '价格'}
 			, {field: 'specialmedicine', width: 100, title: '是否特殊药品'}
+			, {field: 'drugstatus', width: 100, title: '药品状态'}
 			, {field: 'number', width: 60, title: '发药数量', sort: true, edit: 'text'}
 			, {field: 'start', width: 60, title: '操作', align: 'center', toolbar: '#toolbar1'}
 		]]
@@ -28,7 +51,7 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 		elem: '#test1'
 		, even: true
 		, page: true
-		, width: 920
+		, width: 1070
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25, 30]
 		, cols: [[
@@ -37,7 +60,9 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 			, {field: 'specification', width: 120, title: '规格'}
 			, {field: 'druginventorynumber', width: 120, title: '库存数量'}
 			, {field: 'drugunit', width: 120, title: '药品单位'}
+			, {field: 'price', width: 60, title: '价格'}
 			, {field: 'specialmedicine', width: 100, title: '是否特殊药品'}
+			, {field: 'drugstatus', width: 100, title: '药品状态'}
 			, {field: 'number', width: 60, title: '发药数量', sort: true}
 			, {field: 'start', width: 60, title: '操作', align: 'center', toolbar: '#toolbar2'}
 		]]
@@ -47,7 +72,7 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 		elem: '#test2'
 		, even: true
 		, page: true
-		, width: 920
+		, width: 1000
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25, 30]
 		, cols: [[
@@ -56,8 +81,10 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 			, {field: 'specification', width: 120, title: '规格'}
 			, {field: 'druginventorynumber', width: 120, title: '库存数量'}
 			, {field: 'drugunit', width: 120, title: '药品单位'}
+			, {field: 'price', width: 60, title: '价格'}
+			, {field: 'drugstatus', width: 100, title: '药品状态'}
 			, {field: 'specialmedicine', width: 100, title: '是否特殊药品'}
-			, {field: 'number', width: 60, title: '发药数量', sort: true}
+			, {field: 'number', width: 100, title: '发药数量', sort: true}
 		]]
 		, data: drugDate
 	});
@@ -84,7 +111,7 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 			layer.open({
 				type: 1
 				, title: '请确认发药的药品'
-				, area: ['500px', '400px']
+				, area: ['1000px', '400px']
 				, shade: 0
 				, maxmin: true
 				, btnAlign: 'c' //按钮居中
@@ -104,7 +131,7 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 							} else if (res === "failed") {
 								layer.alert("发药失败！");
 							} else if (res === "conflict") {
-								layer.alert("药品有冲突，请重新选择！")
+								layer.alert("药品有冲突，请重新选择！");
 							}
 						},
 						error: function (res) {
@@ -129,50 +156,57 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 		});
 	});
 	table.on('tool(drug)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-		var data = obj.data //获得当前行数据
-			, layEvent = obj.event; //获得 lay-event 对应的值
-		if (layEvent === 'add') {
-			if (parseInt(data.number) > 0 && parseInt(data.number) <= parseInt(data.druginventorynumber)) {
-				if (drugDate.length === 0) {
-					drugDate.push(data);
-					layer.alert('添加成功！');
-					table.reload("test1", {
-						data: drugDate,
-					});
-				} else {
-					var count = 0;
-					for (let i = 0; i < drugDate.length; i++) {
-						if (drugDate[i].drugcode === data.drugcode) {
-							layer.confirm("表单中已有该药品，是否需要替换", {btn: ['确定', '取消']},
-								function (dex) {
-									drugDate.splice(i, 1);
-									drugDate.push(data);
-									layer.alert('替换成功！');
-									layer.close(dex);
-									table.reload("test1", {
-										data: drugDate,
-									});
-								});
+			var data = obj.data //获得当前行数据
+				, layEvent = obj.event; //获得 lay-event 对应的值
+			if (layEvent === 'add') {
+				if (data.drugstatus === "启用") {
+					if (parseInt(data.number) > 0 && parseInt(data.number) <= parseInt(data.druginventorynumber)) {
+						if (drugDate.length === 0) {
+
+							drugDate.push(data);
+							layer.alert('添加成功！');
+							table.reload("test1", {
+								data: drugDate,
+							});
+
 						} else {
-							count++;
-							if (count === drugDate.length) {
-								drugDate.push(data);
-								layer.alert('添加成功！');
-								table.reload("test1", {
-									data: drugDate,
-								});
-								break;
+							var count = 0;
+							for (let i = 0; i < drugDate.length; i++) {
+								if (drugDate[i].drugcode === data.drugcode) {
+									layer.confirm("表单中已有该药品，是否需要替换", {btn: ['确定', '取消']},
+										function (dex) {
+											drugDate.splice(i, 1);
+											drugDate.push(data);
+											layer.alert('替换成功！');
+											layer.close(dex);
+											table.reload("test1", {
+												data: drugDate,
+											});
+										});
+								} else {
+									count++;
+									if (count === drugDate.length) {
+										drugDate.push(data);
+										layer.alert('添加成功！');
+										table.reload("test1", {
+											data: drugDate,
+										});
+										break;
+									}
+								}
 							}
 						}
+					} else if (parseInt(data.number) > parseInt(data.druginventorynumber)) {
+						layer.alert('库存数量不足,请重新填写数量！');
+					} else {
+						layer.alert('填写数量必须大于0')
 					}
+				}else {
+					layer.alert('药品不是启用状态，不可添加！');
 				}
-			} else if (parseInt(data.number) > parseInt(data.druginventorynumber)) {
-				layer.alert('库存数量不足,请重新填写数量！');
-			} else {
-				layer.alert('填写数量必须大于0')
 			}
 		}
-	});
+	);
 	table.on('tool(drug1)', function (obj) {
 		var data = obj.data //获得当前行数据
 			, layEvent = obj.event; //获得 lay-event 对应的值

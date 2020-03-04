@@ -73,8 +73,8 @@ layui.use(['table', 'jquery', 'form'], function () {
 		// var title = $('#title').val();
 		// var title2 = $('#title2').val();
 
-		alert(account + "," + password + "," + confirmPassword + "," + username + "," + phone + "," + sex
-			+ "," + age + "," + role + ",职位为：" + title);
+		// alert(account + "," + password + "," + confirmPassword + "," + username + "," + phone + "," + sex
+		// 	+ "," + age + "," + role + ",职位为：" + title);
 
 		if (account.length >= 6 && account.length <= 12) {
 
@@ -94,7 +94,7 @@ layui.use(['table', 'jquery', 'form'], function () {
 							success: function (msg) {
 								if (msg === '1') {
 									layer.alert("注册成功");
-									table.reload('idTest');
+									window.location.reload();
 								} else {
 									layer.alert("注册失败，请重新尝试");
 								}

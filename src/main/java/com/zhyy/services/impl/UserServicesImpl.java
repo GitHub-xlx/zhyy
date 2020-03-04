@@ -38,6 +38,18 @@ public class UserServicesImpl implements UserServices
 	}
 
 	@Override
+	public List<User> queryAllUser(int pageInt, int limitInt, String where)
+	{
+		return userMapper.queryAllUser(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int count(String where)
+	{
+		return userMapper.count(where);
+	}
+
+	@Override
 	public List<User> checkUser()
 	{
 		return userMapper.checkUser();
@@ -48,6 +60,12 @@ public class UserServicesImpl implements UserServices
 	public boolean regStaff(String account, String password, String username, String phone, String sex, String age, String role, String title, String rolecode, String pharmacycode, String state)
 	{
 		return userMapper.regStaff(account,password,username,phone,sex,age,role,title,rolecode,pharmacycode,state);
+	}
+
+	@Override
+	public boolean updateStaff(String where ,String account)
+	{
+		return userMapper.updateStaff(where,account);
 	}
 
 	//重置密码
@@ -91,6 +109,19 @@ public class UserServicesImpl implements UserServices
 	public boolean drug2Discontinuation(String drugcode)
 	{
 		return userMapper.drug2Discontinuation(drugcode);
+	}
+
+	//药品启用(药库的药品状态)
+	@Override
+	public boolean drugEnable(String drugcode)
+	{
+		return userMapper.drugEnable(drugcode);
+	}
+	//药品启用(药房的药品状态)
+	@Override
+	public boolean drugEnable2(String drugcode)
+	{
+		return userMapper.drugEnable2(drugcode);
 	}
 
 	//查询药库库存数量不足的药品

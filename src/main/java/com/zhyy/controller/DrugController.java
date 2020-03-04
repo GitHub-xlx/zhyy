@@ -1,6 +1,7 @@
 package com.zhyy.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
@@ -118,6 +119,18 @@ public class DrugController
 		tableMsg.setCount(count);
 		tableMsg.setData(druginventory);
 		return tableMsg;
+	}
+
+	/**
+	 * 药房发药的分类
+	 *
+	 * @return
+	 */
+	@RequestMapping("/selectclasscode")
+	public @ResponseBody
+	List<Druginformation> selectclasscode(HttpServletRequest request)
+	{
+		return drugServices.selectclasscode();
 	}
 
 	/**
@@ -306,6 +319,90 @@ public class DrugController
 	}
 
 	/**
+	 * 医保药品核对的药品信息查询
+	 *
+	 * @return
+	 */
+	@RequestMapping("/selectdrugstore")
+	public @ResponseBody
+	TableMsg selectdrugstore(String drugcode, String commoname, String page, String limit, HttpServletRequest request)
+	{
+		int pageInt = Integer.valueOf(page);
+		int limitInt = Integer.valueOf(limit);
+
+		PageHelper.startPage(pageInt, limitInt);
+		List all = drugServices.selectdrugstore(drugcode, commoname);
+		PageInfo p = new PageInfo(all);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int) p.getTotal());
+		tableMsg.setData(p.getList());
+		return tableMsg;
+	}
+
+	/**
+	 * 更改药品医保状态
+	 *
+	 * @return
+	 */
+	@RequestMapping("/updatehealthinsurance")
+	public @ResponseBody
+	String updatehealthinsurance(HttpServletRequest request)
+	{
+		String status = request.getParameter("status");
+		String drugcode = request.getParameter("drugcode");
+		String commoname = request.getParameter("commoname");
+		String res = "";
+
+		int i = drugServices.updateDruginformationhealthinsurance(status, drugcode, commoname);
+
+		if (i > 0)
+		{
+			res = "success";
+		} else
+		{
+			res = "exist";
+		}
+
+		return res;
+	}
+
+	@RequestMapping("/selectinventorylist")
+	public @ResponseBody
+	TableMsg selectinventorylist(String page, String limit,HttpServletRequest request)
+	{
+		int pageInt = Integer.valueOf(page);
+		int limitInt = Integer.valueOf(limit);
+
+		PageHelper.startPage(pageInt, limitInt);
+		String drugcode = request.getParameter("drugcode");
+		String inventoryresults = request.getParameter("inventoryresults");
+		String commoname = request.getParameter("commoname");
+		String start = request.getParameter("start");
+		String end = request.getParameter("end");
+		User user = (User) request.getSession().getAttribute("user");
+		List all = null;
+		if (("请选择").equals(inventoryresults))
+		{
+			all = drugServices.selectinventorylist(user.getPharmacycode(), drugcode, null, commoname,start,end);
+		} else
+		{
+			all = drugServices.selectinventorylist(user.getPharmacycode(), drugcode, inventoryresults, commoname,start,end);
+		}
+
+		PageInfo p = new PageInfo(all);
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int) p.getTotal());
+		tableMsg.setData(p.getList());
+
+		return tableMsg;
+	}
+
+	/**
 	 * @return
 	 * @Description 药品请领查询
 	 * @author xlx
@@ -381,6 +478,33 @@ public class DrugController
 
 	}
 
+	//药品低限设置查询
+	@RequestMapping("/lowLimitQuery")
+	public @ResponseBody
+	TableMsg lowLimitQuery(String drugcode, String commoname, int page, int limit, HttpServletRequest request)
+	{
+
+		System.out.println("药品低限设置查询");
+		String where = "1=1";
+		System.out.println("drugcode:" + drugcode + ",commoname:" + commoname);
+
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+		if (drugcode != null)
+		{
+			where = drugcode.length() > 0 ? where + " and A.drugcode like '%" + drugcode + "%'" : where;
+		}
+		if (commoname != null)
+		{
+			where = commoname.length() > 0 ? where + " and B.commoname like '%" + commoname + "%'" : where;
+		}
+
+		int countPage = drugServices.countlowLimitQuery(where);
+		List<Drugstoredruginventory> list = drugServices.querylowLimitQuery(pageInt, limitInt, where);
+
+		return new TableMsg(0, "", countPage, list);
+	}
+
 	//药品低限设置
 	@ResponseBody
 	@RequestMapping("/lowestSetting")
@@ -409,8 +533,7 @@ public class DrugController
 	 * @author cbd
 	 */
 	@RequestMapping("/selectDrugClass")
-	@IgnoreLog
-	public @ResponseBody
+	@ResponseBody
 	TableMsg selectDrugClass(int page, int limit)
 	{
 		//开启分页
@@ -565,14 +688,13 @@ public class DrugController
 	@IgnoreLog
 	public @ResponseBody
 	TableMsg selectInventorycheck(int page, int limit, String commonname, String specialmedicine)
+	@ResponseBody
+	public TableMsg selectInventorycheck(int page, int limit, String commoname, String specialmedicine)
 	{
 		//开启分页
 		PageHelper.startPage(page, limit);
-		List<Inventorycheck> list = drugServices.selectInventorycheck(commonname, specialmedicine);
+		List<Inventorycheck> list = drugServices.selectInventorycheck(commoname, specialmedicine);
 		PageInfo pageInfo = new PageInfo(list);
-		System.out.println(111111);
-		System.out.println(pageInfo.getList());
-		System.out.println(111111);
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
@@ -581,12 +703,36 @@ public class DrugController
 		return tableMsg;
 	}
 
-	//药房药品低限报警
+	/**
+	 * @return
+	 * @Description 查询药房出入库明细
+	 * @author xlx
+	 * @Date 下午 21:52 2020/3/1 0001
+	 * @Param
+	 **/
+	@RequestMapping("/selectPharmacyd")
+	@ResponseBody
+	public TableMsg selectPharmacyd(int page, int limit, String drugcode, String lotnumber, String asker, String outbound, String start, String end)
+	{
+		//开启分页
+		PageHelper.startPage(page, limit);
+		List<Pharmacydrugschedule> list = drugServices.selectPharmacyd(drugcode, lotnumber, asker, outbound, start, end);
+		PageInfo pageInfo = new PageInfo(list);
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount((int) pageInfo.getTotal());
+		tableMsg.setData(pageInfo.getList());
+		return tableMsg;
+	}
+
+
+	//低限报警列表
 	@RequestMapping("/pharmacyLowLimitDrugs")
 	public @ResponseBody
 	TableMsg pharmacyLowLimitDrugs(String page, String limit, HttpServletRequest request)
 	{
-		System.out.println("药房药品低限报警");
+		System.out.println("低限报警列表");
 		System.out.println("page:" + page + ", limit:" + limit);
 		int pageInt = Integer.valueOf(page) - 1;
 		int limitInt = Integer.valueOf(limit);
@@ -604,7 +750,34 @@ public class DrugController
 		return tableMsg;
 	}
 
-	//已过期列表
+	//低限报警查询
+	@RequestMapping("/pharmacyDrugsQuery")
+	public @ResponseBody
+	TableMsg pharmacyDrugsQuery(String drugcode, String commoname, int page, int limit, HttpServletRequest request)
+	{
+
+		System.out.println("低限报警查询");
+		String where = "1=1";
+		System.out.println("drugcode:" + drugcode + ",commoname:" + commoname);
+
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+		if (drugcode != null)
+		{
+			where = drugcode.length() > 0 ? where + " and A.drugcode like '%" + drugcode + "%'" : where;
+		}
+		if (commoname != null)
+		{
+			where = commoname.length() > 0 ? where + " and B.commoname like '%" + commoname + "%'" : where;
+		}
+
+		int countPage = drugServices.countpharmacyDrugsQuery(where);
+		List<Druginventorytable> list = drugServices.querypharmacyDrugsQuery(pageInt, limitInt, where);
+
+		return new TableMsg(0, "", countPage, list);
+	}
+
+	//过期报警列表
 	@RequestMapping("/doDrugInventoryExpired")
 	@IgnoreLog
 	public @ResponseBody
@@ -626,6 +799,41 @@ public class DrugController
 		tableMsg.setCount(count);
 		tableMsg.setData(druginventorytableList);
 		return tableMsg;
+	}
+
+	//过期查询
+	@RequestMapping("/expiredQuery")
+	public @ResponseBody
+	TableMsg expiredQuery(String drugcode, String commoname, String start, String end, int page, int limit, HttpServletRequest request)
+	{
+
+		System.out.println("过期查询");
+		String where = "1=1";
+		System.out.println("drugcode:" + drugcode + ",commoname:" + commoname);
+
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+		if (drugcode != null)
+		{
+			where = drugcode.length() > 0 ? where + " and A.drugcode like '%" + drugcode + "%'" : where;
+		}
+		if (commoname != null)
+		{
+			where = commoname.length() > 0 ? where + " and B.commoname like '%" + commoname + "%'" : where;
+		}
+		if (start != null)
+		{
+			where = start.length() > 0 ? where + " and A.productiondate >= '" + start + "'" : where;
+		}
+		if (end != null)
+		{
+			where = end.length() > 0 ? where + " and A.productiondate <= '" + end + "'" : where;
+		}
+
+		int countPage = drugServices.countexpiredQuery(where);
+		List<Druginventorytable> list = drugServices.queryexpiredQuery(pageInt, limitInt, where);
+
+		return new TableMsg(0, "", countPage, list);
 	}
 
 	//已滞销列表
@@ -652,6 +860,182 @@ public class DrugController
 		return tableMsg;
 	}
 
+	//滞销查询
+	@RequestMapping("/unSaleQuery")
+	public @ResponseBody
+	TableMsg unSaleQuery(String drugcode, String commoname, String start, String end, int page, int limit, HttpServletRequest request)
+	{
+
+		System.out.println("滞销查询");
+		String where = "1=1";
+		System.out.println("drugcode:" + drugcode + ",commoname:" + commoname);
+
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+		if (drugcode != null)
+		{
+			where = drugcode.length() > 0 ? where + " and A.drugcode like '%" + drugcode + "%'" : where;
+		}
+		if (commoname != null)
+		{
+			where = commoname.length() > 0 ? where + " and B.commoname like '%" + commoname + "%'" : where;
+		}
+		if (start != null)
+		{
+			where = start.length() > 0 ? where + " and C.receivetime >= '" + start + "'" : where;
+		}
+		if (end != null)
+		{
+			where = end.length() > 0 ? where + " and C.receivetime <= '" + end + "'" : where;
+		}
+
+		int countPage = drugServices.countunSaleQuery(where);
+		List<Druginventorytable> list = drugServices.queryunSaleQuery(pageInt, limitInt, where);
+		return new TableMsg(0, "", countPage, list);
+	};
+
+
+
+	//盘点
+	@RequestMapping("/doInventory")
+	public @ResponseBody
+	TableMsg doInventory(String page, String limit, HttpServletRequest request)
+	{
+		System.out.println("执行到盘点");
+		System.out.println("page:" + page + ", limit:" + limit);
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+
+		List<Druginventorytable> druginventorytableList = null;
+		int count = 0;
+		druginventorytableList = drugServices.queryInventoryTableList(pageInt, limitInt);
+		count = drugServices.countInventoryTableList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(druginventorytableList);
+		return tableMsg;
+
+	}
+
+	//盘点查询
+	@RequestMapping("/inventoryQuery")
+	public @ResponseBody
+	TableMsg inventoryQuery(String drugcode, String commoname, int page, int limit, HttpServletRequest request)
+	{
+
+		System.out.println("盘点查询");
+		String where = "1=1";
+		System.out.println("drugcode:" + drugcode + ",commoname:" + commoname);
+
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+		if (drugcode != null)
+		{
+			where = drugcode.length() > 0 ? where + " and A.drugcode like '%" + drugcode + "%'" : where;
+		}
+		if (commoname != null)
+		{
+			where = commoname.length() > 0 ? where + " and B.commoname like '%" + commoname + "%'" : where;
+		}
+
+		int countPage = drugServices.countInventoryQuery(where);
+		List<Druginventorytable> list = drugServices.queryInventoryQuery(pageInt, limitInt, where);
+
+		return new TableMsg(0, "", countPage, list);
+	}
+
+	//盘点后调整库存数量/盘点结果
+	@RequestMapping("/adjustmentQuantity")
+	@ResponseBody
+	public String adjustmentQuantity(String data)
+	{
+		System.out.println("执行到盘点后调整库存数量/盘点结果");
+		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println(dateFormat.format(date));
+
+		boolean b = drugServices.deleteAfterInventory();
+		System.out.println("清除原先数据库数据" + b);
+		List<AfterInventory> afterInventories = JSON.parseArray(data, AfterInventory.class);
+		String result = "";
+		for (int i = 0; i < afterInventories.size(); i++)
+		{
+			System.out.println(afterInventories.get(i));
+
+			//盘点前后数量比较
+			if (afterInventories.get(i).getDruginventorynumber() == afterInventories.get(i).getFinishedquantity())
+			{
+				//如果相等
+				afterInventories.get(i).setRelativequantity(0);
+				afterInventories.get(i).setRelativeamount(0);
+			} else
+			{
+				//如果不相等
+				//盘点前数量大于盘点后数量(盘亏)
+				if (afterInventories.get(i).getDruginventorynumber() > afterInventories.get(i).getFinishedquantity())
+				{
+					afterInventories.get(i).setRelativequantity(afterInventories.get(i).getDruginventorynumber() - afterInventories.get(i).getFinishedquantity());
+					double z = mul(afterInventories.get(i).getRelativequantity(), afterInventories.get(i).getWholesaleprice());
+					afterInventories.get(i).setRelativeamount(z);
+					result = "盘亏";
+				} else
+				{
+					afterInventories.get(i).setRelativequantity(afterInventories.get(i).getFinishedquantity() - afterInventories.get(i).getDruginventorynumber());
+					double z = mul(afterInventories.get(i).getRelativequantity(), afterInventories.get(i).getWholesaleprice());
+					afterInventories.get(i).setRelativeamount(z);
+					result = "盘盈";
+				}
+				//盘点结果录入盘点结果表
+				drugServices.insertInventory(afterInventories.get(i).getDrugcode(), afterInventories.get(i).getSpecification(), afterInventories.get(i).getDrugunit(), afterInventories.get(i).getLotnumber(), afterInventories.get(i).getDruginventorynumber(), afterInventories.get(i).getRelativequantity(), afterInventories.get(i).getFinishedquantity(), afterInventories.get(i).getWholesaleprice(), afterInventories.get(i).getRelativeamount());
+
+				//录入盘点盈亏表
+				drugServices.insertInventory2(afterInventories.get(i).getDrugcode(), result, "001", dateFormat.format(date));
+
+				//药房药品库存数量自动调整
+				drugServices.updateDruginventoryCount(afterInventories.get(i).getDrugcode(), afterInventories.get(i).getFinishedquantity());
+
+			}
+		}
+
+		return "1";
+	}
+
+	//乘法计算
+	public double mul(double x, double y)
+	{
+		System.out.println("两个数相乘为：" + x + "*" + y + "=" + x * y);
+		double z = x * y;
+		return z;
+	}
+
+
+	//盘点之后
+	@RequestMapping("/afterInventory")
+	public @ResponseBody
+	TableMsg afterInventory(String page, String limit, HttpServletRequest request)
+	{
+		System.out.println("执行到盘点结果后");
+		System.out.println("page:" + page + ", limit:" + limit);
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+
+		List<AfterInventory> afterInventories = null;
+		int count = 0;
+		afterInventories = drugServices.queryAfterInventoryList(pageInt, limitInt);
+		count = drugServices.countAfterInventoryList();
+
+		TableMsg tableMsg = new TableMsg();
+		tableMsg.setCode(0);
+		tableMsg.setMsg("");
+		tableMsg.setCount(count);
+		tableMsg.setData(afterInventories);
+		return tableMsg;
+
+	}
+
 	@RequestMapping("/showInventory")
 	@IgnoreLog
 	public @ResponseBody List<Inventorycheck> showInventory(){
@@ -659,29 +1043,4 @@ public class DrugController
 		List<Inventorycheck> list = drugServices.selectInventorycheck(null,null);
 		return list;
 	};
-
-	//	//盘点
-	//	@RequestMapping("/doInventory")
-	//	public @ResponseBody
-	//	TableMsg doInventory(String page, String limit, HttpServletRequest request)
-	//	{
-	//		System.out.println("执行到盘点");
-	//		System.out.println("page:" + page + ", limit:" + limit);
-	//		int limitInt = Integer.valueOf(limit);
-	//		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
-	//
-	//	}
-	//	//盘点后调整库存数量
-	//	@ResponseBody
-	//	@RequestMapping("/adjustmentQuantity")
-	//	public String adjustmentQuantity(Druginventorytable druginventorytable){
-	//		System.out.println("执行到盘点后调整库存数量");
-	//
-	//
-	//
-	//
-	//		return msg;
-	//	}
-
-
 }

@@ -20,7 +20,7 @@ public class Purchasestatistics
 	private String lotnumber;
 	//有效期
 	private String date;
-
+	private String price;
 	public Purchasestatistics(Integer psid, String drugcode, String purchasenumber, String totalpurchasemount, String purchasetime, String buyer, String operator, String state, String lotnumber, String date)
 	{
 		this.psid = psid;
@@ -138,6 +138,16 @@ public class Purchasestatistics
 	public void setDate(String date)
 	{
 		this.date = date;
+	}
+
+	public String getPrice()
+	{
+		return price;
+	}
+
+	public void setPrice(String price)
+	{
+		this.price = price;
 	}
 
 	@Override

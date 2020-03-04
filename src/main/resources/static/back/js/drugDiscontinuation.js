@@ -34,11 +34,32 @@ layui.use(['table', 'jquery','form'], function () {
 			, {field: 'productiondate', width: 200, title: '生产日期', sort: true}
 			, {field: 'drugstatus', width: 130, title: '药品状态', sort: true}
 			, {field: 'pharmacynumber', width: 130, title: '药房编号', sort: true}
-			, {title: '操作', fixed: 'right', width: 400, align: 'center', toolbar: '#barDemo'}
+			, {title: '操作', fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo'}
 		]]
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25]
+		, where: { //设定异步数据接口的额外参数，任意设
+			drugcode: $('#drugcode').val(),
+			commoname: $('#commoname').val()
+		}
 	});
+
+	// 用于带条件查询
+	$("#query_bt").click(function () {
+		table.reload('idTest', {
+			url: "drugController/drugDiscontinuation"
+			, where: { //设定异步数据接口的额外参数，任意设
+				drugcode: $('#drugcode').val(),
+				commoname: $('#commoname').val()
+			}
+			, page: {
+				curr: 1 //重新从第 1 页开始
+			}
+		});
+		// Layui表格,刷新当前分页数据
+		// $(".layui-laypage-btn").click()
+	});
+
 	table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 		var data = obj.data //获得当前行数据
 			, layEvent = obj.event; //获得 lay-event 对应的值
@@ -56,6 +77,26 @@ layui.use(['table', 'jquery','form'], function () {
 						table.reload('idTest');
 					} else {
 						layer.alert("停用失败，请重新尝试");
+					}
+				},//响应成功后的回调函数
+				error: function () {
+					alert("服务器繁忙")
+				},//表示如果请求响应出现错误，会执行的回调函数
+				dataType: "text"//设置接受到的响应数据的格式
+			});
+
+		}else if (layEvent === 'open') {
+			// layer.msg('启用操作');
+			$.ajax({
+				type: "POST", //请求方式
+				url: 'userController/drugEnable', // 请求路径
+				data: {drugcode: data.drugcode},
+				success: function (msg) {
+					if (msg === '1') {
+						layer.alert("启用成功");
+						table.reload('idTest');
+					} else {
+						layer.alert("启用失败，请重新尝试");
 					}
 				},//响应成功后的回调函数
 				error: function () {

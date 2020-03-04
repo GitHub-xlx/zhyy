@@ -61,10 +61,10 @@ public class VacationServiceImpl
 //    private static final String PROCESS_DEFINE_KEY = "vacationProcess";
 
     public boolean startVac(String userName, List list,String processkey) {
-	    Deployment deployment = processEngine.getRepositoryService().createDeployment().name(processkey)
-			    .addClasspathResource("processes/"+processkey+".bpmn")
-			    .addClasspathResource("processes/"+processkey+".png")
-			    .deploy();
+//	    Deployment deployment = processEngine.getRepositoryService().createDeployment().name(processkey)
+//			    .addClasspathResource("processes/"+processkey+".bpmn")
+//			    .addClasspathResource("processes/"+processkey+".png")
+//			    .deploy();
         identityService.setAuthenticatedUserId(userName);
         // 开始流程
         ProcessInstance vacationInstance = runtimeService.startProcessInstanceByKey(processkey);
@@ -75,6 +75,7 @@ public class VacationServiceImpl
 
         Map<String, Object> vars = new HashMap<>(5);
         vars.put("applyUser", userName);
+        vars.put("instanceId", vacationInstance.getId());
         vars.put("applyTime", TimeUtil.getTime(new Date()));
         vars.put("reason", processkey);
         vars.put("list", list);
@@ -113,10 +114,11 @@ public class VacationServiceImpl
         String durgResult = runtimeService.getVariable(instance.getId(), "durgResult", String.class);
         String dispenser = runtimeService.getVariable(instance.getId(), "dispenser", String.class);
         String medicineTime = runtimeService.getVariable(instance.getId(), "medicineTime", String.class);
-	    List<Druginformation> list = runtimeService.getVariable(instance.getId(), "list", List.class);
+        String id = runtimeService.getVariable(instance.getId(), "instanceId", String.class);
+        List<Druginformation> list = runtimeService.getVariable(instance.getId(), "list", List.class);
 	    Vacation vac = new Vacation();
         vac.setApplyUser(instance.getStartUserId());
-	    vac.setId(instance.getId());
+	    vac.setInstanceId(id);
         vac.setReason(reason);
         vac.setList(list);
         vac.setResult(result);

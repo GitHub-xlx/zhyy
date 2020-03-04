@@ -23,8 +23,8 @@ layui.use('table', function(){
 		}
 		,cols: [[
 
-			{field:'id', width:80, title: '实例ID', sort: true}
-			,{field:'name', width:80, title: '流程名称', sort: true}
+			{field:'instanceId', width:80, title: '实例ID', sort: true}
+			,{field:'reason', width:80, title: '流程名称', sort: true}
 			,{field:'applyUser', width:100, title: '申请人'}
 			,{field:'list', width:80, title: '药品集合', sort: true}
 			,{field:'applyTime', width:100, title: '申请时间', sort: true}
@@ -46,7 +46,7 @@ layui.use('table', function(){
 			,last: false //不显示尾页 ,hide:false
 		}
 		,cols: [[
-			{field:'id', width:80, title: '实例ID', sort: true}
+			{field:'instanceId', width:80, title: '实例ID', sort: true}
 			,{field:'reason', width:80, title: '流程名称', sort: true}
 			,{field:'applyUser', width:100, title: '申请人'}
 			,{field:'list', width:80, title: '药品集合', sort: true}
@@ -74,7 +74,7 @@ layui.use('table', function(){
 			,last: false //不显示尾页
 		}
 		,cols: [[
-			{field:'id', width:80, title: '实例ID', sort: true}
+			{field:'id', width:80, title: '任务ID', sort: true}
 			,{field:'name', width:80, title: '流程名称', sort: true}
 			,{field:'applyUser', width:100, title: '申请人',templet: '<div>{{d.vac.applyUser}}</div>'}
 			,{field:'list', width:80, title: '药品集合', sort: true,templet: '<div>{{d.vac.list}}</div>'}
@@ -99,7 +99,7 @@ layui.use('table', function(){
 			,last: false //不显示尾页
 		}
 		,cols: [[
-			{field:'id', width:80, title: '实例ID', sort: true}
+			{field:'instanceId', width:80, title: '实例ID', sort: true}
 			,{field:'reason', width:80, title: '流程名称', sort: true}
 			,{field:'applyUser', width:100, title: '申请人'}
 			,{field:'list', width:80, title: '药品集合', sort: true}
@@ -188,7 +188,7 @@ layui.use('table', function(){
 		alert(JSON.stringify(data));
 		if(layEvent === 'schedule'){
 			var src1=document.getElementById('imgProcess');
-			src1.src = "/vacationController/getFlowChart?id="+data.id;
+			src1.src = "/vacationController/getFlowChart?id="+data.instanceId;
 			layer.open({
 				type: 1
 				, title: '流程审核图'
@@ -265,6 +265,7 @@ layui.use('table', function(){
 							var data1={
 								'id':data.id
 								,'gsonList':JSON.stringify(data.vac.list)
+								,'vac.instanceId':data.vac.instanceId
 								,'vac.applyUser':data.vac.applyUser
 								,'vac.reason':data.vac.reason
 								,'vac.nowResult':'同意'
@@ -307,16 +308,13 @@ layui.use('table', function(){
 			method:'post',
 			data:data1,
 			success:function(res){
-				if(res.val()){
-					layer.msg('审核成功', {
-						time: 1500, //1500ms后自动关闭
-					});
+				if(res){
+					layer.alert('审核成功');
 					obj.del();
 				}
-				else
-					layer.msg('审核失败，请重新尝试', {
-						time: 1500, //1500ms后自动关闭
-					});
+				else{
+					layer.alert('审核失败，请重新尝试');
+				}
 			},
 			error:function (data) {
 			}

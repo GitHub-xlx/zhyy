@@ -24,8 +24,18 @@ public interface UserMapper
 	 */
 	@Select("select account from userinfo")
     public List<User> checkUser();
+	//注册工作人员
     @Insert("insert into userinfo (account,password,username,phone,sex,age,department,position,rolecode,pharmacycode,state) values (#{account},#{password},#{username},#{phone},#{sex},#{age},#{role},#{title},#{rolecode},#{pharmacycode},#{state})")
 	public boolean regStaff(String account,String password,String username,String phone,String sex,String age,String role,String title,String rolecode,String pharmacycode,String state);
+	//修改用户信息
+	@Update("update userinfo set ${where} where account = '${account}' ")
+    public boolean updateStaff(String where ,String account);
+
+	@Select("select * from userinfo where ${where} limit #{pageInt},#{limitInt}")
+	public List<User> queryAllUser(int pageInt, int limitInt,String where);
+	@Select("select count(*) from userinfo where ${where}")
+	public int count(String where);
+
 	@Select("select * from userinfo limit #{pageInt},#{limitInt}")
 	public List<User> queryUserList(int pageInt, int limitInt);
 	@Select("select count(*) from userinfo")
@@ -45,6 +55,13 @@ public interface UserMapper
 	public boolean drugDiscontinuation(String drugcode);
 	@Update("update druginventorytable set drugstatus ='停用' where drugcode = #{drugcode}")
 	public boolean drug2Discontinuation(String drugcode);
+
+	@Update("update drugstoredruginventory set drugstatus ='启用' where drugcode = #{drugcode}")
+	public boolean drugEnable(String drugcode);
+	@Update("update druginventorytable set drugstatus ='启用' where drugcode = #{drugcode}")
+	public boolean drugEnable2(String drugcode);
+
+
 	@Update("update drugstoredruginventory set drugstatus ='已过期' where drugcode = #{drugcode}")
 	public boolean expiredStatus(String drugcode);
 	@Update("update druginventorytable set drugstatus ='已过期' where drugcode = #{drugcode}")

@@ -53,3 +53,9 @@
 #state_pa{
     width: 10%;
 }
+#confirmation{
+    font-size: 45px;
+    font-family: 幼圆;
+    text-align: center;
+    margin-top: 3%;
+}

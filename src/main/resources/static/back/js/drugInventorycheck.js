@@ -46,7 +46,7 @@ layui.use('table', function(){
 		table.reload('condition',{
 			url:"/drugController/selectInventorycheck"
 			,where: { //设定异步数据接口的额外参数，任意设
-				commonname: $('#drugn1').val(),
+				commoname: $('#drugn1').val(),
 				specialmedicine: $('#drugn2').val(),
 			}
 			,page: {
