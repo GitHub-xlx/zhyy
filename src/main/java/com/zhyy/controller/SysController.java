@@ -28,6 +28,7 @@ public class SysController
 	private SysServices sysServices;
 
 	@RequestMapping("/menuManage")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg menuManage(String menucode,String menu,int page,int limit, HttpServletRequest request){
 
@@ -49,6 +50,7 @@ public class SysController
 	}
 
 	@RequestMapping("/permissionManage")
+	@IgnoreLog
 	public @ResponseBody
 	Object menumanger(String rolecode)
 	{
@@ -118,11 +120,13 @@ public class SysController
 
 
 	@RequestMapping("/queryRole")
+	@IgnoreLog
 	public @ResponseBody List<Role> queryRole(){
 
 		return sysServices.queryRole();
 	}
 	@RequestMapping("/roleManage")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg menuManage(String rolecode,String rolename,String department,int page,int limit, HttpServletRequest request){
 
@@ -146,12 +150,14 @@ public class SysController
 	}
 
 	@RequestMapping("/queryParentMenu")
+	@IgnoreLog
 	public @ResponseBody List<Menu> queryParentMenu(){
 
 		return sysServices.queryAllMenu("parentcode = '0'",null);
 	}
 
 	@RequestMapping("/checkMenu")
+	@IgnoreLog
 	public @ResponseBody ResultInfo checkMenu(String menucode)
 	{
 		ResultInfo resultInfo;
@@ -208,7 +214,7 @@ public class SysController
 	}
 
 	@RequestMapping("/editMenu")
-	public @ResponseBody ResultInfo addMenu(String menucode,String menuname,String url){
+	public @ResponseBody ResultInfo editMenu(String menucode,String menuname,String url){
 
 		ResultInfo resultInfo;
 
@@ -222,16 +228,18 @@ public class SysController
 
 
 	@RequestMapping("/queryDepartment")
+	@IgnoreLog
 	public @ResponseBody List<Department> queryDepartment(){
 
 		return sysServices.queryDepartment();
 	}
 
 	@RequestMapping("/checkRole")
+	@IgnoreLog
 	public @ResponseBody ResultInfo checkRole(String rolecode)
 	{
 		ResultInfo resultInfo;
-		if (sysServices.checkMenu(rolecode)>0){
+		if (sysServices.checkRole(rolecode)>0){
 			resultInfo =  new ResultInfo(300,"编号已存在");
 		}else{
 			resultInfo =  new ResultInfo(200,"编号可用");
@@ -266,6 +274,7 @@ public class SysController
 	}
 
 	@RequestMapping("/checkPassword")
+	@IgnoreLog
 	public @ResponseBody ResultInfo checkPassword(String account,String password)
 	{
 		ResultInfo resultInfo;

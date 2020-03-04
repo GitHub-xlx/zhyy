@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.zhyy.aspect.IgnoreLog;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import org.apache.ibatis.session.RowBounds;
@@ -36,6 +37,7 @@ public class DrugController
 	 * @return
 	 */
 	@RequestMapping("/selectprice")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg selectprice(String drugcode, String commoname, String start, String end, String page, String limit, HttpServletRequest request)
 	{
@@ -63,6 +65,7 @@ public class DrugController
 	 * @return
 	 */
 	@RequestMapping("/selectsale")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg selectsale(String drugcode, String commoname, String specialmedicine, String idcard, String consumername, String salesperson, String start, String end, String page, String limit, HttpServletRequest request)
 	{
@@ -95,6 +98,7 @@ public class DrugController
 	 * @return
 	 */
 	@RequestMapping("/selectdruginventory")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg selectdruginventory(String classcode, String commoname, String page, String limit, HttpServletRequest request)
 	{
@@ -239,6 +243,7 @@ public class DrugController
 	 * @return
 	 */
 	@RequestMapping("/selectcompatibility")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg selectcompatibility(String drugcode, String page, String limit, HttpServletRequest request)
 	{
@@ -260,6 +265,7 @@ public class DrugController
 	}
 
 	@RequestMapping("/queryDrugcode")
+	@IgnoreLog
 	public @ResponseBody
 	List<Druginformation> queryDrugcode()
 	{
@@ -267,6 +273,7 @@ public class DrugController
 	}
 
 	@RequestMapping("/queryDrugcodeIf")
+	@IgnoreLog
 	public @ResponseBody
 	List<Druginformation> queryDrugcodeIf(HttpServletRequest request)
 	{
@@ -306,6 +313,7 @@ public class DrugController
 	 * @Param
 	 **/
 	@RequestMapping("/selectclaim")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg selectclaim(int limit, int page, String commoname, String pincode, HttpServletRequest request)
 	{
@@ -326,6 +334,7 @@ public class DrugController
 
 	//--药房--药品库存列表
 	@RequestMapping("/doDrugInventory")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg doDrugInventory(String page, String limit, HttpServletRequest request)
 	{
@@ -349,6 +358,7 @@ public class DrugController
 
 	//--药库--药品库存列表
 	@RequestMapping("/doDrugStoreDrugInventory")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg doDrugStoreDrugInventory(String page, String limit, HttpServletRequest request)
 	{
@@ -399,7 +409,8 @@ public class DrugController
 	 * @author cbd
 	 */
 	@RequestMapping("/selectDrugClass")
-	@ResponseBody
+	@IgnoreLog
+	public @ResponseBody
 	TableMsg selectDrugClass(int page, int limit)
 	{
 		//开启分页
@@ -422,6 +433,7 @@ public class DrugController
 	 * @author cbd
 	 */
 	@RequestMapping("/selectClassCode")
+	@IgnoreLog
 	@ResponseBody
 	public String selectClassCode(String parentCode)
 	{
@@ -461,6 +473,7 @@ public class DrugController
 	 * @author cbd
 	 */
 	@RequestMapping("/selectDrugInfo")
+	@IgnoreLog
 	@ResponseBody
 	public TableMsg selectDrugInfo(int page, int limit)
 	{
@@ -507,6 +520,7 @@ public class DrugController
 	 * @author cbd
 	 */
 	@RequestMapping("/selectDrugStoreInventory")
+	@IgnoreLog
 	@ResponseBody
 	public TableMsg selectDrugStoreInventory(int page, int limit)
 	{
@@ -548,7 +562,8 @@ public class DrugController
 	}
 
 	@RequestMapping("/selectInventorycheck")
-	@ResponseBody
+	@IgnoreLog
+	public @ResponseBody
 	TableMsg selectInventorycheck(int page, int limit, String commonname, String specialmedicine)
 	{
 		//开启分页
@@ -591,6 +606,7 @@ public class DrugController
 
 	//已过期列表
 	@RequestMapping("/doDrugInventoryExpired")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg doDrugInventoryExpired(String page, String limit, HttpServletRequest request)
 	{
@@ -614,6 +630,7 @@ public class DrugController
 
 	//已滞销列表
 	@RequestMapping("/doDrugInventoryUnsalable")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg doDrugInventoryUnsalable(String page, String limit, HttpServletRequest request)
 	{
@@ -635,6 +652,13 @@ public class DrugController
 		return tableMsg;
 	}
 
+	@RequestMapping("/showInventory")
+	@IgnoreLog
+	public @ResponseBody List<Inventorycheck> showInventory(){
+
+		List<Inventorycheck> list = drugServices.selectInventorycheck(null,null);
+		return list;
+	};
 
 	//	//盘点
 	//	@RequestMapping("/doInventory")

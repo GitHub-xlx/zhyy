@@ -99,7 +99,7 @@ public interface SysMapper
 	 * @param url
 	 * @return
 	 */
-	@Insert("insert into menu (menucode,parentcode,menu,url)values(#{menucode},#{parentcode},#{menu},#{url}")
+	@Insert("insert into menu (menucode,parentcode,menu,url)values(#{menucode},#{parentcode},#{menu},#{url})")
 	public int addMenu(String menucode,String parentcode,String menu,String url);
 
 
@@ -157,7 +157,7 @@ public interface SysMapper
 	 * @param rolename
 	 * @return
 	 */
-	@Insert("insert into role (departmentcode,rolecode,rolename)values(#{departmentcode},#{rolecode},#{rolename}")
+	@Insert("insert into role (departmentcode,rolecode,rolename)values(#{departmentcode},#{rolecode},#{rolename})")
 	public int addRole(String departmentcode,String rolecode,String rolename);
 
 

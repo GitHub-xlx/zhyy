@@ -38,6 +38,7 @@ public class UserController
 		return "back/html/login";
 	}
 	@RequestMapping("/query")
+	@IgnoreLog
 	public String queryUserList()
 	{
 		return "back/html/login";
@@ -84,6 +85,7 @@ public class UserController
 	}
 
 	@RequestMapping("/showMain")
+	@IgnoreLog
 	public String showMain(HttpServletRequest request, Model model){
 		User user = (User)request.getSession().getAttribute("user");
 		ArrayList<Menu> list = (ArrayList<Menu>) userServices.queryMenuList(user.getRolecode());
@@ -244,6 +246,7 @@ public class UserController
 
     //用户管理列表
 	@RequestMapping("/manageUsers")
+	@IgnoreLog
 	public @ResponseBody
 	TableMsg manageUsers(String page, String limit, HttpServletRequest request){
 		System.out.println("执行到管理用户列表");
@@ -268,6 +271,7 @@ public class UserController
 
 	//检测用户是否存在
 	@ResponseBody
+	@IgnoreLog
 	@RequestMapping("/checkUser")
 	public String checkUser(String account){
 		System.out.println("执行到检测用户是否存在");
