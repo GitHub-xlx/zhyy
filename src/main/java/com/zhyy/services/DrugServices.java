@@ -249,11 +249,23 @@ public interface DrugServices
 	//统计药房--库存列表数量
 	int countDrugInventoryList();
 
+	//药品停用查询
+	List<Druginventorytable> querydrugDiscontinuation(int pageInt,int limitInt,String where);
+	//药品停用查询总数
+	int countdrugDiscontinuation(String where);
+
 	///低限报警的-------------------
 	//查询药房--库存列表
 	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
 	//统计药房--库存列表数量
 	int countPharmacyLowLimitDrugsList();
+
+
+	///低限报警查询-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> querypharmacyDrugsQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	int countpharmacyDrugsQuery(String where);
 
 	///过期的-------------------
 	//查询药房--库存列表
@@ -261,24 +273,46 @@ public interface DrugServices
 	//统计药房--库存列表数量
 	int countDrugInventoryExpiredList();
 
+	///过期查询-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryexpiredQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	int countexpiredQuery(String where);
+
 	///滞销的-------------------
 	//查询药房--库存列表
 	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
 	//统计药房--库存列表数量
 	int countDrugInventoryUnsalableList();
 
-	//查询药库--库存列表
+	///滞销查询-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryunSaleQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	int countunSaleQuery(String where);
+
+
+
+	//药品低限设置
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
-	//统计药库--库存列表数量
+	//药品低限设置统计
 	int countDrugStoreInventoryList();
+
+	//药品低限设置查询
+	List<Drugstoredruginventory> querylowLimitQuery(int pageInt,int limitInt,String where);
+	int countlowLimitQuery(String where);
 
 	//药品低限设置
 	boolean lowestSetting(String drugCode,String setData);
 
-
 	//盘点列表
 	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
 	int countInventoryTableList();
+
+	//盘点查询
+	List<Druginventorytable> queryInventoryQuery(int pageInt,int limitInt,String where);
+	int countInventoryQuery(String where);
+
 
 	boolean deleteAfterInventory();
     //盘点之后
@@ -288,6 +322,8 @@ public interface DrugServices
 	//盘点之后药房库存数量变更
 	boolean updateDruginventoryCount(String drugcode,int finishedquantity);
 
+	//录入盘点盈亏表
+	boolean insertInventory2(String drugcode,String inventoryresults,String pharmacycode,String inventorytime);
 
 	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
 	//List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine);

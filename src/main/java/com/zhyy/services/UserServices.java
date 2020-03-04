@@ -18,7 +18,7 @@ public interface UserServices
 	public List<User> checkUser();
 	public boolean regStaff(String account,String password,String username,String phone,String sex,
 	                        String age,String role,String title,String rolecode,String pharmacycode,String state);
-	public boolean updateStaff(String password,String username,String phone,String sex,String age,String role,String title,String rolecode);
+	public boolean updateStaff(String where ,String account);
 	public boolean resetPassword(String account);
 	public boolean enableUser(String account);
 	public boolean disableUser(String account);
@@ -33,6 +33,10 @@ public interface UserServices
 	public String findDrugNameByDrugCode(String drugcode);
 	public List<User> queryUserList(int pageInt,int limitInt );
 	public int countUserList();
+
+	public List<User> queryAllUser(int pageInt,int limitInt,String where);
+	public int count(String where);
+
 	public List<Menu> queryMenuList(String rolecode);
 	public List<Druginventorytable> expiredCheck();
 	public List<Druginventorytable> unsalableCheck();

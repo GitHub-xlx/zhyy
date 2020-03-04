@@ -8,10 +8,28 @@
 </head>
 <body>
 
+
+<form class="layui-form">
+    <div class="layui-form-item" >
+
+        <div class="layui-inline">
+            <label class="layui-form-label" >药品编号 ：</label>
+            <div class="layui-input-inline">
+                <input name="drugcode" id="drugcode" class="layui-input" type="text" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label" >药品名称 ：</label>
+            <div class="layui-input-inline">
+                <input name="commoname" id="commoname" class="layui-input" type="text" autocomplete="off">
+            </div>
+        </div>
+        <button class="layui-btn " id="query_bt"  type="button">查询</button>
+    </div>
+</form>
 <div class="layui-btn-group demoTable">
     <button class="layui-btn layui-btn-warm" data-type="getCheckData">保存</button>
 </div>
-
     <table class="layui-hide" id="demo2" lay-filter="test2"></table>
 
 <h1  align="center">盘点清单</h1>

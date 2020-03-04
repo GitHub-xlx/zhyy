@@ -218,13 +218,30 @@ public interface DrugMapper
 	@Select("select count(*) from druginventorytable")
 	int countDrugInventoryList();
 
-	///低于最低数量的---------------------------
+	//药品停用查询
+	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> querydrugDiscontinuation(int pageInt,int limitInt,String where);
+	//药品停用查询总数
+	@Select("select count(*) from druginventorytable A ,druginformation B  where ${where} and A.drugcode=B.drugcode")
+	public int countdrugDiscontinuation(String where);
+
+
+	///低限报警---------------------------
 	//查询药房--库存列表
 	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums  limit #{pageInt},#{limitInt}")
 	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
 	//统计药房--库存列表数量
 	@Select("select count(*) from druginventorytable")
 	int countPharmacyLowLimitDrugsList();
+
+	///低限报警查询-------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums  limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> querypharmacyDrugsQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums")
+	int countpharmacyDrugsQuery(String where);
+
 
 	///过期的---------------------------
 	//查询药房--库存列表
@@ -234,6 +251,15 @@ public interface DrugMapper
 	@Select("select count(*) from druginventorytable")
 	int countDrugInventoryExpiredList();
 
+	///过期查询-------------------
+	//查询药房--库存列表
+	@Select("select A.*,B.commoname,B.shelflife from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.drugstatus= '已过期' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryexpiredQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	@Select("select count(*) from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.drugstatus= '已过期'")
+	int countexpiredQuery(String where);
+
+
 	///滞销的-------------------
 	//查询药房--库存列表
 	@Select("select A.*,B.commoname,C.receivetime from druginventorytable A,druginformation B,pharmacydrugschedule C where A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' limit #{pageInt},#{limitInt}")
@@ -242,13 +268,27 @@ public interface DrugMapper
 	@Select("select count(*) from druginventorytable")
 	int countDrugInventoryUnsalableList();
 
+	///滞销查询-------------------
+	@Select("select A.*,B.commoname,C.receivetime from druginventorytable A,druginformation B,pharmacydrugschedule C where ${where} and A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' limit #{pageInt},#{limitInt}")
+	List<Druginventorytable> queryunSaleQuery(int pageInt,int limitInt,String where);
+	@Select("select count(*) from druginventorytable A,druginformation B,pharmacydrugschedule C where ${where} and A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' ")
+	int countunSaleQuery(String where);
 
-	//查询药库--库存列表
+
+
+	//药品低限设置
 	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
-	//统计药库--库列表数量
+	//药品低限设置统计
 	@Select("select count(*) from drugstoredruginventory")
 	int countDrugStoreInventoryList();
+
+	//药品低限设置查询
+	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where ${where} and A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
+	List<Drugstoredruginventory> querylowLimitQuery(int pageInt,int limitInt,String where);
+	@Select("select count(*) from drugstoredruginventory A,druginformation B where ${where} and A.drugcode=B.drugcode")
+	int countlowLimitQuery(String where);
+
 
 	//药品低限设置
 	@Update("update drugstoredruginventory set drugminimums = #{setData} where drugcode = #{drugCode}")
@@ -259,6 +299,12 @@ public interface DrugMapper
 	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
 	@Select("select count(*) from druginventorytable")
 	int countInventoryTableList();
+
+	//盘点查询
+	@Select("select A.drugcode,B.commoname,B.specification,A.drugunit,A.lotnumber,A.druginventorynumber,B.wholesaleprice from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode")
+	List<Druginventorytable> queryInventoryQuery(int pageInt,int limitInt,String where);
+	@Select("select count(*) from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode")
+	int countInventoryQuery(String where);
 
 	//清理盘点数据
 	@Delete("delete from afterinventory")
@@ -271,7 +317,7 @@ public interface DrugMapper
 	int countAfterInventoryList();
 
 
-	//盘点之后插入数据
+	//盘点之后录入盘点结果
     @Insert("insert into afterinventory (drugcode,specification,drugunit,lotnumber,druginventorynumber,relativequantity,finishedquantity,wholesaleprice,relativeamount)" +
 		    " values (#{drugcode},#{specification},#{drugunit},#{lotnumber},#{druginventorynumber},#{relativequantity},#{finishedquantity},#{wholesaleprice},#{relativeamount})")
     boolean insertInventory(String drugcode,String specification,String drugunit,String lotnumber,int druginventorynumber,int relativequantity,int finishedquantity,double wholesaleprice,double relativeamount);
@@ -279,6 +325,12 @@ public interface DrugMapper
 	//盘点之后药房库存数量调整
 	@Update("update druginventorytable set druginventorynumber = #{finishedquantity} where drugcode = #{drugcode}")
 	boolean updateDruginventoryCount(String drugcode,int finishedquantity);
+
+	//盘点之后录入盘点盈亏表
+	@Insert("insert into inventory (drugcode,inventoryresults,pharmacycode,inventorytime)" +
+			" values (#{drugcode},#{inventoryresults},#{pharmacycode},#{inventorytime})")
+	boolean insertInventory2(String drugcode, String inventoryresults, String pharmacycode, String inventorytime);
+
 
 
 

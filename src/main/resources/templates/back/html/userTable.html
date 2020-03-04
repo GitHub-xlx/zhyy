@@ -5,16 +5,121 @@
     <title>用户管理界面</title>
     <base th:href="@{/}">
     <link rel="stylesheet" type="text/css" th:href="@{static/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{static/back/css/commond.css}" />
 </head>
 <body>
+<h3 id="fun_title">用户管理</h3>
+<form class="layui-form">
+    <div class="layui-form-item" >
 
+        <div class="layui-inline">
+            <label class="layui-form-label" >角色编号 ：</label>
+            <div class="layui-input-inline">
+                <input name="rolecode" id="rolecode" class="layui-input" type="text" autocomplete="off">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label" >角色名称 ：</label>
+            <div class="layui-input-inline">
+                <input name="rolename" id="rolename" class="layui-input" type="text" autocomplete="off">
+            </div>
+        </div>
 
-<div>
-    <button type="button" class="layui-btn layui-btn-warm" id="distribution">新增人员</button>
-</div>
+    </div>
+    <div class="layui-form-item" >
+
+        <div class="layui-inline">
+            <label class="layui-form-label" >部门名称：</label>
+            <div class="layui-input-inline">
+                <input name="department" id="department" class="layui-input" type="text" autocomplete="off">
+            </div>
+        </div>
+
+        <button class="layui-btn " id="query_bt"  type="button">查询</button>
+        <button type="button" class="layui-btn layui-btn-warm" id="distribution">新增人员</button>
+    </div>
+</form>
+
 
 <table class="layui-hide" id="demo" lay-filter="test"></table>
 
+<div id="updateStaffDiv" style="display: none">
+
+    <form class="layui-form" on >
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" id="username" name="username"  autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-inline">
+                <input type="text" id="phone" name="phone" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">性别</label>
+            <div class="layui-input-block">
+                <input type="radio"  name="sex" value="男" title="男" checked="">
+                <input type="radio"  name="sex" value="女" title="女">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">年龄</label>
+            <div class="layui-input-inline">
+                <input type="text" id="age" name="age" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px">部门</label>
+            <div class="layui-input-inline">
+                <select id="role" name="role" lay-verify="" lay-filter="role" style="margin-top: 4px;height: 30px">
+                    <option value="01">药库</option>
+                    <option value="02">药房</option>
+                </select>
+            </div>
+        </div>
+        <div id="docInfo" style="display: none">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">职位</label>
+                <div class="layui-input-inline">
+                    <select id="title" name="title" lay-verify="" lay-filter="title"
+                            style="margin-top: 4px;height: 30px">
+                        <option value="">请选择</option>
+                        <option value="001">库管人员</option>
+                        <option value="002">仓库经理</option>
+                        <option value="005">采购人员</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div id="docInfo2" style="display: none">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">职位</label>
+                <div class="layui-input-inline">
+                    <select id="title2" name="title2" lay-verify="" lay-filter="title"
+                            style="margin-top: 4px;height: 30px">
+                        <option value="">请选择</option>
+                        <option value="003">药房销售</option>
+                        <option value="004">药房经理</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button type="button" id="updateSave" >修改</button>
+            </div>
+        </div>
+    </form>
+</div>
 
 <script type="text/html" id="barDemo">
     {{# if(d.rolecode =='000' ){  }}

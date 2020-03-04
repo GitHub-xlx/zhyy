@@ -28,9 +28,13 @@ public interface UserMapper
     @Insert("insert into userinfo (account,password,username,phone,sex,age,department,position,rolecode,pharmacycode,state) values (#{account},#{password},#{username},#{phone},#{sex},#{age},#{role},#{title},#{rolecode},#{pharmacycode},#{state})")
 	public boolean regStaff(String account,String password,String username,String phone,String sex,String age,String role,String title,String rolecode,String pharmacycode,String state);
 	//修改用户信息
-	@Update("update userinfo set password = #{password},username = #{username},phone = #{phone},sex = #{sex},age = #{age},role = #{role},title = #{title},rolecode = #{rolecode}")
-    public boolean updateStaff(String password,String username,String phone,String sex,String age,String role,String title,String rolecode);
+	@Update("update userinfo set ${where} where account = '${account}' ")
+    public boolean updateStaff(String where ,String account);
 
+	@Select("select * from userinfo where ${where} limit #{pageInt},#{limitInt}")
+	public List<User> queryAllUser(int pageInt, int limitInt,String where);
+	@Select("select count(*) from userinfo where ${where}")
+	public int count(String where);
 
 	@Select("select * from userinfo limit #{pageInt},#{limitInt}")
 	public List<User> queryUserList(int pageInt, int limitInt);

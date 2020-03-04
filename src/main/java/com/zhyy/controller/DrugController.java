@@ -375,11 +375,11 @@ public class DrugController
 		return tableMsg;
 	}
 
-	//--药房--药品库存列表
+	//药品停用
 	@RequestMapping("/doDrugInventory")
 	public @ResponseBody
 	TableMsg doDrugInventory(String page, String limit, HttpServletRequest request){
-		System.out.println("药房药--药房--药品库存列表品库存列表");
+		System.out.println("药品停用");
 		System.out.println("page:"+page+", limit:"+limit);
 		int pageInt=Integer.valueOf(page)-1;
 		int limitInt=Integer.valueOf(limit);
@@ -397,11 +397,36 @@ public class DrugController
 		return tableMsg;
 
 	}
-	//--药库--药品库存列表
+
+	//药品停用查询
+	@RequestMapping("/drugDiscontinuation")
+	public @ResponseBody
+	TableMsg drugDiscontinuation(String drugcode,String commoname,int page,int limit, HttpServletRequest request){
+
+		System.out.println("药品停用查询");
+		String where ="1=1";
+		System.out.println("drugcode:"+drugcode+",commoname:"+commoname);
+
+		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and A.drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (commoname!=null){
+			where = commoname.length()>0 ? where+" and B.commoname like '%"+commoname+"%'" : where;
+		}
+
+		int countPage = drugServices.countdrugDiscontinuation(where);
+		List<Druginventorytable> list = drugServices.querydrugDiscontinuation(pageInt,limitInt,where);
+
+		return new TableMsg(0,"",countPage,list);
+	}
+
+	//药品低限设置
 	@RequestMapping("/doDrugStoreDrugInventory")
 	public @ResponseBody
 	TableMsg doDrugStoreDrugInventory(String page, String limit, HttpServletRequest request){
-		System.out.println("--药库--药品库存列表");
+		System.out.println("药品低限设置");
 		System.out.println("page:"+page+", limit:"+limit);
 		int pageInt=Integer.valueOf(page)-1;
 		int limitInt=Integer.valueOf(limit);
@@ -418,6 +443,30 @@ public class DrugController
 		tableMsg.setData(druginventorytableList);
 		return tableMsg;
 
+	}
+
+	//药品低限设置查询
+	@RequestMapping("/lowLimitQuery")
+	public @ResponseBody
+	TableMsg lowLimitQuery(String drugcode,String commoname,int page,int limit, HttpServletRequest request){
+
+		System.out.println("药品低限设置查询");
+		String where ="1=1";
+		System.out.println("drugcode:"+drugcode+",commoname:"+commoname);
+
+		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and A.drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (commoname!=null){
+			where = commoname.length()>0 ? where+" and B.commoname like '%"+commoname+"%'" : where;
+		}
+
+		int countPage = drugServices.countlowLimitQuery(where);
+		List<Drugstoredruginventory> list = drugServices.querylowLimitQuery(pageInt,limitInt,where);
+
+		return new TableMsg(0,"",countPage,list);
 	}
 
 	//药品低限设置
@@ -642,11 +691,37 @@ public class DrugController
 		return tableMsg;
 	}
 
+	//低限报警查询
+	@RequestMapping("/pharmacyDrugsQuery")
+	public @ResponseBody
+	TableMsg pharmacyDrugsQuery(String drugcode,String commoname,int page,int limit, HttpServletRequest request){
+
+		System.out.println("低限报警查询");
+		String where ="1=1";
+		System.out.println("drugcode:"+drugcode+",commoname:"+commoname);
+
+		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and A.drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (commoname!=null){
+			where = commoname.length()>0 ? where+" and B.commoname like '%"+commoname+"%'" : where;
+		}
+
+		int countPage = drugServices.countpharmacyDrugsQuery(where);
+		List<Druginventorytable> list = drugServices.querypharmacyDrugsQuery(pageInt,limitInt,where);
+
+		return new TableMsg(0,"",countPage,list);
+	}
+
 	//过期报警列表
 	@RequestMapping("/doDrugInventoryExpired")
 	public @ResponseBody
 	TableMsg doDrugInventoryExpired(String page, String limit, HttpServletRequest request)
 	{
+
+
 		System.out.println("过期报警列表");
 		System.out.println("page:" + page + ", limit:" + limit);
 		int pageInt = Integer.valueOf(page) - 1;
@@ -663,6 +738,34 @@ public class DrugController
 		tableMsg.setCount(count);
 		tableMsg.setData(druginventorytableList);
 		return tableMsg;
+	}
+
+	//过期查询
+	@RequestMapping("/expiredQuery")
+	public @ResponseBody
+	TableMsg expiredQuery(String drugcode,String commoname,String start, String end,int page,int limit, HttpServletRequest request){
+
+		System.out.println("过期查询");
+		String where ="1=1";
+		System.out.println("drugcode:"+drugcode+",commoname:"+commoname);
+
+		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and A.drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (commoname!=null){
+			where = commoname.length()>0 ? where+" and B.commoname like '%"+commoname+"%'" : where;
+		}if(start!=null){
+			where = start.length()>0 ? where+" and A.productiondate >= '" + start + "'" : where;
+		}if(end!=null){
+			where = end.length()>0 ? where+" and A.productiondate <= '" + end + "'" : where;
+		}
+
+		int countPage = drugServices.countexpiredQuery(where);
+		List<Druginventorytable> list = drugServices.queryexpiredQuery(pageInt,limitInt,where);
+
+		return new TableMsg(0,"",countPage,list);
 	}
 
 	//已滞销列表
@@ -688,6 +791,33 @@ public class DrugController
 		return tableMsg;
 	}
 
+	//滞销查询
+	@RequestMapping("/unSaleQuery")
+	public @ResponseBody
+	TableMsg unSaleQuery(String drugcode,String commoname,String start, String end,int page,int limit, HttpServletRequest request){
+
+		System.out.println("滞销查询");
+		String where ="1=1";
+		System.out.println("drugcode:"+drugcode+",commoname:"+commoname);
+
+		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and A.drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (commoname!=null){
+			where = commoname.length()>0 ? where+" and B.commoname like '%"+commoname+"%'" : where;
+		}if(start!=null){
+			where = start.length()>0 ? where+" and C.receivetime >= '" + start + "'" : where;
+		}if(end!=null){
+			where = end.length()>0 ? where+" and C.receivetime <= '" + end + "'" : where;
+		}
+
+		int countPage = drugServices.countunSaleQuery(where);
+		List<Druginventorytable> list = drugServices.queryunSaleQuery(pageInt,limitInt,where);
+
+		return new TableMsg(0,"",countPage,list);
+	}
 
 		//盘点
 		@RequestMapping("/doInventory")
@@ -712,18 +842,43 @@ public class DrugController
 			return tableMsg;
 
 		}
+	//盘点查询
+	@RequestMapping("/inventoryQuery")
+	public @ResponseBody
+	TableMsg inventoryQuery(String drugcode,String commoname,int page,int limit, HttpServletRequest request){
 
+		System.out.println("盘点查询");
+		String where ="1=1";
+		System.out.println("drugcode:"+drugcode+",commoname:"+commoname);
 
+		int limitInt=Integer.valueOf(limit);
+		int pageInt=(Integer.valueOf(page)-1)* limitInt;
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and A.drugcode like '%"+drugcode+"%'" : where;
+		}
+		if (commoname!=null){
+			where = commoname.length()>0 ? where+" and B.commoname like '%"+commoname+"%'" : where;
+		}
+
+		int countPage = drugServices.countInventoryQuery(where);
+		List<Druginventorytable> list = drugServices.queryInventoryQuery(pageInt,limitInt,where);
+
+		return new TableMsg(0,"",countPage,list);
+	}
 
 		//盘点后调整库存数量/盘点结果
 		@RequestMapping("/adjustmentQuantity")
 		@ResponseBody
 		public String adjustmentQuantity(String data){
 			System.out.println("执行到盘点后调整库存数量/盘点结果");
+			Date date = new Date();
+			SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+			System.out.println(dateFormat.format(date));
 
 			boolean b=drugServices.deleteAfterInventory();
 			System.out.println("清除原先数据库数据"+b);
 			List<AfterInventory> afterInventories = JSON.parseArray(data, AfterInventory.class);
+			String result="";
 			for (int i = 0; i <afterInventories.size() ; i++)
 			{
 				System.out.println(afterInventories.get(i));
@@ -735,24 +890,28 @@ public class DrugController
 					afterInventories.get(i).setRelativeamount(0);
 				}else{
 					//如果不相等
-					//盘点前数量大于盘点后数量
+					//盘点前数量大于盘点后数量(盘亏)
 					if(afterInventories.get(i).getDruginventorynumber()>afterInventories.get(i).getFinishedquantity()){
 						afterInventories.get(i).setRelativequantity(afterInventories.get(i).getDruginventorynumber()-afterInventories.get(i).getFinishedquantity());
 						double z=mul(afterInventories.get(i).getRelativequantity(),afterInventories.get(i).getWholesaleprice());
 						afterInventories.get(i).setRelativeamount(z);
-
+						result="盘亏";
 					}else{
 						afterInventories.get(i).setRelativequantity(afterInventories.get(i).getFinishedquantity()-afterInventories.get(i).getDruginventorynumber());
 						double z=mul(afterInventories.get(i).getRelativequantity(),afterInventories.get(i).getWholesaleprice());
 						afterInventories.get(i).setRelativeamount(z);
-
+						result="盘盈";
 					}
-					//盘点结果入录数据库
+					//盘点结果录入盘点结果表
 					drugServices.insertInventory(afterInventories.get(i).getDrugcode(),afterInventories.get(i).getSpecification(),afterInventories.get(i).getDrugunit(),afterInventories.get(i).getLotnumber()
 					,afterInventories.get(i).getDruginventorynumber(),afterInventories.get(i).getRelativequantity(),afterInventories.get(i).getFinishedquantity(),afterInventories.get(i).getWholesaleprice(),afterInventories.get(i).getRelativeamount());
 
-					//药房药品数量自动调整
+					//录入盘点盈亏表
+					drugServices.insertInventory2(afterInventories.get(i).getDrugcode(),result,"001",dateFormat.format(date));
+
+					//药房药品库存数量自动调整
 					drugServices.updateDruginventoryCount(afterInventories.get(i).getDrugcode(),afterInventories.get(i).getFinishedquantity());
+
 				}
 			}
 
@@ -789,5 +948,8 @@ public class DrugController
 		return tableMsg;
 
 	}
+
+
+
 
 }

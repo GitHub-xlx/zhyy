@@ -38,6 +38,18 @@ public class UserServicesImpl implements UserServices
 	}
 
 	@Override
+	public List<User> queryAllUser(int pageInt, int limitInt, String where)
+	{
+		return userMapper.queryAllUser(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int count(String where)
+	{
+		return userMapper.count(where);
+	}
+
+	@Override
 	public List<User> checkUser()
 	{
 		return userMapper.checkUser();
@@ -51,9 +63,9 @@ public class UserServicesImpl implements UserServices
 	}
 
 	@Override
-	public boolean updateStaff(String password, String username, String phone, String sex, String age, String role, String title, String rolecode)
+	public boolean updateStaff(String where ,String account)
 	{
-		return userMapper.updateStaff(password,username,phone,sex,age,role,title,rolecode);
+		return userMapper.updateStaff(where,account);
 	}
 
 	//重置密码

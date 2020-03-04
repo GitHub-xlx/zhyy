@@ -18,7 +18,7 @@ public class MyJobDetail implements Job
 	{
 		JobDetail jobDetail=context.getJobDetail();
         Map map=jobDetail.getJobDataMap();
-		System.out.println("time is ="+getTime()+",hello myjobdetail -- data is "+map.get("msg")+"等库存数量不足->");
+		System.out.println("time is ="+getTime()+",hello myjobdetail -- data is "+map.get("msg")+"->警告！");
 		TestSend testSend =new TestSend();
 		testSend.sendMail(String.valueOf(map.get("msg")));
 	}

@@ -267,6 +267,18 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
+	public List<Druginventorytable> querydrugDiscontinuation(int pageInt, int limitInt, String where)
+	{
+		return drugMapper.querydrugDiscontinuation(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int countdrugDiscontinuation(String where)
+	{
+		return drugMapper.countdrugDiscontinuation(where);
+	}
+
+	@Override
 	public List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt, int limitInt)
 	{
 		return drugMapper.queryPharmacyLowLimitDrugsList(pageInt,limitInt);
@@ -276,6 +288,18 @@ public class DrugServicesImpl implements DrugServices
 	public int countPharmacyLowLimitDrugsList()
 	{
 		return drugMapper.countPharmacyLowLimitDrugsList();
+	}
+
+	@Override
+	public List<Druginventorytable> querypharmacyDrugsQuery(int pageInt, int limitInt, String where)
+	{
+		return drugMapper.querypharmacyDrugsQuery(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int countpharmacyDrugsQuery(String where)
+	{
+		return drugMapper.countpharmacyDrugsQuery(where);
 	}
 
 	@Override
@@ -291,6 +315,18 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
+	public List<Druginventorytable> queryexpiredQuery(int pageInt, int limitInt, String where)
+	{
+		return drugMapper.queryexpiredQuery(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int countexpiredQuery(String where)
+	{
+		return drugMapper.countexpiredQuery(where);
+	}
+
+	@Override
 	public List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt, int limitInt)
 	{
 		return drugMapper.queryDrugInventoryUnsalableList(pageInt,limitInt);
@@ -300,6 +336,18 @@ public class DrugServicesImpl implements DrugServices
 	public int countDrugInventoryUnsalableList()
 	{
 		return drugMapper.countDrugInventoryUnsalableList();
+	}
+
+	@Override
+	public List<Druginventorytable> queryunSaleQuery(int pageInt, int limitInt, String where)
+	{
+		return drugMapper.queryunSaleQuery(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int countunSaleQuery(String where)
+	{
+		return drugMapper.countunSaleQuery(where);
 	}
 
 
@@ -313,6 +361,18 @@ public class DrugServicesImpl implements DrugServices
 	public int countDrugStoreInventoryList()
 	{
 		return drugMapper.countDrugStoreInventoryList();
+	}
+
+	@Override
+	public List<Drugstoredruginventory> querylowLimitQuery(int pageInt, int limitInt, String where)
+	{
+		return drugMapper.querylowLimitQuery(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int countlowLimitQuery(String where)
+	{
+		return drugMapper.countlowLimitQuery(where);
 	}
 
 	@Override
@@ -331,6 +391,18 @@ public class DrugServicesImpl implements DrugServices
 	public int countInventoryTableList()
 	{
 		return drugMapper.countInventoryTableList();
+	}
+
+	@Override
+	public List<Druginventorytable> queryInventoryQuery(int pageInt, int limitInt, String where)
+	{
+		return drugMapper.queryInventoryQuery(pageInt,limitInt,where);
+	}
+
+	@Override
+	public int countInventoryQuery(String where)
+	{
+		return drugMapper.countInventoryQuery(where);
 	}
 
 	@Override
@@ -355,6 +427,12 @@ public class DrugServicesImpl implements DrugServices
 	public boolean updateDruginventoryCount(String drugcode, int finishedquantity)
 	{
 		return drugMapper.updateDruginventoryCount(drugcode,finishedquantity);
+	}
+
+	@Override
+	public boolean insertInventory2(String drugcode, String inventoryresults, String pharmacycode, String inventorytime)
+	{
+		return drugMapper.insertInventory2(drugcode,inventoryresults,pharmacycode,inventorytime);
 	}
 
 	@Override

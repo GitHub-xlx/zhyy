@@ -38,7 +38,28 @@ layui.use(['table', 'jquery','form'], function () {
 		]]
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25]
+		, where: { //设定异步数据接口的额外参数，任意设
+			drugcode: $('#drugcode').val(),
+			commoname: $('#commoname').val()
+		}
 	});
+
+	// 用于带条件查询
+	$("#query_bt").click(function () {
+		table.reload('idTest', {
+			url: "drugController/drugDiscontinuation"
+			, where: { //设定异步数据接口的额外参数，任意设
+				drugcode: $('#drugcode').val(),
+				commoname: $('#commoname').val()
+			}
+			, page: {
+				curr: 1 //重新从第 1 页开始
+			}
+		});
+		// Layui表格,刷新当前分页数据
+		// $(".layui-laypage-btn").click()
+	});
+
 	table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
 		var data = obj.data //获得当前行数据
 			, layEvent = obj.event; //获得 lay-event 对应的值

@@ -8,7 +8,8 @@
  **/
 layui.use(['table', 'jquery','form'], function () {
 	var table = layui.table
-		, form = layui.form;
+		, form = layui.form
+		, $2 = layui.jquery;
 
 	table.render({
 		elem: '#demo2'//指定表格
@@ -46,7 +47,21 @@ layui.use(['table', 'jquery','form'], function () {
 		, limit: 5
 		, limits: [5, 10, 15, 20, 25]
 	});
-
+    // 用于带条件查询
+	$2("#query_bt").click(function () {
+		table.reload('idTest2', {
+			url: "drugController/inventoryQuery"
+			, where: { //设定异步数据接口的额外参数，任意设
+				drugcode: $2('#drugcode').val(),
+				commoname: $2('#commoname').val()
+			}
+			, page: {
+				curr: 1 //重新从第 1 页开始
+			}
+		});
+		// Layui表格,刷新当前分页数据
+		// $(".layui-laypage-btn").click()
+	});
 	//头工具栏事件
 	table.on('toolbar(test2)', function(obj){
 
