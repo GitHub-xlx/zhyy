@@ -65,9 +65,15 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price)
+	public int insertDruginventoryOutbound(String drugcode, String time, String number, String lotnumber, String specialmedicine, String asktime, String receivetime, String operatingtime, String pharmacynumber, String asker, String price)
 	{
-		return drugMapper.insertDruginventoryOutbound(drugcode, time, number, lotnumber, specialmedicine, asktime, receivetime, operatingtime, pharmacynumber, asker,price);
+		return 0;
+	}
+
+	@Override
+	public int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker)
+	{
+		return drugMapper.insertDruginventoryOutbound(drugcode, time, number, lotnumber, specialmedicine, asktime, receivetime, operatingtime, pharmacynumber, asker);
 	}
 
 	@Override
@@ -95,6 +101,12 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
+	public List<Druginformation> selectclasscode()
+	{
+		return null;
+	}
+
+	@Override
 	public List<Druginformation> queryDrugcode(String drugcode)
 	{
 		String where="1=1 ";
@@ -111,45 +123,32 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public List<Druginformation> selectclasscode()
-	{
-		return drugMapper.selectclasscode();
-	}
-
-	@Override
 	public List<Druginformation> selectdrugstore(String drugcode, String commoname)
 	{
-		String where="1=1 ";
-		if(drugcode!=null){
-			where = drugcode.length()>0 ? where+" and drugcode like '%"+drugcode+"%'" : where;
-		}
-		if (commoname!=null){
-			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where;
-		}
-		return drugMapper.selectdrugstore(where);
+		return null;
 	}
 
 	@Override
 	public int updateDruginformationhealthinsurance(String healthinsurance, String drugcode, String commoname)
 	{
-		return drugMapper.updateDruginformationhealthinsurance(healthinsurance,drugcode,commoname);
+		return 0;
 	}
 
 	@Override
-	public List<InventoryDruginformation> selectinventorylist(String pharmacycode, String drugcode, String inventoryresults, String commoname ,String start,String end)
+	public List<InventoryDruginformation> selectinventorylist(String pharmacycode, String drugcode, String inventoryresults, String commoname, String start, String end)
 	{
-		return drugMapper.selectinventorylist(pharmacycode, drugcode, inventoryresults, commoname, start, end);
+		return null;
 	}
 
 	@Override
-	public List<Druginformation> selectDruginformation(String commoname, String pincode)
+	public List<Druginformation> selectDruginformation(String commonname, String pincode)
 	{
 		String where="1=1 ";
-		if(commoname!=null){
-			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where;
+		if(commonname!=null){
+			where = commonname.length()>0 ? where+" and commonname = '"+commonname+"'" : where;
 		}
 		if (pincode!=null){
-			where = pincode.length()>0 ? where+" and pincode like '%"+pincode+"%'" : where;
+			where = pincode.length()>0 ? where+" and pincode = '"+pincode+"'" : where;
 		}
 		return drugMapper.selectDruginformation(where);
 
@@ -158,9 +157,10 @@ public class DrugServicesImpl implements DrugServices
 	@Override
 	public int insertOutbound(Vacation vac)
 	{
-		User user = userServices.queryUserByAccount(vac.getApplyUser());
+		String[] split = vac.getDurgResult().split(",");
+		String pharmacycode = split[1];
 		String time = TimeUtil.getTime(new Date());
-		drugMapper.insertOutbound(vac, user.getPharmacycode(), time);
+		drugMapper.insertOutbound(vac, pharmacycode, time);
 		return drugMapper.updatePharmacyInventory(vac.getList());
 	}
 
@@ -229,11 +229,11 @@ public class DrugServicesImpl implements DrugServices
 	}
 
 	@Override
-	public List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine)
+	public List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine)
 	{
 		String where="1=1 ";
-		if(commoname!=null){
-			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where+" and commoname like '%%'";
+		if(commonname!=null){
+			where = commonname.length()>0 ? where+" and commonname like '%"+commonname+"%'" : where+" and commonname like '%%'";
 		}
 		if (specialmedicine!=null){
 			where = specialmedicine.length()>0 ? where+" and specialmedicine = '"+specialmedicine+"'" : where;
@@ -245,7 +245,7 @@ public class DrugServicesImpl implements DrugServices
 	@Override
 	public boolean insertInventory(String drugcode, String specification, String drugunit, String lotnumber, int druginventorynumber, int relativequantity, int finishedquantity, double wholesaleprice, double relativeamount)
 	{
-		return drugMapper.insertInventory(drugcode,specification,drugunit,lotnumber,druginventorynumber,relativequantity,finishedquantity,wholesaleprice,relativeamount);
+		return false;
 	}
 
 	@Override
@@ -275,85 +275,85 @@ public class DrugServicesImpl implements DrugServices
 	@Override
 	public List<Druginventorytable> querydrugDiscontinuation(int pageInt, int limitInt, String where)
 	{
-		return drugMapper.querydrugDiscontinuation(pageInt,limitInt,where);
+		return null;
 	}
 
 	@Override
 	public int countdrugDiscontinuation(String where)
 	{
-		return drugMapper.countdrugDiscontinuation(where);
+		return 0;
 	}
 
 	@Override
 	public List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt, int limitInt)
 	{
-		return drugMapper.queryPharmacyLowLimitDrugsList(pageInt,limitInt);
+		return null;
 	}
 
 	@Override
 	public int countPharmacyLowLimitDrugsList()
 	{
-		return drugMapper.countPharmacyLowLimitDrugsList();
+		return 0;
 	}
 
 	@Override
 	public List<Druginventorytable> querypharmacyDrugsQuery(int pageInt, int limitInt, String where)
 	{
-		return drugMapper.querypharmacyDrugsQuery(pageInt,limitInt,where);
+		return null;
 	}
 
 	@Override
 	public int countpharmacyDrugsQuery(String where)
 	{
-		return drugMapper.countpharmacyDrugsQuery(where);
+		return 0;
 	}
 
 	@Override
 	public List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt, int limitInt)
 	{
-		return drugMapper.queryDrugInventoryExpiredList(pageInt,limitInt);
+		return null;
 	}
 
 	@Override
 	public int countDrugInventoryExpiredList()
 	{
-		return drugMapper.countDrugInventoryExpiredList();
+		return 0;
 	}
 
 	@Override
 	public List<Druginventorytable> queryexpiredQuery(int pageInt, int limitInt, String where)
 	{
-		return drugMapper.queryexpiredQuery(pageInt,limitInt,where);
+		return null;
 	}
 
 	@Override
 	public int countexpiredQuery(String where)
 	{
-		return drugMapper.countexpiredQuery(where);
+		return 0;
 	}
 
 	@Override
 	public List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt, int limitInt)
 	{
-		return drugMapper.queryDrugInventoryUnsalableList(pageInt,limitInt);
+		return null;
 	}
 
 	@Override
 	public int countDrugInventoryUnsalableList()
 	{
-		return drugMapper.countDrugInventoryUnsalableList();
+		return 0;
 	}
 
 	@Override
 	public List<Druginventorytable> queryunSaleQuery(int pageInt, int limitInt, String where)
 	{
-		return drugMapper.queryunSaleQuery(pageInt,limitInt,where);
+		return null;
 	}
 
 	@Override
 	public int countunSaleQuery(String where)
 	{
-		return drugMapper.countunSaleQuery(where);
+		return 0;
 	}
 
 
@@ -372,13 +372,13 @@ public class DrugServicesImpl implements DrugServices
 	@Override
 	public List<Drugstoredruginventory> querylowLimitQuery(int pageInt, int limitInt, String where)
 	{
-		return drugMapper.querylowLimitQuery(pageInt,limitInt,where);
+		return null;
 	}
 
 	@Override
 	public int countlowLimitQuery(String where)
 	{
-		return drugMapper.countlowLimitQuery(where);
+		return 0;
 	}
 
 	@Override
@@ -402,43 +402,43 @@ public class DrugServicesImpl implements DrugServices
 	@Override
 	public List<Druginventorytable> queryInventoryQuery(int pageInt, int limitInt, String where)
 	{
-		return drugMapper.queryInventoryQuery(pageInt,limitInt,where);
+		return null;
 	}
 
 	@Override
 	public int countInventoryQuery(String where)
 	{
-		return drugMapper.countInventoryQuery(where);
+		return 0;
 	}
 
 	@Override
 	public boolean deleteAfterInventory()
 	{
-		return drugMapper.deleteAfterInventory();
+		return false;
 	}
 
 	@Override
 	public List<AfterInventory> queryAfterInventoryList(int pageInt, int limitInt)
 	{
-		return drugMapper.queryAfterInventoryList(pageInt,limitInt);
+		return null;
 	}
 
 	@Override
 	public int countAfterInventoryList()
 	{
-		return drugMapper.countAfterInventoryList();
+		return 0;
 	}
 
 	@Override
 	public boolean updateDruginventoryCount(String drugcode, int finishedquantity)
 	{
-		return drugMapper.updateDruginventoryCount(drugcode,finishedquantity);
+		return false;
 	}
 
 	@Override
 	public boolean insertInventory2(String drugcode, String inventoryresults, String pharmacycode, String inventorytime)
 	{
-		return drugMapper.insertInventory2(drugcode,inventoryresults,pharmacycode,inventorytime);
+		return false;
 	}
 
 	@Override
@@ -547,5 +547,22 @@ public class DrugServicesImpl implements DrugServices
 	public List<GainAndLoss> gainAndLoss()
 	{
 		return drugMapper.gainAndLoss();
+	}
+
+	@Override
+	public int updateStorageState(String drugCode, String lotNumber)
+	{
+		return drugMapper.updateStorageState(drugCode,lotNumber);
+	}
+
+	@Override
+	public List<Inboundoutboundschedule> selectInAndOutBoundDrug(String drugcode)
+	{
+		String where="1=1 ";
+		if(drugcode!=null){
+			where = drugcode.length()>0 ? where+" and commonname like '%"+drugcode+"%'" : where+" and drugcode like '%%'";
+		}
+
+		return drugMapper.selectInAndOutBoundDrug(where);
 	}
 }

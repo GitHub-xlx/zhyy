@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -371,7 +372,6 @@ public interface DrugMapper
 	})
 	int updatePharmacyInventory(List<Druginformation> list);
 
-
 	/**
 	 * @Description  批量插入药房入库
 	 * @author xlx
@@ -381,14 +381,13 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
+			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},'入库',#{item.lotnumber},#{item.specialmedicine},'入库',#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
+			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
 			"</foreach>",
 			"</script>"
 	})
 	int insertPharmacyDrug(Vacation vac,String pharmacycode,String time);
-
 
 	/**
 	 * @Description  修改药房库存
@@ -406,14 +405,13 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 					"<foreach collection='list' separator=';' item='i' >" +
-					"INSERT INTO druginventorytable" +
+					"INSERT INTO drugstoredruginventory" +
 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
 					"ON DUPLICATE KEY UPDATE " +
 					"druginventorynumber=druginventorynumber+ #{i.number}" +
 					"</foreach>" +
 					"</script>"
-
 	})
 	int updatePharmacy(List<Druginformation> list,String pharmacycode);
 
@@ -574,9 +572,9 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,receivetime,operatingtime) values ",
+			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},#{outbound},#{item.lotnumber},#{item.specialmedicine},#{outboundtype},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time},#{time})",
+			"(#{item.drugcode}, #{item.number},#{outbound},#{item.lotnumber},#{item.specialmedicine},#{outboundtype},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
 			"</foreach>",
 			"</script>"
 	})
@@ -587,7 +585,24 @@ public interface DrugMapper
 	 */
 	@Select("select A.*,B.commoname from inventory A,druginformation B where A.drugcode = B.drugcode")
 	List<GainAndLoss> gainAndLoss();
+	/**
+	 * 根据入库药品的编号批次，将入库后的药品状态改为已入库
+	 * @author cbd
+	 * @param drugCode 药品编号
+	 * @param lotnumber 批次
+	 * @return 返回int类型判断状态
+	 */
+	@Update("UPDATE purchasestatistics  set state= 1 WHERE drugcode=#{drugCode} and lotnumber=#{lotnumber}")
+	int updateStorageState(String drugCode,String lotnumber);
 
+	/**
+	 * 查询药库出入库明细
+	 * @author cbd
+	 * @return 返回出入库明细查询的结果集list
+	 * @param where 条件
+	 */
+	@Select("SELECT * FROM inboundoutboundschedule where #{where}")
+	List<Inboundoutboundschedule> selectInAndOutBoundDrug(String where);
 	/**
 	 * @Description  修改药房库存(退库)
 	 * @author xlx
