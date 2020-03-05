@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.zhyy.aspect.IgnoreLog;
 import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import org.apache.ibatis.session.RowBounds;
@@ -200,7 +201,7 @@ public class DrugController
 				{
 					e.printStackTrace();
 				}
-				j = drugServices.insertDruginventoryOutbound(list1.get(i).getDrugcode(),list1.get(i).getProductiondate(),list1.get(i).getNumber(),list1.get(i).getLotnumber(),list1.get(i).getSpecialmedicine(),asktime,receivetime,operatingtime,user.getPharmacycode(),user.getUsername());
+				j = drugServices.insertDruginventoryOutbound(list1.get(i).getDrugcode(),list1.get(i).getProductiondate(),list1.get(i).getNumber(),list1.get(i).getLotnumber(),list1.get(i).getSpecialmedicine(),asktime,receivetime,operatingtime,user.getPharmacycode(),user.getUsername(),list1.get(i).getPrice());
 				k = drugServices.updateDruginventoryNumber(list1.get(i).getDrugcode(),list1.get(i).getNumber(),list1.get(i).getLotnumber());
 			}
 			if(j>0&&k>0){
@@ -674,6 +675,32 @@ public class DrugController
 		System.out.println("过期查询");
 		String where = "1=1";
 		System.out.println("drugcode:" + drugcode + ",commoname:" + commoname);
+
+		int limitInt = Integer.valueOf(limit);
+		int pageInt = (Integer.valueOf(page) - 1) * limitInt;
+		if (drugcode != null)
+		{
+			where = drugcode.length() > 0 ? where + " and A.drugcode like '%" + drugcode + "%'" : where;
+		}
+		if (commoname != null)
+		{
+			where = commoname.length() > 0 ? where + " and B.commoname like '%" + commoname + "%'" : where;
+		}
+		if (start != null)
+		{
+			where = start.length() > 0 ? where + " and A.productiondate >= '" + start + "'" : where;
+		}
+		if (end != null)
+		{
+			where = end.length() > 0 ? where + " and A.productiondate <= '" + end + "'" : where;
+		}
+
+		int countPage = drugServices.countexpiredQuery(where);
+		List<Druginventorytable> list = drugServices.queryexpiredQuery(pageInt, limitInt, where);
+
+		return new TableMsg(0, "", countPage, list);
+	}
+
 	/**
 	 * 查询药库出入库明细
 	 * @author cbd
@@ -695,21 +722,5 @@ public class DrugController
 		tableMsg.setData(pageInfo.getList());
 		return tableMsg;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

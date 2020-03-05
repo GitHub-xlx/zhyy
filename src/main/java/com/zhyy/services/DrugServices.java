@@ -104,7 +104,7 @@ public interface DrugServices
 	 * @param asker
 	 * @return
 	 */
-	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker);
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price);
 
 	/**
 	 * 药房药品发药出库库存减少
@@ -135,6 +135,8 @@ public interface DrugServices
 	 */
 	int selectcountcompatibilityList(String drugcode);
 
+	List<Druginformation> selectclasscode();
+
 	/**
 	 * 查找药品信息表中的drugcode
 	 * @param drugcode
@@ -146,6 +148,24 @@ public interface DrugServices
 	 * 新增配伍禁忌
 	 */
 	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
+
+	/**
+	 * 根据drugcode和commoname查询药品信息
+	 * @return
+	 */
+	List<Druginformation> selectdrugstore(String drugcode,String commoname);
+
+	/**
+	 * 更改药品的医保状态
+	 * @return
+	 */
+	int updateDruginformationhealthinsurance(String healthinsurance,String drugcode,String commoname);
+
+	/**
+	 * 药房盘盈盘亏表
+	 * @return
+	 */
+	List<InventoryDruginformation> selectinventorylist(String pharmacycode, String drugcode, String inventoryresults, String commoname ,String start,String end);
 
 	/**
 	 * @Description  通过药品常用名称和拼音码查找药品信息表
@@ -224,37 +244,96 @@ public interface DrugServices
 	 * @Param outbound 出入库
 	 * @Param start，end 操作时间的开始和结束
 	 **/
-	 List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end);
+	List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end);
 
 
-	/**
-	 * @Description  药房库存查询（通过常用名称和是否为特殊药品）
-	 * @author xlx
-	 * @Date 下午 18:13 2020/2/28 0028
-	 * @Param
-	 * @return
-	 **/
-//	List<Druginformation> selectDruginformation(String commonname, String pincode);
+
 
 	//查询药房--库存列表
 	List<Druginventorytable> queryDrugInventoryList(int pageInt,int limitInt);
 	//统计药房--库存列表数量
 	int countDrugInventoryList();
 
-	//查询药库--库存列表
+	//药品停用查询
+	List<Druginventorytable> querydrugDiscontinuation(int pageInt,int limitInt,String where);
+	//药品停用查询总数
+	int countdrugDiscontinuation(String where);
+
+	///低限报警的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countPharmacyLowLimitDrugsList();
+
+
+	///低限报警查询-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> querypharmacyDrugsQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	int countpharmacyDrugsQuery(String where);
+
+	///过期的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryExpiredList();
+
+	///过期查询-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryexpiredQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	int countexpiredQuery(String where);
+
+	///滞销的-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
+	//统计药房--库存列表数量
+	int countDrugInventoryUnsalableList();
+
+	///滞销查询-------------------
+	//查询药房--库存列表
+	List<Druginventorytable> queryunSaleQuery(int pageInt,int limitInt,String where);
+	//统计药房--库存列表数量
+	int countunSaleQuery(String where);
+
+
+
+	//药品低限设置
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
-	//统计药库--库存列表数量
+	//药品低限设置统计
 	int countDrugStoreInventoryList();
+
+	//药品低限设置查询
+	List<Drugstoredruginventory> querylowLimitQuery(int pageInt,int limitInt,String where);
+	int countlowLimitQuery(String where);
 
 	//药品低限设置
 	boolean lowestSetting(String drugCode,String setData);
-
 
 	//盘点列表
 	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
 	int countInventoryTableList();
 
+	//盘点查询
+	List<Druginventorytable> queryInventoryQuery(int pageInt,int limitInt,String where);
+	int countInventoryQuery(String where);
+
+
+	boolean deleteAfterInventory();
+	//盘点之后
+	List <AfterInventory>queryAfterInventoryList(int pageInt,int limitInt);
+	int countAfterInventoryList();
+
+	//盘点之后药房库存数量变更
+	boolean updateDruginventoryCount(String drugcode,int finishedquantity);
+
+	//录入盘点盈亏表
+	boolean insertInventory2(String drugcode,String inventoryresults,String pharmacycode,String inventorytime);
+
 	List<Inventorycheck> selectInventorycheck(String commonname,String specialmedicine);
+	//List<Inventorycheck> selectInventorycheck(String commoname,String specialmedicine);
+
+	boolean insertInventory(String drugcode,String specification,String drugunit,String lotnumber,int druginventorynumber,int relativequantity,int finishedquantity,double wholesaleprice,double relativeamount);
 
 	/**
 	 * 查询药库药品库存表信息
