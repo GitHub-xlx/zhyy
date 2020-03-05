@@ -114,7 +114,7 @@
 		//打开新增页面
 		var addClassIndex;
 		function openAddclass() {
-			alert("openAddClass 方法调用");
+			// alert("openAddClass 方法调用");
 			addClassIndex = layer.open({
 				type: 1,
 				title: '新增分类信息',
@@ -130,7 +130,7 @@
 		form.on('select(parentClass)',function(data){
 
 			parentCode = data.value;
-			alert(parentCode);
+			// alert(parentCode);
 			$.ajax({
 				url:'/drugController/selectClassCode',
 				type:"post",
@@ -154,23 +154,24 @@
 		form.on("submit(doSubmit)", function (obj) {
 			className=($('#classname').val());
 
-			alert(classCode+"要新增的classcode");
-			alert(className+"要新增的名称");
-			alert(parentCode+"要新增的大类编号");
+			// alert(classCode+"要新增的classcode");
+			// alert(className+"要新增的名称");
+			// alert(parentCode+"要新增的大类编号");
 			//序列化表单数据
 			var params = $("#dataFrm").serialize();
-			layer.alert(params);
+			// layer.alert(params);
 
 			// layer.alert(obj);
 
 			$.post('/drugController/saveDrugClassSetInfo',
                 {"classcode":classCode,"classname":className,"parentcode":parentCode},
                 function (obj) {
+				if(obj==="success"){
+					alert("分类设置成功！");
+					layer.close(addClassIndex);
+					table.reload();
+                }
 
-				layer.msg("classsettings="+obj);
-				//关闭弹出层
-				// layer.close(mainIndex)
-				//刷新数据 表格
 
 			})
 		});

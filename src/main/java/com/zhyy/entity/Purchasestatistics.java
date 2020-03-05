@@ -22,6 +22,11 @@ public class Purchasestatistics
 	private String date;
 	private String price;
 	public Purchasestatistics(Integer psid, String drugcode, String purchasenumber, String totalpurchasemount, String purchasetime, String buyer, String operator, String state, String lotnumber, String date)
+	private String productname;
+	private String productiondate;
+
+
+	public Purchasestatistics(Integer psid, String drugcode, String purchasenumber, String totalpurchasemount, String purchasetime, String buyer, String operator, int state, String lotnumber, String date, String productname, String productiondate)
 	{
 		this.psid = psid;
 		this.drugcode = drugcode;
@@ -148,6 +153,16 @@ public class Purchasestatistics
 	public void setPrice(String price)
 	{
 		this.price = price;
+	}
+
+	public String getProductname()
+	{
+		return productname;
+	}
+
+	public void setProductname(String productname)
+	{
+		this.productname = productname;
 	}
 
 	@Override

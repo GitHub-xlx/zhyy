@@ -2,7 +2,10 @@ package com.zhyy.mapper;
 
 
 import com.zhyy.entity.*;
-import com.zhyy.sqlifclass.*;
+import com.zhyy.sqlifclass.CompatibilityIfClass;
+import com.zhyy.sqlifclass.DrugDistributionIfClass;
+import com.zhyy.sqlifclass.DrugPriceIfClass;
+import com.zhyy.sqlifclass.DrugSaleIfClass;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -10,6 +13,7 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -120,11 +124,11 @@ public interface DrugMapper
 	 */
 	@Insert({
 			"<script>",
-			"insert into pharmacydrugschedule(drugcode,time,number,outbound,lotnumber,specialmedicine,outboundtype,auditor,asktime,reviewtime,receivetime,operatingtime,pharmacynumber,asker,price) values ",
-			"(#{drugcode}, #{time},#{number},'出库',#{lotnumber},#{specialmedicine},'出库','无',#{asktime},null,#{receivetime},#{operatingtime},#{pharmacynumber},#{asker},#{price})",
+			"insert into pharmacydrugschedule(drugcode,time,number,outbound,lotnumber,specialmedicine,outboundtype,auditor,asktime,reviewtime,receivetime,operatingtime,pharmacynumber,asker) values ",
+			"(#{drugcode}, #{time},#{number},'出库',#{lotnumber},#{specialmedicine},'出库','无',#{asktime},null,#{receivetime},#{operatingtime},#{pharmacynumber},#{asker})",
 			"</script>"
 	})
-	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price);
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker);
 
 	/**
 	 * 更改药房药品库存数量
@@ -178,29 +182,7 @@ public interface DrugMapper
 	})
 	int insertcompatibility(String drugcodeA,String drugcodeB,String contraindications);
 
-	@Select("select distinct classcode from druginformation")
-	List<Druginformation> selectclasscode();
 
-	@Select("select * from druginformation where ${where}")
-	List<Druginformation> selectdrugstore(String where);
-
-	/**
-	 * 更改药品的医保状态
-	 * @return
-	 */
-	@Update({
-			"<script>",
-			"update druginformation set healthinsurance = #{healthinsurance} where drugcode = #{drugcode} and commoname = #{commoname}",
-			"</script>"
-	})
-	int updateDruginformationhealthinsurance(String healthinsurance,String drugcode,String commoname);
-
-	/**
-	 * 药房盘盈盘亏表
-	 * @return
-	 */
-	@SelectProvider(type = InventoryDruginformationIfClass.class,method = "selectinventorylist")
-	List<InventoryDruginformation> selectinventorylist(String pharmacycode, String drugcode, String inventoryresults, String commoname ,String start,String end);
 
 	/**
 	 * @Description  查找药品信息表
@@ -220,77 +202,12 @@ public interface DrugMapper
 	@Select("select count(*) from druginventorytable")
 	int countDrugInventoryList();
 
-	//药品停用查询
-	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
-	List<Druginventorytable> querydrugDiscontinuation(int pageInt,int limitInt,String where);
-	//药品停用查询总数
-	@Select("select count(*) from druginventorytable A ,druginformation B  where ${where} and A.drugcode=B.drugcode")
-	public int countdrugDiscontinuation(String where);
-
-
-	///低限报警---------------------------
-	//查询药房--库存列表
-	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums  limit #{pageInt},#{limitInt}")
-	List<Druginventorytable> queryPharmacyLowLimitDrugsList(int pageInt,int limitInt);
-	//统计药房--库存列表数量
-	@Select("select count(*) from druginventorytable")
-	int countPharmacyLowLimitDrugsList();
-
-	///低限报警查询-------------------
-	//查询药房--库存列表
-	@Select("select A.*,B.commoname from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums  limit #{pageInt},#{limitInt}")
-	List<Druginventorytable> querypharmacyDrugsQuery(int pageInt,int limitInt,String where);
-	//统计药房--库存列表数量
-	@Select("select count(*) from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.druginventorynumber<A.drugminimums")
-	int countpharmacyDrugsQuery(String where);
-
-
-	///过期的---------------------------
-	//查询药房--库存列表
-	@Select("select A.*,B.commoname,B.shelflife from druginventorytable A,druginformation B where A.drugcode=B.drugcode and A.drugstatus= '已过期' limit #{pageInt},#{limitInt}")
-	List<Druginventorytable> queryDrugInventoryExpiredList(int pageInt,int limitInt);
-	//统计药房--库存列表数量
-	@Select("select count(*) from druginventorytable")
-	int countDrugInventoryExpiredList();
-
-	///过期查询-------------------
-	//查询药房--库存列表
-	@Select("select A.*,B.commoname,B.shelflife from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.drugstatus= '已过期' limit #{pageInt},#{limitInt}")
-	List<Druginventorytable> queryexpiredQuery(int pageInt,int limitInt,String where);
-	//统计药房--库存列表数量
-	@Select("select count(*) from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode and A.drugstatus= '已过期'")
-	int countexpiredQuery(String where);
-
-
-	///滞销的-------------------
-	//查询药房--库存列表
-	@Select("select A.*,B.commoname,C.receivetime from druginventorytable A,druginformation B,pharmacydrugschedule C where A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' limit #{pageInt},#{limitInt}")
-	List<Druginventorytable> queryDrugInventoryUnsalableList(int pageInt,int limitInt);
-	//统计药房--库存列表数量
-	@Select("select count(*) from druginventorytable")
-	int countDrugInventoryUnsalableList();
-
-	///滞销查询-------------------
-	@Select("select A.*,B.commoname,C.receivetime from druginventorytable A,druginformation B,pharmacydrugschedule C where ${where} and A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' limit #{pageInt},#{limitInt}")
-	List<Druginventorytable> queryunSaleQuery(int pageInt,int limitInt,String where);
-	@Select("select count(*) from druginventorytable A,druginformation B,pharmacydrugschedule C where ${where} and A.drugcode=B.drugcode and B.drugcode=C.drugcode and A.drugstatus= '已滞销' and C.outbound = '入库' ")
-	int countunSaleQuery(String where);
-
-
-
-	//药品低限设置
+	//查询药库--库存列表
 	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
-	//药品低限设置统计
+	//统计药库--库列表数量
 	@Select("select count(*) from drugstoredruginventory")
 	int countDrugStoreInventoryList();
-
-	//药品低限设置查询
-	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where ${where} and A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
-	List<Drugstoredruginventory> querylowLimitQuery(int pageInt,int limitInt,String where);
-	@Select("select count(*) from drugstoredruginventory A,druginformation B where ${where} and A.drugcode=B.drugcode")
-	int countlowLimitQuery(String where);
-
 
 	//药品低限设置
 	@Update("update drugstoredruginventory set drugminimums = #{setData} where drugcode = #{drugCode}")
@@ -301,40 +218,6 @@ public interface DrugMapper
 	List<Druginventorytable> queryInventoryTableList(int pageInt,int limitInt);
 	@Select("select count(*) from druginventorytable")
 	int countInventoryTableList();
-
-	//盘点查询
-	@Select("select A.drugcode,B.commoname,B.specification,A.drugunit,A.lotnumber,A.druginventorynumber,B.wholesaleprice from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode")
-	List<Druginventorytable> queryInventoryQuery(int pageInt,int limitInt,String where);
-	@Select("select count(*) from druginventorytable A,druginformation B where ${where} and A.drugcode=B.drugcode")
-	int countInventoryQuery(String where);
-
-	//清理盘点数据
-	@Delete("delete from afterinventory")
-	boolean deleteAfterInventory();
-
-	//盘点之后查询
-	@Select("select A.*,B.commoname,B.specification,B.wholesaleprice from afterinventory A,druginformation B where A.drugcode=B.drugcode")
-	List <AfterInventory>queryAfterInventoryList(int pageInt,int limitInt);
-	@Select("select count(*) from afterinventory")
-	int countAfterInventoryList();
-
-
-	//盘点之后录入盘点结果
-    @Insert("insert into afterinventory (drugcode,specification,drugunit,lotnumber,druginventorynumber,relativequantity,finishedquantity,wholesaleprice,relativeamount)" +
-		    " values (#{drugcode},#{specification},#{drugunit},#{lotnumber},#{druginventorynumber},#{relativequantity},#{finishedquantity},#{wholesaleprice},#{relativeamount})")
-    boolean insertInventory(String drugcode,String specification,String drugunit,String lotnumber,int druginventorynumber,int relativequantity,int finishedquantity,double wholesaleprice,double relativeamount);
-
-	//盘点之后药房库存数量调整
-	@Update("update druginventorytable set druginventorynumber = #{finishedquantity} where drugcode = #{drugcode}")
-	boolean updateDruginventoryCount(String drugcode,int finishedquantity);
-
-	//盘点之后录入盘点盈亏表
-	@Insert("insert into inventory (drugcode,inventoryresults,pharmacycode,inventorytime)" +
-			" values (#{drugcode},#{inventoryresults},#{pharmacycode},#{inventorytime})")
-	boolean insertInventory2(String drugcode, String inventoryresults, String pharmacycode, String inventorytime);
-
-
-
 
 
 	/**
@@ -364,7 +247,7 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =druginventory- #{item.number} " +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 
@@ -408,7 +291,7 @@ public interface DrugMapper
 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"druginventorynumber=druginventorynumber+ #{i.number}" +
+					"druginventorynumber=(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number}" +
 					"</foreach>" +
 					"</script>"
 	})
@@ -465,7 +348,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("SELECT * FROM pharmacydrugschedule where ${where}")
+	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
 	List<Pharmacydrugschedule> selectPharmacyd(String where);
 	/**
 	 * 查询药库药品库存表信息
@@ -492,7 +375,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where #{where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
 
@@ -584,86 +467,30 @@ public interface DrugMapper
 	 */
 	@Select("select A.*,B.commoname from inventory A,druginformation B where A.drugcode = B.drugcode")
 	List<GainAndLoss> gainAndLoss();
+	/**
+	 * 根据入库药品的编号批次，将入库后的药品状态改为已入库
+	 * @author cbd
+	 * @param drugCode 药品编号
+	 * @param lotnumber 批次
+	 * @return 返回int类型判断状态
+	 */
+	@Update("UPDATE purchasestatistics  set state= 1 WHERE drugcode=#{drugCode} and lotnumber=#{lotnumber}")
+	int updateStorageState(String drugCode,String lotnumber);
 
 	/**
-	 * @Description  修改药房库存(退库)
-	 * @author xlx
-	 * @Date 上午 7:08 2020/2/27 0027
-	 * @Param
-	 * @return
-	 * 	"<script>" +
-	 * 					"<foreach collection='list' separator=';' item='i' >" +
-	 * 					"INSERT INTO druginventorytable" +
-	 * 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
-	 * 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
-	 * 					"ON DUPLICATE KEY UPDATE " +
-	 * 					"druginventorynumber=druginventorynumber+ #{i.number}" +
-	 * 					"</foreach>" +
-	 * 					"</script>"
-	 **/
-	@Update({
-			"<script>" +
-					"<foreach collection='list' separator=';' item='i' >" +
-					"update druginventorytable set druginventorynumber =druginventorynumber- #{i.number} " +
-					"where  drugcode =#{i.drugcode} and lotnumber=#{i.lotnumber}" +
-					"</foreach>" +
-					"</script>"
-	})
-	int updatePharmacywithdrawal(List list);
+	 * 查询药库出入库明细
+	 * @author cbd
+	 * @return 返回出入库明细查询的结果集list
+	 * @param where 条件
+	 */
+	@Select("SELECT * FROM inboundoutboundschedule where #{where}")
+	List<Inboundoutboundschedule> selectInAndOutBoundDrug(String where);
 
-	/**
-	 * @Description  药库库存查询（通过常用名称）
-	 * @author xlx
-	 * @Date 下午 17:52 2020/2/28 0028
-	 * @Param
-	 * @return
-	 **/
-	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
-			+ " druginventorytable b where a.drugcode=b.drugcode")
-	List<Inventorycheck> selectStoreInventorycheck(String where);
 
-	/**
-	 * @Description  插入药品报损表
-	 * @author xlx
-	 * @Date 上午 9:58 2020/3/4 0004
-	 * @Param
-	 * @return
-	 **/
-	@Insert({
-			"<script>",
-			"insert into breakdownofdrugs(drugcode, damagedtype, lossreporter,lossreport,losstime,losscount,lossamount,lotnumber,drugstate,auditor,reviewtime,provepath,pharmacycode) values ",
-			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{vac.damagedtype}, #{vac.applyUser},#{vac.reason},#{vac.applyTime},#{item.losscount},#{item.lossamount},#{item.lotnumber},#{item.drugstatus},#{vac.auditor},#{vac.auditTime},#{vac.provepath},#{pharmacycode})",
-			"</foreach>",
-			"</script>"
-	})
-	int insertBreakdownOfDrugs(Vacation vac,String pharmacycode);
 
-	/**
-	 * @Description  查询药品报损表
-	 * @author xlx
-	 * @Date 上午 10:16 2020/3/4 0004
-	 * @Param
-	 * @return
-	 **/
-	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where1}) a,"
-			+ " (SELECT * FROM breakdownofdrugs where ${where2}) b where a.drugcode=b.drugcode")
-	List<Breakdownofdrugs> selectBreakdownOfDrugs(String where1,String where2);
 
-	/**
-	 * @Description  修改药房库存(报损)
-	 * @author xlx
-	 * @Date 上午 7:08 2020/2/27 0027
-	 * @Param
-	 * @return
-	 **/
-	@Update({
-			"<script>" +
-					"<foreach collection='list' separator=';' item='i' >" +
-					"update druginventorytable set druginventorynumber =druginventorynumber- #{i.losscount} " +
-					"where  drugcode =#{i.drugcode} and lotnumber=#{i.lotnumber}" +
-					"</foreach>" +
-					"</script>"
-	})
-	int updatePharmacydamaged(List list);
+
+
+
+
 }
