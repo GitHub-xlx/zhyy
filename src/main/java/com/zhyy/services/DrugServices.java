@@ -104,9 +104,7 @@ public interface DrugServices
 	 * @param asker
 	 * @return
 	 */
-	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price);
-
-	int insertDruginventoryOutbound(String drugcode, String time, String number, String lotnumber, String specialmedicine, String asktime, String receivetime, String operatingtime, String pharmacynumber, String asker);
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,double price);
 
 	/**
 	 * 药房药品发药出库库存减少
@@ -116,6 +114,12 @@ public interface DrugServices
 	 * @return
 	 */
 	int updateDruginventoryNumber(String drugcode,String number,String lotnumber);
+
+	/**
+	 * 批量插入药房发药销售
+	 * @return
+	 */
+	int insertDrugsale(String drugcode,String unitpricesold,String quantitysold,String totalprice,String salestime,String specialmedicine,String idcard,String salesperson,String pharmacycode,String consumername);
 
 	/**
 	 * 配伍禁忌
@@ -246,7 +250,7 @@ public interface DrugServices
 	 * @Param outbound 出入库
 	 * @Param start，end 操作时间的开始和结束
 	 **/
-	List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end);
+	 List<Pharmacydrugschedule> selectPharmacyd(String drugcode, String lotnumber, String asker, String outbound, String start, String end);
 
 
 
@@ -322,7 +326,7 @@ public interface DrugServices
 
 
 	boolean deleteAfterInventory();
-	//盘点之后
+    //盘点之后
 	List <AfterInventory>queryAfterInventoryList(int pageInt,int limitInt);
 	int countAfterInventoryList();
 
@@ -415,20 +419,4 @@ public interface DrugServices
 	 * @return
 	 */
 	List<GainAndLoss> gainAndLoss();
-	/**
-	 * 根据入库药品的编号批次，将入库后的药品状态改为已入库
-	 * @author cbd
-	 * @param drugCode 药品编号
-	 * @param lotNumber 批次
-	 * @return 返回int类型判断状态
-	 */
-	int updateStorageState(String drugCode,String lotNumber);
-	/**
-	 * 查询药库出入库明细
-	 * @author cbd
-	 * @return 返回出入库明细查询的结果集list
-	 *
-	 */
-	List<Inboundoutboundschedule> selectInAndOutBoundDrug(String drugcode);
-
 }

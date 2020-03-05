@@ -30,9 +30,9 @@ public class DruginventoryDruginformation
 	private String antibiotic;
 	private String approvalnumber;
 	private String healthinsurance;
-	private String price;
-	private String wholesaleprice;
-	private String additionrate;
+	private double price;
+	private double wholesaleprice;
+	private double additionrate;
 	private String precautions;
 	private String shelflife;
 
@@ -316,32 +316,32 @@ public class DruginventoryDruginformation
 		this.healthinsurance = healthinsurance;
 	}
 
-	public String getPrice()
+	public double getPrice()
 	{
 		return price;
 	}
 
-	public void setPrice(String price)
+	public void setPrice(double price)
 	{
 		this.price = price;
 	}
 
-	public String getWholesaleprice()
+	public double getWholesaleprice()
 	{
 		return wholesaleprice;
 	}
 
-	public void setWholesaleprice(String wholesaleprice)
+	public void setWholesaleprice(double wholesaleprice)
 	{
 		this.wholesaleprice = wholesaleprice;
 	}
 
-	public String getAdditionrate()
+	public double getAdditionrate()
 	{
 		return additionrate;
 	}
 
-	public void setAdditionrate(String additionrate)
+	public void setAdditionrate(double additionrate)
 	{
 		this.additionrate = additionrate;
 	}

@@ -27,7 +27,7 @@
 <!-- 自定义表格工具栏 -->
 <div style="display:none" id="headToolbar">
     <div class="layui-btn-container toolbar-position">
-        <button class="layui-btn layui-btn-sm " lay-event="addClass">新增药品信息设置</button>
+        <button class="layui-btn layui-btn-sm " lay-event="addClass">新增分类</button>
     </div>
 </div>
 <!-- 数据表格结束 -->
@@ -295,15 +295,12 @@
 		//打开新增页面
 		var addClassIndex;
 		function openAddclass() {
-			// alert("openAddClass 方法调用");
+			alert("openAddClass 方法调用");
 			addClassIndex = layer.open({
 				type: 1,
-				title: '新增药品信息设置',
+				title: '新增分类信息',
 				content: $("#addClassLayout"),
-				area: ['600px', '520px'],
-                end:function () {
-	                window.location.reload();
-                }
+				area: ['600px', '600px']
 			});
 
 		}
@@ -334,40 +331,29 @@
 
 		});
 		//新增信息提交
-        var drugCodeDo;
+        var className;
 		form.on("submit(doSubmit)", function (obj) {
-			// className=($('#classname').val());
+			className=($('#classname').val());
 
-			// //序列化表单数据
-			// var params = $("#dataFrm").serialize();
-			drugCodeDo = obj.field.drugcode;
-                alert("药品编号:"+drugCodeDo);
+			alert(classCode+"要新增的classcode");
+			alert(className+"要新增的名称");
+			alert(parentCode+"要新增的大类编号");
+			//序列化表单数据
+			var params = $("#dataFrm").serialize();
+			layer.alert(params);
 
 			// layer.alert(obj);
-            $.ajax({
-	            type:"POST",
-                url:'/drugController/saveDrugInfo',
-	            data:obj.field,
-                success:function (res) {
-                    if(res==='success'){
-                    	alert("编号为："+drugCodeDo+"的药品信息设置成功！");
-                    	layer.close(addClassIndex);
-                    }
-                },
-                error:function () {
-	                layer.msg('服务器繁忙');
-                }
-            });
-			// $.ajax('/drugController/saveDrugClassSetInfo',
-            //     {"classcode":classCode,"classname":className,"parentcode":parentCode},
-            //     function (obj) {
-            //
-			// 	layer.msg(obj);
-			// 	//关闭弹出层
-			// 	// layer.close(mainIndex)
-			// 	//刷新数据 表格
-            //
-			// })
+
+			$.post('/drugController/saveDrugClassSetInfo',
+                {"classcode":classCode,"classname":className,"parentcode":parentCode},
+                function (obj) {
+
+				layer.msg(obj);
+				//关闭弹出层
+				// layer.close(mainIndex)
+				//刷新数据 表格
+
+			})
 		});
 
 

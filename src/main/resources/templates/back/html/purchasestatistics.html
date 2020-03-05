@@ -43,13 +43,6 @@
             </select>
         </div> -->
         <div class="layui-form-item">
-            <label class="layui-form-label">药品名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="productname" id="productname" lay-verify="title" autocomplete="off"
-                       placeholder="请输入新采购药品名称" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">药品编号</label>
             <div class="layui-input-block">
                 <input type="text" name="drugcode" id="drugcode" lay-verify="title" autocomplete="off"
@@ -106,13 +99,6 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">生产日期</label>
-            <div class="layui-input-block">
-                <input type="text" name="productiondate" id="productiondate" lay-verify="title" autocomplete="off"
-                       placeholder="请输入采购药品的有效日期" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label">有效日期</label>
             <div class="layui-input-block">
                 <input type="text" name="date" id="date" lay-verify="title" autocomplete="off"
@@ -129,89 +115,14 @@
     </form>
 </div>
 <!--采购信息登记弹出层结束-->
-<!-- 新增入库信息弹出层开始 -->
-
-<div style="display: none;padding: 20px" id="addStorageLayout">
-
-    <form class="layui-form" lay-filter="formAddStorage" id="addStorage">
-
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">药品编号</label>
-        <div class="layui-input-block">
-            <input type="text" name="drugcode"  lay-verify="title" autocomplete="off"
-                   placeholder="请输入药品编号" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">药品入库数量</label>
-        <div class="layui-input-block">
-            <input type="text" name="druginventory"  lay-verify="title" autocomplete="off"
-                   placeholder="请输入入库数量(默认采购数量)" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">药品最低限量</label>
-        <div class="layui-input-block">
-            <input type="text" name="drugminimums"  lay-verify="title" autocomplete="off"
-                   placeholder="请输入该药品最低限量" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">批号</label>
-        <div class="layui-input-block">
-            <input type="text" name="lotnumber"  lay-verify="title" autocomplete="off"
-                   placeholder="请输入药品批号(默认采购登记的批号)" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">生产日期</label>
-        <div class="layui-input-block">
-            <input type="text" name="productiondate"  lay-verify="title" autocomplete="off"
-                   placeholder="请输入生产日期(默认采购登记的信息)" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">药品状态</label>
-        <div class="layui-input-block">
-                <select name="drugstatus" lay-filter="drugstatus">
-                    <option value="启用" selected="">启用</option>
-                    <option value="禁用">禁用</option>
-                </select>
-        </div>
-    </div>
-    <div class="layui-form-item" style="text-align: center;">
-        <div class="layui-input-block">
-            <button type="button" class="layui-btn layui-btn-normal layui-btn-sm layui-icon layui-icon-release"
-                    lay-filter="doStorage" lay-submit="">提交</button>
-            <button type="reset" class="layui-btn layui-btn-warm layui-btn-sm layui-icon layui-icon-refresh">重置</button>
-        </div>
-    </div>
-
-    </form>
-
-</div>
-<!-- 新增入库信息弹出层结束 -->
 <script th:src= "@{static/layui/layui.js}"></script>
-<!--toolbar信息 -->
-<script type="text/html" id="stateBar">
-    {{# if(d.state == 0){  }}
-    <button type="button" lay-event="notStock" class="layui-btn  layui-btn-sm">未入库</button>
-    {{# }else{             }}
-    <button type="button" class="layui-btn layui-btn-disabled">已入库</button>
-    {{#   }   }}
-</script>
 <script type="text/javascript"  >
-	layui.use(['element', 'layer', 'jquery', 'form', 'table','laydate'], function () {
+	layui.use(['element', 'layer', 'jquery', 'form', 'table'], function () {
 		var $ = layui.jquery;
 		var layer = layui.layer;
 		var form = layui.form;
 		var element = layui.element;
 		var table = layui.table;
-        var laydate = layui.laydate;
-		laydate.render({
-			elem: '#test1'
-		});
 
 		table.render({
 			elem: '#drugClass'
@@ -230,8 +141,7 @@
 			, cols: [
 				[
 				// { type: 'checkbox', fixed: 'left' }
-				// 	{ field: 'psid', title: 'ID', fixed: 'left', align: 'center', unresize: true, sort: true }
-                    { field: 'productname', title: '药品名称', sort: true, align: 'center' }
+					{ field: 'psid', title: 'ID', fixed: 'left', align: 'center', unresize: true, sort: true }
 					, { field: 'drugcode', title: '药品编号', sort: true, align: 'center' }
 					, { field: 'purchasenumber', title: '采购数量', sort: true, align: 'center' }
 					, { field: 'totalpurchasemount', title: '采购总金额', sort: true, align: 'center' }
@@ -240,7 +150,7 @@
 					, { field: 'operator', title: '经办人', align: 'center' }
 					, { field: 'lotnumber', title: '批号', align: 'center' }
 					, { field: 'date', title: '有效日期', align: 'center' }
-					, { field: 'state', title: '入库状态', align: 'center' ,toolbar:"#stateBar"}
+					, { field: 'state', title: '入库状态', align: 'center' }
 			]
             ]
 			, page: true
@@ -263,81 +173,16 @@
 		//打开新增页面
 		var addClassIndex;
 		function openAddclass() {
-			// alert("openAddClass 方法调用");
+			alert("openAddClass 方法调用");
 			addClassIndex = layer.open({
 				type: 1,
-				title: '新增采购药品登记',
+				title: '采购药品登记',
 				content: $("#addClassLayout"),
 				area: ['600px', '520px']
 			});
 
 		}
-		//打开入库弹出层方法
-        var openAddStorage;
-		function openAddStorage(){
-			// alert("openAddStorage 方法调用");
-			openAddStorage = layer.open({
-				type: 1,
-				title: '新增药品入库登记',
-				content: $("#addStorageLayout").html(),
-				area: ['600px', '520px']
-			});
-			setFormValueStorage(dataStorage)
-        }
-        //给入库弹出层动态添加数据的方法
-        function setFormValueStorage(data){
-	        form.val("formAddStorage",{
-	        	"drugcode":data.drugcode,
-                "druginventory":data.purchasenumber,
-                "lotnumber":data.lotnumber,
-                "productiondate":data.productiondate,
-                "drugstatus":data.drugstatus
-            });
-            form.render(null,'formTestFilter')
-        }
 
-		//入库操作的方法
-        var dataStorage;//未入库的行信息对象数据
-        table.on('tool(drugClass)',function (rowData) {
-            dataStorage = rowData.data;
-        	var data =JSON.stringify(rowData.data);
-            alert("未入库");
-            const productname = rowData.data.productname;
-            // layer.alert("00"+productname);
-	        layer.confirm('确认入库药品:'+productname, {icon: 3, title:'提示'}, function(index){
-		        var storagePage=layer.open({
-			        type: 1,
-			        title: '新增药品入库登记',
-			        content: $("#addStorageLayout").html(),
-			        area: ['600px', '520px']
-		        });
-		        setFormValueStorage(dataStorage);
-		        form.on("submit(doStorage)",function (dataStorage) {
-			        layer.msg("提交入库数据="+dataStorage.field.drugcode);
-			        $.ajax({
-				        type: "POST",
-				        url: "/drugController/saveDrugStoreInventory",
-				        dataType: "text",
-				        data: dataStorage.field,
-				        success: function (msg) {
-				        	if(msg==="success"){
-						        layer.msg("入库成功！！！");
-						        layer.close(storagePage);
-						        table.reload();
-                            }
-				        },
-				        error: function () {
-					        layer.msg('服务器繁忙');
-				        }
-			        });
-
-
-
-		        })
-		        // openAddStorage();
-		        // layer.close(index);
-	        });
-        });
 		//大类药品选择后获取其子类的最大编码
 		var parentCode;
 		var classCode;
@@ -367,21 +212,20 @@
 		//新增信息提交
         var className;
 		form.on("submit(doSubmit)", function (data) {
+
+
 			$.ajax({
                 type:"POST",
                 url:"/drugController/savePurchaseStatistics",
 			    data:data.field,
                 success:function (data) {
-                	if(data==="success"){
-                		alert("采购登记成功！");
-		                layer.close(addClassIndex);
-		                table.reload();
-                    }
-                    // alert(data);
-                    // layer.msg("layer=="+data);
-                    // layer.close(addClassIndex);
-                    // table.reload();
+                    alert(data);
+                    layer.msg("layer=="+data);
+                    layer.close(addClassIndex);
+
                 }
+
+
             });
 			// //序列化表单数据
 			// var params = $("#dataFrm").serialize();

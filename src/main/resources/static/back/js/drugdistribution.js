@@ -118,31 +118,47 @@ layui.use(['form', 'layer', 'jquery', 'table'], function () {
 				, content: $('#tb')
 				, btn: ['确认发药', '取消发药'] //只是为了演示
 				, yes: function () {
-					$.ajax({
-						url: '/drugController/confirmsendmedicine',
-						method: 'post',
-						data: {
-							'list': drugDateObj
-						},
-						success: function (res) {
-							if (res === "success") {
-								alert("发药成功！");
-								window.location.reload();
-							} else if (res === "failed") {
-								layer.alert("发药失败！");
-							} else if (res === "conflict") {
-								layer.alert("药品有冲突，请重新选择！");
-							}
-						},
-						error: function (res) {
-							if (res === "failed") {
-								layer.alert("发药失败！");
-							} else if (res === "conflict") {
-								layer.alert("药品有冲突，请重新选择！")
+					var state=0;
+					for (let i = 0; i < drugDate.length; i++) {
+						if(drugDate[i].specialmedicine==="是"){
+							if($('#idcard').val().length===18 && $('#consumername').val().length>0){
+								state=0;
+							}else{
+								state=1;
 							}
 						}
-					});
-					layer.closeAll();
+					}
+					if(state === 0){
+						$.ajax({
+							url: '/drugController/confirmsendmedicine',
+							method: 'post',
+							data: {
+								'list': drugDateObj,
+								idcard : $('#idcard').val(),
+								consumername: $('#consumername').val()
+							},
+							success: function (res) {
+								if (res === "success") {
+									alert("发药成功！");
+									window.location.reload();
+								} else if (res === "failed") {
+									layer.alert("发药失败！");
+								} else if (res === "conflict") {
+									layer.alert("药品有冲突，请重新选择！");
+								}
+							},
+							error: function (res) {
+								if (res === "failed") {
+									layer.alert("发药失败！");
+								} else if (res === "conflict") {
+									layer.alert("药品有冲突，请重新选择！")
+								}
+							}
+						});
+						layer.closeAll();
+					}else{
+						alert("请输入正确的个人信息！");
+					}
 				}
 				, btn2: function () {
 					layer.closeAll();

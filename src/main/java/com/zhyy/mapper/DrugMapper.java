@@ -125,7 +125,7 @@ public interface DrugMapper
 			"(#{drugcode}, #{time},#{number},'出库',#{lotnumber},#{specialmedicine},'出库','无',#{asktime},null,#{receivetime},#{operatingtime},#{pharmacynumber},#{asker},#{price})",
 			"</script>"
 	})
-	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price);
+	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,double price);
 
 	/**
 	 * 更改药房药品库存数量
@@ -140,6 +140,19 @@ public interface DrugMapper
 			"</script>"
 	})
 	int updateDruginventoryNumber(String drugcode,String number,String lotnumber);
+
+	/**
+	 * 批量插入药房发药销售
+	 * @return
+	 */
+	@Insert({
+			"<script>",
+			"insert into drugsalesregistrationform(drugcode,unitpricesold,quantitysold,totalprice,salestime,specialmedicine,idcard,salesperson,pharmacycode,consumername) values ",
+			"(#{drugcode}, #{unitpricesold},#{quantitysold},#{totalprice},#{salestime},#{specialmedicine},#{idcard},#{salesperson},#{pharmacycode},#{consumername})",
+			"</script>"
+	})
+	int insertDrugsale(String drugcode,String unitpricesold,String quantitysold,String totalprice,String salestime,String specialmedicine,String idcard,String salesperson,String pharmacycode,String consumername);
+
 
 	/**
 	 * 查找药品配伍禁忌
@@ -282,7 +295,7 @@ public interface DrugMapper
 	//药品低限设置
 	@Select("select A.*,B.commoname from drugstoredruginventory A,druginformation B where A.drugcode=B.drugcode  limit #{pageInt},#{limitInt}")
 	List<Drugstoredruginventory> queryDrugStoreInventoryList(int pageInt,int limitInt);
-	//药品低限设置统计
+	//统计药库--库列表数量
 	@Select("select count(*) from drugstoredruginventory")
 	int countDrugStoreInventoryList();
 
@@ -365,7 +378,7 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-			"update drugstoredruginventory set druginventory =druginventory- #{item.number} " +
+			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})- #{item.number} " +
 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
 			"</foreach></script>"
 
@@ -409,7 +422,7 @@ public interface DrugMapper
 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
 					"ON DUPLICATE KEY UPDATE " +
-					"druginventorynumber=druginventorynumber+ #{i.number}" +
+					"druginventorynumber=(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number}" +
 					"</foreach>" +
 					"</script>"
 	})
@@ -466,7 +479,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("SELECT * FROM pharmacydrugschedule where ${where}")
+	@Select("SELECT * FROM pharmacydrugschedule where #{where}")
 	List<Pharmacydrugschedule> selectPharmacyd(String where);
 	/**
 	 * 查询药库药品库存表信息
@@ -493,7 +506,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.commoname,a.price,b.* from (SELECT drugcode,commoname,price FROM druginformation where ${where}) a,"
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname,price FROM druginformation where #{where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
 

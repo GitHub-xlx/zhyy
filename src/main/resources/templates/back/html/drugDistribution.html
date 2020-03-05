@@ -46,6 +46,22 @@
 </div>
 <div id="tb" style="display: none">
     <table class="layui-hide" id="test2" lay-filter="drug2"></table>
+    <div class="layui-form-item">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">购买人姓名:</label>
+                <div class="layui-input-inline">
+                    <input name="consumername" id="consumername" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">购买人身份证:</label>
+                <div class="layui-input-inline">
+                    <input name="idcard" id="idcard" class="layui-input" type="text" autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script th:src="@{static/layui/layui.js}"></script>
 <script th:src="@{static/back/js/drugdistribution.js}"></script>
