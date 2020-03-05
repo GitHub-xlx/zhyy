@@ -15,13 +15,12 @@ public class Purchasestatistics
 	private String purchasetime;
 	private String buyer;
 	private String operator;
-	private String state;
+	private int state;
 	//批号
 	private String lotnumber;
 	//有效期
 	private String date;
 	private String price;
-	public Purchasestatistics(Integer psid, String drugcode, String purchasenumber, String totalpurchasemount, String purchasetime, String buyer, String operator, String state, String lotnumber, String date)
 	private String productname;
 	private String productiondate;
 
@@ -115,12 +114,12 @@ public class Purchasestatistics
 		this.operator = operator;
 	}
 
-	public String getState()
+	public int getState()
 	{
 		return state;
 	}
 
-	public void setState(String state)
+	public void setState(int state)
 	{
 		this.state = state;
 	}

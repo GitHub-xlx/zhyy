@@ -106,6 +106,8 @@ public interface DrugServices
 	 */
 	int insertDruginventoryOutbound(String drugcode,String time,String number,String lotnumber,String specialmedicine,String asktime,String receivetime,String operatingtime,String pharmacynumber,String asker,String price);
 
+	int insertDruginventoryOutbound(String drugcode, String time, String number, String lotnumber, String specialmedicine, String asktime, String receivetime, String operatingtime, String pharmacynumber, String asker);
+
 	/**
 	 * 药房药品发药出库库存减少
 	 * @param drugcode
