@@ -365,7 +365,47 @@ public interface DrugServices
 	 */
 	public List<Purchasestatistics> selectPurchaseStatistics();
 
+	/**
+	 * @Description  药房退库，插入出入库表并更新库存（药房药库都要）
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	int pharmacyWithdrawal(Vacation vac);
 
+	/**
+	 * @Description  药库退库，插入出入库表并更新库存（药库）
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	int depotwithdrawal(Vacation vac);
 
+	/**
+	 * @Description  通过常用名称和特殊分类查询药库库存表
+	 * @author xlx
+	 * @Date 下午 17:44 2020/3/3 0003
+	 * @Param
+	 * @return
+	 **/
+	List<Inventorycheck> selectStoreInventorycheck(String commoname,String specialmedicine);
 
+	/**
+	 * @Description  药品报损
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	int insertBreakdownOfDrugs(Vacation vac);
+	/**
+	 * @Description  药品报损
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	List<Breakdownofdrugs> selectBreakdownOfDrugs(String damagedtype,String commoname, String start, String end);
 }

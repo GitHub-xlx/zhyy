@@ -369,7 +369,7 @@ public interface DrugMapper
 			"</foreach></script>"
 
 	})
-	int updatePharmacyInventory(List<Druginformation> list);
+	int updatePharmacyInventory(List list);
 
 	/**
 	 * @Description  批量插入药房入库
@@ -380,9 +380,9 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
+			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"(#{item.drugcode}, #{item.number},'入库',#{item.lotnumber},#{item.specialmedicine},'入库',#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
 			"</foreach>",
 			"</script>"
 	})
@@ -395,24 +395,28 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 * 	"<script>" +
-	 * 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
-	 * 			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number} " +
-	 * 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
-	 * 			"</foreach></script>"
-	 *
+	 * 					"<foreach collection='list' separator=';' item='i' >" +
+	 * 					"INSERT INTO druginventorytable" +
+	 * 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
+	 * 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
+	 * 					"ON DUPLICATE KEY UPDATE " +
+	 * 					"druginventorynumber=druginventorynumber+ #{i.number}" +
+	 * 					"</foreach>" +
+	 * 					"</script>"
 	 **/
 	@Update({
 			"<script>" +
-					"<foreach collection='list' separator=';' item='i' >" +
-					"INSERT INTO drugstoredruginventory" +
-					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
-					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
-					"ON DUPLICATE KEY UPDATE " +
-					"druginventorynumber=druginventorynumber+ #{i.number}" +
-					"</foreach>" +
-					"</script>"
+			"<foreach collection='list' separator=';' item='i' >" +
+			"INSERT INTO druginventorytable" +
+			"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
+			"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
+			"ON DUPLICATE KEY UPDATE " +
+			"druginventorynumber=druginventorynumber+ #{i.number}" +
+			"</foreach>" +
+			"</script>"
+
 	})
-	int updatePharmacy(List<Druginformation> list,String pharmacycode);
+	int updatePharmacy(List list,String pharmacycode);
 
 
 	/**
@@ -492,7 +496,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
+	@Select("select a.commoname,a.price,b.* from (SELECT drugcode,commoname,price FROM druginformation where ${where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
 
@@ -513,5 +517,151 @@ public interface DrugMapper
 	@Select("select * from purchasestatistics ")
 	List<Purchasestatistics> selectPurchaseStatistics();
 
+	/**
+	 * @Description  批量插入药库出入库
+	 * @author xlx
+	 * @Date 下午 21:03 2020/2/26 0026
+	 * @Param
+	 * @return
+	 **/
+	@Insert({
+			"<script>",
+			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
+			"<foreach collection='vac.list' item='item' index='index' separator=','>",
+			"(#{item.drugcode}, #{item.number},#{outbound},#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"</foreach>",
+			"</script>"
+	})
+	int insertDrugstore(Vacation vac,String pharmacycode,String time,String outbound);
 
+	/**
+	 * @Description  修改药库库存（退库）
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 **/
+	@Update({
+			"<script>" +
+					"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+					"update drugstoredruginventory set druginventory =druginventory- #{item.number} " +
+					"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
+					"</foreach></script>"
+
+	})
+	int updateDepotwithdrawal(List list);
+	/**
+	 * @Description  修改药库库存（药房退库）
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 **/
+	@Update({
+			"<script>" +
+					"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+					"update drugstoredruginventory set druginventory =druginventory+ #{item.number} " +
+					"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
+					"</foreach></script>"
+
+	})
+	int updateDepot(List list);
+	/**
+	 * @Description  批量插入药房出入库
+	 * @author xlx
+	 * @Date 下午 21:03 2020/2/26 0026
+	 * @Param
+	 * @return
+	 **/
+	@Insert({
+			"<script>",
+			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
+			"<foreach collection='vac.list' item='item' index='index' separator=','>",
+			"(#{item.drugcode}, #{item.number},#{outbound},#{item.lotnumber},#{item.specialmedicine},#{outboundtype},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
+			"</foreach>",
+			"</script>"
+	})
+	int insertPharmacyOutbound(Vacation vac,String pharmacycode,String time,String outbound,String outboundtype);
+
+	/**
+	 * @Description  修改药房库存(退库)
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 * 	"<script>" +
+	 * 					"<foreach collection='list' separator=';' item='i' >" +
+	 * 					"INSERT INTO druginventorytable" +
+	 * 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
+	 * 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
+	 * 					"ON DUPLICATE KEY UPDATE " +
+	 * 					"druginventorynumber=druginventorynumber+ #{i.number}" +
+	 * 					"</foreach>" +
+	 * 					"</script>"
+	 **/
+	@Update({
+			"<script>" +
+					"<foreach collection='list' separator=';' item='i' >" +
+					"update druginventorytable set druginventorynumber =druginventorynumber- #{i.number} " +
+					"where  drugcode =#{i.drugcode} and lotnumber=#{i.lotnumber}" +
+					"</foreach>" +
+					"</script>"
+	})
+	int updatePharmacywithdrawal(List list);
+
+	/**
+	 * @Description  药库库存查询（通过常用名称）
+	 * @author xlx
+	 * @Date 下午 17:52 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
+			+ " druginventorytable b where a.drugcode=b.drugcode")
+	List<Inventorycheck> selectStoreInventorycheck(String where);
+
+	/**
+	 * @Description  插入药品报损表
+	 * @author xlx
+	 * @Date 上午 9:58 2020/3/4 0004
+	 * @Param
+	 * @return
+	 **/
+	@Insert({
+			"<script>",
+			"insert into breakdownofdrugs(drugcode, damagedtype, lossreporter,lossreport,losstime,losscount,lossamount,lotnumber,drugstate,auditor,reviewtime,provepath,pharmacycode) values ",
+			"<foreach collection='vac.list' item='item' index='index' separator=','>",
+			"(#{item.drugcode}, #{vac.damagedtype}, #{vac.applyUser},#{vac.reason},#{vac.applyTime},#{item.losscount},#{item.lossamount},#{item.lotnumber},#{item.drugstatus},#{vac.auditor},#{vac.auditTime},#{vac.provepath},#{pharmacycode})",
+			"</foreach>",
+			"</script>"
+	})
+	int insertBreakdownOfDrugs(Vacation vac,String pharmacycode);
+
+	/**
+	 * @Description  查询药品报损表
+	 * @author xlx
+	 * @Date 上午 10:16 2020/3/4 0004
+	 * @Param
+	 * @return
+	 **/
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where1}) a,"
+			+ " (SELECT * FROM breakdownofdrugs where ${where2}) b where a.drugcode=b.drugcode")
+	List<Breakdownofdrugs> selectBreakdownOfDrugs(String where1,String where2);
+
+	/**
+	 * @Description  修改药房库存(报损)
+	 * @author xlx
+	 * @Date 上午 7:08 2020/2/27 0027
+	 * @Param
+	 * @return
+	 **/
+	@Update({
+			"<script>" +
+					"<foreach collection='list' separator=';' item='i' >" +
+					"update druginventorytable set druginventorynumber =druginventorynumber- #{i.losscount} " +
+					"where  drugcode =#{i.drugcode} and lotnumber=#{i.lotnumber}" +
+					"</foreach>" +
+					"</script>"
+	})
+	int updatePharmacydamaged(List list);
 }

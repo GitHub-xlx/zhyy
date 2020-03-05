@@ -24,7 +24,7 @@
 <div id="tb" style="display: none">
     <table class="layui-hide" id="test4" lay-filter="drug4"></table>
     <h3 id="fun_title4">审核意见</h3>
-    <textarea id="text1" placeholder="请输入意见（必填）" style="size: 100px"></textarea>
+    <textarea id="text1" placeholder="请输入意见（必填）" style="size: 200px"></textarea>
 </div>
 <div id="tb1" style="display: none">
     <table class="layui-hide" id="test5" lay-filter="drug5"></table>
@@ -32,6 +32,19 @@
 <div id="img" style="display: none">
     <h3 id="fun_title5">流程状态</h3>
     <img id="imgProcess" src=""  alt="流程已结束"/>
+</div>
+<div id="tb2" style="display: none">
+    <table class="layui-hide" id="test6" lay-filter="drug6"></table>
+    <div class="layui-upload-list">
+        <!--            预览图-->
+        <img class="layui-upload-img" id="demo1" width="200px" height="200px" >
+        <p id="demoText"></p>
+    </div>
+    <h3 id="fun_title6">审核意见</h3>
+    <textarea id="text2" placeholder="请输入意见（必填）" style="size: 200px"></textarea>
+</div>
+<div id="tb3" style="display: none">
+    <table class="layui-hide" id="test7" lay-filter="drug7"></table>
 </div>
 
 <script th:src="@{static/back/js/jquery-3.4.1.js}"></script>
@@ -44,12 +57,25 @@
 <!--    <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>-->
 <!--</script>-->
 <script type="text/html" id="titleTpl">
-    {{#  if(d.start === 1){ }}
-    <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
-    <a class="layui-btn layui-btn-sm background-style" lay-event="modify">修改</a>
+    {{#  if(d.name === '药品报损'){ }}
+        {{#  if(d.start === 1){ }}
+        <a class="layui-btn layui-btn-sm background-style" lay-event="damagedDetails">查看详情</a>
+        <a class="layui-btn layui-btn-sm background-style" lay-event="damagedModify">修改</a>
+        {{#  } else { }}
+        <a class="layui-btn layui-btn-sm background-style" lay-event="damagedDetails">查看详情</a>
+        {{#  } }}
     {{#  } else { }}
-    <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
+        {{#  if(d.start === 1){ }}
+        <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
+        <a class="layui-btn layui-btn-sm background-style" lay-event="modify">修改</a>
+        {{#  } else { }}
+        <a class="layui-btn layui-btn-sm background-style" lay-event="details">查看详情</a>
+        {{#  } }}
     {{#  } }}
+
+</script>
+<script type="text/html" id="titleTp2">
+    <span>{{#  d.list.length  }}</span>
 </script>
 
 </body>

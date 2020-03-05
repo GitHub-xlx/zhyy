@@ -31,6 +31,27 @@ public class TimeUtil
      */
     public final static String ROLE_PHMANAGER = "phmanager";
     /**
+     *  pharmacystorage 药房入库
+     */
+    public final static String KEY_1 = "pharmacystorage";
+
+    /**
+     *  drugclaim 药品请领
+     */
+    public final static String KEY_2 = "drugclaim";
+    /**
+     *  pharmacywithdrawal 药房退库
+     */
+    public final static String KEY_3 = "pharmacywithdrawal";
+    /**
+     *  depotwithdrawal 药库退库
+     */
+    public final static String KEY_4 = "depotwithdrawal";
+    /**
+     *  drugdamaged 药品报损
+     */
+    public final static String KEY_5 = "drugdamaged";
+    /**
      * 获取yyyy-MM-dd HH:mm:ss格式的是时间
      */
     public static String getTime(Date date) {

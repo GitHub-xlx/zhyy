@@ -1,8 +1,8 @@
 package com.zhyy.entity;
 
+import com.google.gson.Gson;
 
-public class Druginventorytable
-{
+public class Druginventorytable {
 
 	private long ditid;
 	private String drugcode;
@@ -20,145 +20,136 @@ public class Druginventorytable
 	private String specification;//规格
 	private double wholesaleprice;//批发价
 
-	public long getDitid()
-	{
-		return ditid;
-	}
 
-	public void setDitid(long ditid)
-	{
-		this.ditid = ditid;
-	}
+  public long getDitid() {
+    return ditid;
+  }
+
+  public void setDitid(long ditid) {
+    this.ditid = ditid;
+  }
 
 
-	public String getDrugcode()
-	{
-		return drugcode;
-	}
+  public String getDrugcode() {
+    return drugcode;
+  }
 
-	public void setDrugcode(String drugcode)
-	{
-		this.drugcode = drugcode;
-	}
+  public void setDrugcode(String drugcode) {
+    this.drugcode = drugcode;
+  }
 
 	public String getCommoname()
 	{
 		return commoname;
 	}
 
-	public void setCommoname(String commoname)
-	{
-		this.commoname = commoname;
-	}
+  public double getDruginventorynumber() {
+    return druginventorynumber;
+  }
 
-	public double getDruginventorynumber()
-	{
-		return druginventorynumber;
-	}
-
-	public void setDruginventorynumber(double druginventorynumber)
-	{
-		this.druginventorynumber = druginventorynumber;
-	}
+  public void setDruginventorynumber(long druginventorynumber) {
+    this.druginventorynumber = druginventorynumber;
+  }
 
 
-	public double getDrugminimums()
-	{
-		return drugminimums;
-	}
+  public double getDrugminimums() {
+    return drugminimums;
+  }
 
-	public void setDrugminimums(double drugminimums)
-	{
-		this.drugminimums = drugminimums;
-	}
+  public void setDrugminimums(long drugminimums) {
+    this.drugminimums = drugminimums;
+  }
 
 
-	public String getDrugunit()
-	{
-		return drugunit;
-	}
+  public String getDrugunit() {
+    return drugunit;
+  }
 
-	public void setDrugunit(String drugunit)
-	{
-		this.drugunit = drugunit;
-	}
+  public void setDrugunit(String drugunit) {
+    this.drugunit = drugunit;
+  }
 
 
-	public String getLotnumber()
-	{
-		return lotnumber;
-	}
+  public String getLotnumber() {
+    return lotnumber;
+  }
 
-	public void setLotnumber(String lotnumber)
-	{
-		this.lotnumber = lotnumber;
-	}
+  public void setLotnumber(String lotnumber) {
+    this.lotnumber = lotnumber;
+  }
 
 
-	public String getSpecialmedicine()
-	{
-		return specialmedicine;
-	}
+  public String getSpecialmedicine() {
+    return specialmedicine;
+  }
 
-	public void setSpecialmedicine(String specialmedicine)
-	{
-		this.specialmedicine = specialmedicine;
-	}
+  public void setSpecialmedicine(String specialmedicine) {
+    this.specialmedicine = specialmedicine;
+  }
 
 
-	public String getProductiondate()
-	{
-		return productiondate;
-	}
+  public String getProductiondate() {
+    return productiondate;
+  }
 
-	public void setProductiondate(String productiondate)
-	{
-		this.productiondate = productiondate;
-	}
+  public void setProductiondate(String productiondate) {
+    this.productiondate = productiondate;
+  }
 
 
-	public String getDrugstatus()
-	{
-		return drugstatus;
-	}
+  public String getDrugstatus() {
+    return drugstatus;
+  }
 
-	public void setDrugstatus(String drugstatus)
-	{
-		this.drugstatus = drugstatus;
-	}
+  public void setDrugstatus(String drugstatus) {
+    this.drugstatus = drugstatus;
+  }
 
 
-	public String getPharmacynumber()
-	{
-		return pharmacynumber;
-	}
+  public String getPharmacynumber() {
+    return pharmacynumber;
+  }
 
-	public void setPharmacynumber(String pharmacynumber)
-	{
-		this.pharmacynumber = pharmacynumber;
-	}
-	public String getShelflife()
-	{
-		return shelflife;
-	}
+  public void setPharmacynumber(String pharmacynumber) {
+    this.pharmacynumber = pharmacynumber;
+  }
 
-	public void setShelflife(String shelflife)
-	{
-		this.shelflife = shelflife;
-	}
+  public void setDruginventorynumber(double druginventorynumber)
+  {
+    this.druginventorynumber = druginventorynumber;
+  }
 
-	public String getReceivetime()
-	{
-		return receivetime;
-	}
+  public void setDrugminimums(double drugminimums)
+  {
+    this.drugminimums = drugminimums;
+  }
 
-	public void setReceivetime(String receivetime)
-	{
-		this.receivetime = receivetime;
-	}
+  public void setCommoname(String commoname)
+  {
+    this.commoname = commoname;
+  }
 
+  public String getShelflife()
+  {
+    return shelflife;
+  }
 
-	public String getSpecification()
+  public void setShelflife(String shelflife)
+  {
+    this.shelflife = shelflife;
+  }
+
+  public String getReceivetime()
+  {
+    return receivetime;
+  }
+
+  public void setReceivetime(String receivetime)
+  {
+    this.receivetime = receivetime;
+  }
+
+  public String getSpecification()
 	{
 		return specification;
 	}
@@ -176,5 +167,10 @@ public class Druginventorytable
 	public void setWholesaleprice(double wholesaleprice)
 	{
 		this.wholesaleprice = wholesaleprice;
+	}
+	@Override
+	public String toString()
+	{
+		return  new Gson().toJson(this);
 	}
 }

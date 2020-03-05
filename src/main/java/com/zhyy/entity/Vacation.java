@@ -25,7 +25,7 @@ public class Vacation implements Serializable
      */
     private String instanceId;
     //申请药品集合
-    private List<Druginformation> list;
+    private List list;
     //申请原因
     private String reason;
     //申请时间
@@ -62,8 +62,30 @@ public class Vacation implements Serializable
      */
     private String nowResult;
     private String message;
+    private String damagedtype;
+    private String provepath;
 
-    public String getMessage()
+	public String getDamagedtype()
+	{
+		return damagedtype;
+	}
+
+	public void setDamagedtype(String damagedtype)
+	{
+		this.damagedtype = damagedtype;
+	}
+
+	public String getProvepath()
+	{
+		return provepath;
+	}
+
+	public void setProvepath(String provepath)
+	{
+		this.provepath = provepath;
+	}
+
+	public String getMessage()
     {
         return message;
     }
@@ -105,12 +127,12 @@ public class Vacation implements Serializable
 
 
 
-    public List<Druginformation> getList()
+    public List getList()
     {
         return list;
     }
 
-    public void setList(List<Druginformation> list)
+    public void setList(List list)
     {
         this.list = list;
     }

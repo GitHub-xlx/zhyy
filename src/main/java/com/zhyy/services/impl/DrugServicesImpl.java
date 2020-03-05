@@ -452,4 +452,94 @@ public class DrugServicesImpl implements DrugServices
 	{
 		return drugMapper.selectPurchaseStatistics();
 	}
+
+	/**
+	 * @Description  药房退库，插入出入库表并更新库存（药房药库都要）
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	@Override
+	public int pharmacyWithdrawal(Vacation vac)
+	{
+		User user = userServices.queryUserByAccount(vac.getApplyUser());
+		String time = TimeUtil.getTime(new Date());
+		drugMapper.insertPharmacyOutbound(vac,user.getPharmacycode(),time,"出库","退库");
+		drugMapper.updatePharmacywithdrawal(vac.getList());
+		drugMapper.insertDrugstore(vac,user.getPharmacycode(),time,"入库");
+		return drugMapper.updateDepot(vac.getList());
+	}
+	/**
+	 * @Description  药库退库，插入出入库表并更新库存（药库）
+	 * @author xlx
+	 * @Date 上午 7:21 2020/2/28 0028
+	 * @Param
+	 * @return
+	 **/
+	@Override
+	public int depotwithdrawal(Vacation vac)
+	{
+		User user = userServices.queryUserByAccount(vac.getApplyUser());
+		String time = TimeUtil.getTime(new Date());
+		drugMapper.insertDrugstore(vac,user.getPharmacycode(),time,"退库");
+		return drugMapper.updateDepotwithdrawal(vac.getList());
+	}
+	/**
+	 * @Description  通过常用名称和特殊分类查询药库库存表
+	 * @author xlx
+	 * @Date 下午 17:47 2020/3/3 0003
+	 * @Param
+	 * @return
+	 **/
+	@Override
+	public List<Inventorycheck> selectStoreInventorycheck(String commoname, String specialmedicine)
+	{
+		String where="1=1 ";
+		if(commoname!=null){
+			where = commoname.length()>0 ? where+" and commoname like '%"+commoname+"%'" : where+" and commoname like '%%'";
+		}
+		if (specialmedicine!=null){
+			where = specialmedicine.length()>0 ? where+" and specialmedicine = '"+specialmedicine+"'" : where;
+		}
+		return drugMapper.selectStoreInventorycheck(where);
+	}
+
+	/**
+	 * @Description  药品报损
+	 * @author xlx
+	 * @Date 下午 23:08 2020/3/3 0003
+	 * @Param
+	 * @return
+	 **/
+	@Override
+	public int insertBreakdownOfDrugs(Vacation vac)
+	{
+		User user = userServices.queryUserByAccount(vac.getApplyUser());
+		 //插入报损明细表
+		drugMapper.insertBreakdownOfDrugs(vac,user.getPharmacycode());
+//		 修改药房库存
+		drugMapper.updatePharmacydamaged(vac.getList());
+		return 0;
+	}
+
+	@Override
+	public List<Breakdownofdrugs> selectBreakdownOfDrugs(String damagedtype, String commoname, String start, String end)
+	{
+		String where1="1=1 ";
+		String where2="1=1 ";
+		if(commoname!=null){
+			where1 = commoname.length()>0 ? where1+" and commoname like '%"+commoname+"%'" : where1;
+		}
+		if (damagedtype!=null){
+			where2 = damagedtype.length()>0 ? where2+" and damagedtype = '"+damagedtype+"'" : where2;
+		}
+		if (start!=null){
+			where2 = start.length()>0 ? where2+" and losstime > '"+start+"'" : where2;
+		}
+		if (end!=null){
+			where2 = end.length()>0 ? where2+" and losstime < '"+end+"'" : where2;
+		}
+		return drugMapper.selectBreakdownOfDrugs(where1,where2);
+	}
 }

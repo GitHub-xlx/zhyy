@@ -60,7 +60,7 @@ public class VacationServiceImpl
 
 //    private static final String PROCESS_DEFINE_KEY = "vacationProcess";
 
-    public boolean startVac(String userName, List list,String processkey) {
+    public boolean startVac(String userName, List list,String processkey, Vacation vac) {
 //	    Deployment deployment = processEngine.getRepositoryService().createDeployment().name(processkey)
 //			    .addClasspathResource("processes/"+processkey+".bpmn")
 //			    .addClasspathResource("processes/"+processkey+".png")
@@ -77,7 +77,9 @@ public class VacationServiceImpl
         vars.put("applyUser", userName);
         vars.put("instanceId", vacationInstance.getId());
         vars.put("applyTime", TimeUtil.getTime(new Date()));
-        vars.put("reason", processkey);
+        vars.put("reason", vac.getReason());
+        vars.put("damagedtype", vac.getDamagedtype());
+        vars.put("provepath", vac.getProvepath());
         vars.put("list", list);
 
         taskService.complete(currentTask.getId(), vars);
@@ -114,19 +116,28 @@ public class VacationServiceImpl
         String durgResult = runtimeService.getVariable(instance.getId(), "durgResult", String.class);
         String dispenser = runtimeService.getVariable(instance.getId(), "dispenser", String.class);
         String medicineTime = runtimeService.getVariable(instance.getId(), "medicineTime", String.class);
+        String damagedtype = runtimeService.getVariable(instance.getId(), "damagedtype", String.class);
+        String provepath = runtimeService.getVariable(instance.getId(), "provepath", String.class);
+	    System.out.println("==============="+provepath);
+	    System.out.println("111111111"+provepath);
+	    System.out.println("============="+provepath);
         String id = runtimeService.getVariable(instance.getId(), "instanceId", String.class);
-        List<Druginformation> list = runtimeService.getVariable(instance.getId(), "list", List.class);
+        List list = runtimeService.getVariable(instance.getId(), "list", List.class);
 	    Vacation vac = new Vacation();
         vac.setApplyUser(instance.getStartUserId());
 	    vac.setInstanceId(id);
         vac.setReason(reason);
         vac.setList(list);
-        vac.setResult(result);
-        vac.setAuditor(auditor);
-        vac.setAuditTime(auditTime);
+        if (result!=null){
+	        vac.setResult(result);
+	        vac.setAuditor(auditor);
+	        vac.setAuditTime(auditTime);
+        }
         vac.setDurgResult(durgResult);
         vac.setDispenser(dispenser);
         vac.setMedicineTime(medicineTime);
+        vac.setDamagedtype(damagedtype);
+        vac.setProvepath(provepath);
         Date startTime = instance.getStartTime(); // activiti 6 才有
         vac.setApplyTime(TimeUtil.getTime(startTime));
         vac.setApplyStatus(instance.isEnded() ? "申请结束" : "等待审批");
@@ -152,10 +163,10 @@ public class VacationServiceImpl
         for (Task task : taskList) {
             VacTask vacTask = new VacTask();
             vacTask.setId(task.getId());
-            vacTask.setName(task.getName());
             vacTask.setCreateTime(task.getCreateTime());
             String instanceId = task.getProcessInstanceId();
             ProcessInstance instance = runtimeService.createProcessInstanceQuery().processInstanceId(instanceId).singleResult();
+            vacTask.setName(instance.getProcessDefinitionName());
             Vacation vac = getVac(instance);
             vacTask.setVac(vac);
             if (userName.equals(vac.getApplyUser())){
@@ -178,16 +189,18 @@ public class VacationServiceImpl
 	    String result = vac.getResult();
         Map<String, Object> vars = new HashMap<>();
 	    vars.put("message", vac.getNowResult());
-        if (userName.equals("issuer")){
-	        vars.put("durgResult", result);
-	        vars.put("dispenser", userName);
-	        vars.put("medicineTime",TimeUtil.getTime(new Date()));
-        }else if (userName.equals(vac.getApplyUser())){
-	        vars.put("applyUser", userName);
-	        vars.put("applyTime", TimeUtil.getTime(new Date()));
-	        vars.put("reason", vac.getReason());
-	        vars.put("list", vac.getList());
-        } else{
+
+	    if (userName.equals(vac.getApplyUser())){
+		    vars.put("applyUser", userName);
+		    vars.put("applyTime", TimeUtil.getTime(new Date()));
+		    vars.put("reason", vac.getReason());
+		    vars.put("list", vac.getList());
+	    }
+	    else if (userName.equals("issuer")){
+		    vars.put("durgResult", result);
+		    vars.put("dispenser", userName);
+		    vars.put("medicineTime",TimeUtil.getTime(new Date()));
+	    } else{
 	        vars.put("result", result);
 	        vars.put("auditor", userName);
 	        vars.put("auditTime", TimeUtil.getTime(new Date()));
@@ -425,6 +438,8 @@ public class VacationServiceImpl
 		}
 		return highLightedFlowIds;
 	}
+
+
 	//---------回退
 	//destTaskId驳回的节点，页面可以选择，默认是上级节点
 

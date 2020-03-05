@@ -8,7 +8,10 @@ import com.zhyy.entity.*;
 import com.zhyy.services.DrugServices;
 import com.zhyy.services.impl.VacationServiceImpl;
 import com.zhyy.utils.TimeUtil;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.runtime.ProcessInstanceQuery;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,8 +36,10 @@ public class VacationController
 	private DrugServices drugServices;
 	@Resource
 	private TaskService taskService;
+	@Resource
+	private RuntimeService runtimeService;
 	/**
-	 * @Description  开启流程
+	 * @Description  开启请领流程
 	 * @author xlx
 	 * @Date 下午 17:01 2020/2/24 0024
 	 * @Param
@@ -42,12 +47,48 @@ public class VacationController
 	 **/
 	@RequestMapping("/startProcess")
 	public @ResponseBody
-	boolean startProcess( String gsonList, String processkey, HttpSession session){
+	boolean startProcess( String gsonList, String processkey,  Vacation vac, HttpSession session){
 		boolean flag=false;
 		List<Druginformation> list = new Gson().fromJson(gsonList,new TypeToken< List<Druginformation>>(){}.getType());
 		User user = (User)session.getAttribute("user");
 		if (user!=null){
-			flag=vacationServices.startVac(user.getAccount(),list,processkey);
+			flag=vacationServices.startVac(user.getAccount(),list,processkey,vac);
+		}
+		return flag;
+	}
+	/**
+	 * @Description  开启退库流程
+	 * @author xlx
+	 * @Date 下午 17:01 2020/2/24 0024
+	 * @Param
+	 * @return @RequestBody
+	 **/
+	@RequestMapping("/startWithdrawal")
+	public @ResponseBody
+	boolean startWithdrawal( String gsonList, String processkey,  Vacation vac, HttpSession session){
+		boolean flag=false;
+		List<DrugWithdrawal> list = new Gson().fromJson(gsonList,new TypeToken< List<DrugWithdrawal>>(){}.getType());
+		User user = (User)session.getAttribute("user");
+		if (user!=null){
+			flag=vacationServices.startVac(user.getAccount(),list,processkey,vac);
+		}
+		return flag;
+	}
+	/**
+	 * @Description  开启报损流程
+	 * @author xlx
+	 * @Date 下午 17:01 2020/2/24 0024
+	 * @Param
+	 * @return @RequestBody
+	 **/
+	@RequestMapping("/startDamaged")
+	public @ResponseBody
+	boolean startDamaged( String gsonList,  Vacation vac,HttpSession session){
+		boolean flag=false;
+		List<Inventorycheck> list = new Gson().fromJson(gsonList,new TypeToken< List<Inventorycheck>>(){}.getType());
+		User user = (User)session.getAttribute("user");
+		if (user!=null){
+			flag=vacationServices.startVac(user.getAccount(),list,"drugdamaged",vac);
 		}
 		return flag;
 	}
@@ -92,9 +133,6 @@ public class VacationController
 			list = ( List<Vacation>)vacationServices.myVacRecord(user.getAccount());
 		}
 		PageInfo p = new PageInfo(list);
-		System.out.println(22222222);
-		System.out.println(p.getList());
-		System.out.println(22222222);
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
@@ -144,9 +182,6 @@ public class VacationController
 			list = ( List<Vacation>)vacationServices.myAuditRecord(user.getAccount());
 		}
 		PageInfo p = new PageInfo(list);
-		System.out.println(11111111);
-		System.out.println(p.getList());
-		System.out.println(11111111);
 		TableMsg tableMsg = new TableMsg();
 		tableMsg.setCode(0);
 		tableMsg.setMsg("");
@@ -165,32 +200,58 @@ public class VacationController
 	public @ResponseBody
 	boolean passAudit( HttpSession session,VacTask vacTask,String gsonList){
 		boolean flag=false;
-		List<Druginformation> list = new Gson().fromJson(gsonList,new TypeToken< List<Druginformation>>(){}.getType());
+		List list = new Gson().fromJson(gsonList,new TypeToken< List>(){}.getType());
 		vacTask.getVac().setList(list);
 		User user = (User)session.getAttribute("user");
-		System.out.println(11111111);
-		System.out.println("vacTask"+vacTask.toString());
-		System.out.println(11111111);
 		if (user!=null){
 			Task task=taskService.createTaskQuery() // 创建任务查询
 					.taskId(vacTask.getId()) // 根据任务id查询
 					.singleResult();
+			ProcessInstance process = runtimeService.createProcessInstanceQuery().processInstanceId(vacTask.getVac().getInstanceId()).singleResult();
 			flag = (boolean)vacationServices.passAudit(user.getAccount(),vacTask);
-			if (user.getAccount().equals(TimeUtil.ROLE_ISSUER)&&vacTask.getVac().getNowResult().equals("同意")){
-				//判断是否是同意发药，同意则进入药品出库
-				System.out.println("2222222222");
-				System.out.println(task.getProcessInstanceId());
-				System.out.println("111111111");
+			ProcessInstance process1 = runtimeService.createProcessInstanceQuery().processInstanceId(vacTask.getVac().getInstanceId()).singleResult();
+			String key = process.getProcessDefinitionKey();
+			if (process1==null){
 				Vacation vacation = vacationServices.queryHistoryProcess(task.getProcessInstanceId());
-
-				drugServices.insertOutbound(vacation);
-				//开启药房入库的审核流程
-				vacationServices.startVac(vacation.getApplyUser(),vacation.getList(),"pharmacystorage");
-			}else if (user.getAccount().equals(TimeUtil.ROLE_PHMANAGER)&&vacTask.getVac().getNowResult().equals("同意")){
-				//判断药房是否是同意入库，同意则进入药房药品入库
-				Vacation vacation = vacationServices.queryHistoryProcess(task.getProcessInstanceId());
-				drugServices.insertAndUpdate(vacation);
+				switch(key){
+					case TimeUtil.KEY_1:
+						//判断药房入库，同意则进入药房药品入库
+						drugServices.insertAndUpdate(vacation);
+						break;
+					case TimeUtil.KEY_2:
+						//判断是否是同意发药，同意则进入药品出库
+						drugServices.insertOutbound(vacation);
+						//开启药房入库的审核流程
+						Vacation v = new Vacation();
+						v.setReason("药房入库");
+						vacationServices.startVac(vacation.getApplyUser(),vacation.getList(),TimeUtil.KEY_1,v);
+						break;
+					case TimeUtil.KEY_3:
+						//药房退库
+						drugServices.pharmacyWithdrawal(vacation);
+						break;
+					case TimeUtil.KEY_4:
+						//药库退库
+						drugServices.depotwithdrawal(vacation);
+						break;
+					case TimeUtil.KEY_5:
+						//药品报损
+						drugServices.insertBreakdownOfDrugs(vacation);
+						break;
+					default:
+						break;
+				}
 			}
+//			if (key.equals("pharmacywithdrawal")||key.equals("depotwithdrawal")){
+//
+//			}else{
+//				if (user.getAccount().equals(TimeUtil.ROLE_ISSUER)&&vacTask.getVac().getNowResult().equals("同意")){
+//
+//				}else if (user.getAccount().equals(TimeUtil.ROLE_PHMANAGER)&&vacTask.getVac().getNowResult().equals("同意")){
+//
+//				}
+//			}
+
 		}
 		return flag;
 	}
