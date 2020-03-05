@@ -542,4 +542,10 @@ public class DrugServicesImpl implements DrugServices
 		}
 		return drugMapper.selectBreakdownOfDrugs(where1,where2);
 	}
+
+	@Override
+	public List<GainAndLoss> gainAndLoss()
+	{
+		return drugMapper.gainAndLoss();
+	}
 }

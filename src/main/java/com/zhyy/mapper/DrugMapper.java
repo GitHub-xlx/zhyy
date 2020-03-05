@@ -369,7 +369,7 @@ public interface DrugMapper
 			"</foreach></script>"
 
 	})
-	int updatePharmacyInventory(List list);
+	int updatePharmacyInventory(List<Druginformation> list);
 
 	/**
 	 * @Description  批量插入药房入库
@@ -380,9 +380,9 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
+			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},'入库',#{item.lotnumber},#{item.specialmedicine},'入库',#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
+			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
 			"</foreach>",
 			"</script>"
 	})
@@ -395,28 +395,24 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 * 	"<script>" +
-	 * 					"<foreach collection='list' separator=';' item='i' >" +
-	 * 					"INSERT INTO druginventorytable" +
-	 * 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
-	 * 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
-	 * 					"ON DUPLICATE KEY UPDATE " +
-	 * 					"druginventorynumber=druginventorynumber+ #{i.number}" +
-	 * 					"</foreach>" +
-	 * 					"</script>"
+	 * 			"<foreach collection = 'list' item ='item' open='' close='' separator=';'>" +
+	 * 			"update drugstoredruginventory set druginventory =(select druginventory from drugstoredruginventory where drugcode=#{item.drugcode})+ #{item.number} " +
+	 * 			"where  drugcode =#{item.drugcode} and lotnumber=#{item.lotnumber}" +
+	 * 			"</foreach></script>"
+	 *
 	 **/
 	@Update({
 			"<script>" +
-			"<foreach collection='list' separator=';' item='i' >" +
-			"INSERT INTO druginventorytable" +
-			"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
-			"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
-			"ON DUPLICATE KEY UPDATE " +
-			"druginventorynumber=druginventorynumber+ #{i.number}" +
-			"</foreach>" +
-			"</script>"
-
+					"<foreach collection='list' separator=';' item='i' >" +
+					"INSERT INTO drugstoredruginventory" +
+					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
+					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
+					"ON DUPLICATE KEY UPDATE " +
+					"druginventorynumber=druginventorynumber+ #{i.number}" +
+					"</foreach>" +
+					"</script>"
 	})
-	int updatePharmacy(List list,String pharmacycode);
+	int updatePharmacy(List<Druginformation> list,String pharmacycode);
 
 
 	/**
@@ -496,7 +492,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.commoname,a.price,b.* from (SELECT drugcode,commoname,price FROM druginformation where ${where}) a,"
+	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
 
@@ -582,6 +578,12 @@ public interface DrugMapper
 			"</script>"
 	})
 	int insertPharmacyOutbound(Vacation vac,String pharmacycode,String time,String outbound,String outboundtype);
+	/**
+	 * 查询盘盈盘亏结果
+	 * @return
+	 */
+	@Select("select A.*,B.commoname from inventory A,druginformation B where A.drugcode = B.drugcode")
+	List<GainAndLoss> gainAndLoss();
 
 	/**
 	 * @Description  修改药房库存(退库)

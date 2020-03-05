@@ -408,4 +408,9 @@ public interface DrugServices
 	 * @return
 	 **/
 	List<Breakdownofdrugs> selectBreakdownOfDrugs(String damagedtype,String commoname, String start, String end);
+	/**
+	 * 查询盘盈盘亏结果
+	 * @return
+	 */
+	List<GainAndLoss> gainAndLoss();
 }
