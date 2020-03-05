@@ -11,6 +11,7 @@ layui.use('table', function(){
 	var form = layui.form;
 	var layer = layui.layer;
 	var laydate = layui.laydate;
+	var drugDate=[];
 	table.render({
 		elem: '#test'//指定表格第一张查询表
 		,url:'/drugController/selectStoreInventorycheck'
@@ -137,7 +138,7 @@ layui.use('table', function(){
 						data:{
 							'gsonList':JSON.stringify(drugDate),
 							// 'list':drugDate,
-							'processkey':'pharmacywithdrawal'
+							'processkey':'depotwithdrawal'
 						},
 						success:function(res){
 							if(res){

@@ -2,6 +2,9 @@ package com.zhyy.entity;
 
 
 import com.google.gson.Gson;
+
+import java.io.Serializable;
+
 /**
  * @Description  退库实体类
  * @author xlx
@@ -9,7 +12,7 @@ import com.google.gson.Gson;
  * @Param
  * @return
  **/
-public class DrugWithdrawal
+public class DrugWithdrawal implements Serializable
 {
 
   private long ditid;

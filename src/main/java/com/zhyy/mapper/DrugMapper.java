@@ -371,6 +371,7 @@ public interface DrugMapper
 	})
 	int updatePharmacyInventory(List<Druginformation> list);
 
+
 	/**
 	 * @Description  批量插入药房入库
 	 * @author xlx
@@ -380,13 +381,14 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into inboundoutboundschedule(drugcode, number, outbound,lotnumber,auditor,asker,pharmacycode,asktime,reviewtime,receivetime,operatingtime,treasury) values ",
+			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},'出库',#{item.lotnumber},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{vac.medicineTime},#{time},#{vac.dispenser})",
+			"(#{item.drugcode}, #{item.number},'入库',#{item.lotnumber},#{item.specialmedicine},'入库',#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
 			"</foreach>",
 			"</script>"
 	})
 	int insertPharmacyDrug(Vacation vac,String pharmacycode,String time);
+
 
 	/**
 	 * @Description  修改药房库存
@@ -404,13 +406,14 @@ public interface DrugMapper
 	@Update({
 			"<script>" +
 					"<foreach collection='list' separator=';' item='i' >" +
-					"INSERT INTO drugstoredruginventory" +
+					"INSERT INTO druginventorytable" +
 					"(drugcode,druginventorynumber,drugminimums,drugunit,lotnumber,specialmedicine,productiondate,drugstatus,pharmacynumber) " +
 					"VALUE(#{i.drugcode},#{i.number},'0',#{i.pharmacyunit},#{i.lotnumber},#{i.specialmedicine},#{i.productiondate},#{i.drugstatus},#{pharmacycode}) " +
 					"ON DUPLICATE KEY UPDATE " +
 					"druginventorynumber=druginventorynumber+ #{i.number}" +
 					"</foreach>" +
 					"</script>"
+
 	})
 	int updatePharmacy(List<Druginformation> list,String pharmacycode);
 
@@ -492,7 +495,7 @@ public interface DrugMapper
 	 * @Param
 	 * @return
 	 **/
-	@Select("select a.commoname,b.* from (SELECT drugcode,commoname FROM druginformation where ${where}) a,"
+	@Select("select a.commoname,a.price,b.* from (SELECT drugcode,commoname,price FROM druginformation where ${where}) a,"
 			+ " druginventorytable b where a.drugcode=b.drugcode")
 	List<Inventorycheck> selectInventorycheck(String where);
 
@@ -571,9 +574,9 @@ public interface DrugMapper
 	 **/
 	@Insert({
 			"<script>",
-			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,operatingtime) values ",
+			"insert into pharmacydrugschedule(drugcode, number, outbound,lotnumber,specialmedicine,outboundtype,auditor,asker,pharmacynumber,asktime,reviewtime,receivetime,operatingtime) values ",
 			"<foreach collection='vac.list' item='item' index='index' separator=','>",
-			"(#{item.drugcode}, #{item.number},#{outbound},#{item.lotnumber},#{item.specialmedicine},#{outboundtype},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time})",
+			"(#{item.drugcode}, #{item.number},#{outbound},#{item.lotnumber},#{item.specialmedicine},#{outboundtype},#{vac.auditor},#{vac.applyUser},#{pharmacycode},#{vac.applyTime},#{vac.auditTime},#{time},#{time})",
 			"</foreach>",
 			"</script>"
 	})
